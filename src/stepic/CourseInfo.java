@@ -1,4 +1,4 @@
-package Stepic;
+package stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.util.text.StringUtil;
@@ -22,7 +22,7 @@ public class CourseInfo {
     //course type in format "pycharm <language>"
     private String myType = "pycharm Python";
 
-    List<Integer> instructors = new ArrayList<Integer>();
+    public List<Integer> instructors = new ArrayList<Integer>();
 
     List<Author> myAuthors = new ArrayList<Author>();
     int id;

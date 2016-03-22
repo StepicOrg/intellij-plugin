@@ -1,6 +1,6 @@
 package actions;
 
-import StepicConnector.WorkerService;
+import stepicConnector.WorkerService;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;

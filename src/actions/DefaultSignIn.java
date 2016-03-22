@@ -1,7 +1,7 @@
 package actions;
 
-import StepicConnector.Commands;
-import StepicConnector.WorkerService;
+import stepicConnector.Commands;
+import stepicConnector.WorkerService;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.json.JSONException;
