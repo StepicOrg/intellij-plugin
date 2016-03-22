@@ -1,6 +1,7 @@
-package StepicConnector;
+package Test;
 
 import Stepic.CourseInfo;
+import StepicConnector.Commands;
 import com.squareup.okhttp.OkHttpClient;
 import org.json.JSONException;
 
