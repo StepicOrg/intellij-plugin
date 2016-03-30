@@ -26,14 +26,17 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <applicationService serviceInterface="main.stepicConnector.WorkerService"
+                            serviceImplementation="main.stepicConnector.WorkerService"/>
+
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="DefaultSignIn" class="actions.DefaultSignIn" text="Default sign _in" description="sing in as Peter">
+        <action id="DefaultSignIn" class="main.actions.DefaultSignIn" text="Default sign _in" description="sing in as Peter">
             <add-to-group group-id="OtherMenu" anchor="first"/>
         </action>
-        <action id="WhoAmI" class="actions.WhoAmI" text="_Who am i" description="return username">
+        <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
             <add-to-group group-id="OtherMenu" anchor="first"/>
         </action>
     </actions>
