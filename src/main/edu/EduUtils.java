@@ -1,4 +1,4 @@
-package edu;
+package main.edu;
 
 import com.intellij.ide.SaveAndSyncHandler;
 import com.intellij.openapi.actionSystem.AnActionEvent;

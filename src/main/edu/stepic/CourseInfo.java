@@ -1,4 +1,4 @@
-package stepic;
+package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.util.text.StringUtil;

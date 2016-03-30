@@ -1,4 +1,4 @@
-package test;
+package main.stepicConnector;
 
 import javafx.util.Pair;
 
@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class WorkWithProperties {
-//    "src/test/client_info.properties"
+//    "src/resources/client_info.properties"
 //    client_id      -- as key
 //    client_secret  -- as value
     public static Pair<String, String> getProperties() {
@@ -18,7 +18,8 @@ public class WorkWithProperties {
 
         Pair<String, String> pair = null;
         try {
-            input = new FileInputStream("src/test/client_info.properties");
+//            input = new FileInputStream("src/test/client_info.properties");
+            input = new FileInputStream("src/resources/client_info.properties");
             prop.load(input);
 
             pair = new Pair<>(prop.getProperty("client_id"), prop.getProperty("client_secret"));

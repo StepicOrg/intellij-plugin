@@ -1,4 +1,4 @@
-package actions;
+package main.actions;
 
 import stepicConnector.WorkerService;
 import com.intellij.openapi.actionSystem.AnAction;

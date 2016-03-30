@@ -1,6 +1,5 @@
-package stepicConnector;
+package main.stepicConnector;
 
-import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.util.xmlb.XmlSerializerUtil;
@@ -11,7 +10,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 @Storage(id="WorkerService", file = StoragePathMacros.APP_CONFIG + "/WorkerService.xml")
 //@State(name = "WorkerService", storages = @Storage("course_service.xml"))
-public class WorkerService implements PersistentStateComponent<WorkerService> {
+//public class WorkerService implements PersistentStateComponent<WorkerService> {
+public class WorkerService {
     private static WorkerService ourInstance = new WorkerService();
     public String clientId;
     public String clientSecret;
@@ -24,14 +24,12 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private WorkerService() {
     }
 
-    @Override
     public WorkerService getState() {
 //        return ourInstance;
         System.out.println("get state ----------");
         return this;
     }
 
-    @Override
     public void loadState(WorkerService state) {
 //        XmlSerializerUtil.copyBean(state, ourInstance);
         System.out.println("Load state ----------");

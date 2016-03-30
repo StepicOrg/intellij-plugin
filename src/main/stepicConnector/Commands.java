@@ -1,4 +1,4 @@
-package stepicConnector;
+package main.stepicConnector;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -35,7 +35,7 @@ public class Commands {
 
     //    return String Token
     // OkHttp is bad
-    @Deprecated
+//    @Deprecated
     public static String getToken(String clientId, String clientSecret)
             throws IOException, JSONException {
 
@@ -64,7 +64,7 @@ public class Commands {
         return token;
     }
 
-    @Deprecated
+//    @Deprecated
     private static Request createAndSetHeader(String add_url, String token) {
 
         Request request = new Request.Builder()

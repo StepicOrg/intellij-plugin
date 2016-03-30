@@ -1,4 +1,4 @@
-package edu;/*
+package main.edu;/*
  * Copyright 2000-2014 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ public class EduNames {
   public static final String TASK = "task";
   public static final String TASK_TITLED = StringUtil.toTitleCase(TASK);
   public static final String COURSE = "course";
-  public static final String TEST_TAB_NAME = "test";
+  public static final String TEST_TAB_NAME = "";
   public static final String USER_TEST_INPUT = "input";
   public static final String USER_TEST_OUTPUT = "output";
   public static final String WINDOW_POSTFIX = "_window.";

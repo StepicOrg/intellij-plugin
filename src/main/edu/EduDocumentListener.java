@@ -1,4 +1,4 @@
-package edu;
+package main.edu;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.event.DocumentAdapter;
