@@ -5,8 +5,8 @@ import com.intellij.openapi.editor.event.DocumentAdapter;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.impl.event.DocumentEventImpl;
 import com.intellij.openapi.util.TextRange;
-import courseFormat.AnswerPlaceholder;
-import courseFormat.TaskFile;
+import main.edu.courseFormat.AnswerPlaceholder;
+import main.edu.courseFormat.TaskFile;
 
 import java.util.ArrayList;
 import java.util.List;

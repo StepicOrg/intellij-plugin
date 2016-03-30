@@ -1,40 +1,42 @@
 package main.stepicConnector;
 
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 
 // don't work (((
 
 
-@Storage(id="WorkerService", file = StoragePathMacros.APP_CONFIG + "/WorkerService.xml")
-//@State(name = "WorkerService", storages = @Storage("course_service.xml"))
-//public class WorkerService implements PersistentStateComponent<WorkerService> {
-public class WorkerService {
-    private static WorkerService ourInstance = new WorkerService();
+//@Storage(id="WorkerService", file = "/WorkerService.xml")
+//@State(name = "WorkerService", storages = @Storage("WorkerService.xml"))
+@State(name = "WorkerService", storages = @Storage(id="WorkerService", file = "/WorkerService.xml"))
+public class WorkerService implements PersistentStateComponent<WorkerService> {
+//    private static WorkerService ourInstance = new WorkerService();
     public String clientId;
     public String clientSecret;
     public String token;
 
     public static WorkerService getInstance() {
-        return ourInstance;
+//        return ServiceManager.getService(main.stepicConnector.WorkerService.class);
+        return ServiceManager.getService(WorkerService.class);
     }
 
-    private WorkerService() {
+    public WorkerService() {
     }
 
     public WorkerService getState() {
-//        return ourInstance;
-        System.out.println("get state ----------");
         return this;
     }
 
     public void loadState(WorkerService state) {
-//        XmlSerializerUtil.copyBean(state, ourInstance);
-        System.out.println("Load state ----------");
         XmlSerializerUtil.copyBean(state, this);
     }
+
+
+
 
 //    setters and getters -------------------------------
 

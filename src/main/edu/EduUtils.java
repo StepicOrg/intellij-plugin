@@ -13,9 +13,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
-//import com.jetbrains.edu.oldCourseFormat.OldCourse;
-//import com.jetbrains.edu.oldCourseFormat.TaskWindow;
-import courseFormat.*;
+import main.edu.courseFormat.*;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +25,9 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
+
+//import com.jetbrains.edu.oldCourseFormat.OldCourse;
+//import com.jetbrains.edu.oldCourseFormat.TaskWindow;
 
 public class EduUtils {
   private EduUtils() {
