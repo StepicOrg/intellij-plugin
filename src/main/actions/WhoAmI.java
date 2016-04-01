@@ -17,12 +17,11 @@ public class WhoAmI extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getData(PlatformDataKeys.PROJECT);
         if (WorkerService.getInstance().getClientId() == null) {
-            WorkerService.getInstance().setClientId(Messages.showInputDialog(project, "Please,", "input clientId", Messages.getQuestionIcon()));
-            WorkerService.getInstance().setClientSecret(Messages.showInputDialog(project, "Please,", "input clientSecret", Messages.getQuestionIcon()));
+            Messages.showMessageDialog(project, "Sorry, you don't authorize. Please sing in", "Information", Messages.getInformationIcon());
+        } else {
+            Commands.initToken();
+            String name = Commands.getUserName();
+            Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
         }
-
-        String name = Commands.getUserName();
-
-        Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
     }
 }

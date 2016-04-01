@@ -33,10 +33,10 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="DefaultSignIn" class="main.actions.DefaultSignIn" text="Default sign _in" description="sing in as Peter">
+        <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
             <add-to-group group-id="OtherMenu" anchor="first"/>
         </action>
-        <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
+        <action id="sing in" class="main.actions.SingIn" text="Sing _in" description="Incert your client and secret id">
             <add-to-group group-id="OtherMenu" anchor="first"/>
         </action>
     </actions>

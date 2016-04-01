@@ -23,6 +23,15 @@ public class Commands {
 
     private static final Logger LOG = Logger.getInstance(Commands.class.getName());
 
+    public static void initToken() {
+        try {
+            WorkerService.getInstance().setToken(
+                    getToken(WorkerService.getInstance().clientId, WorkerService.getInstance().clientSecret));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String getToken(String user, String pass) throws JSONException {
         HttpResponse<JsonNode> jsonResponse = null;
         try {
@@ -34,10 +43,7 @@ public class Commands {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-        String token = (String) jsonResponse.getBody().getObject().get("access_token");
-
-        WorkerService.getInstance().setToken(token);
-        return token;
+        return (String) jsonResponse.getBody().getObject().get("access_token");
     }
 
     private static <T> T getFromStepic(String link, final Class<T> container) throws UnirestException {
