@@ -7,20 +7,14 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 
-// don't work (((
-
-
-//@Storage(id="WorkerService", file = "/WorkerService.xml")
 //@State(name = "WorkerService", storages = @Storage("WorkerService.xml"))
 @State(name = "WorkerService", storages = @Storage(id="WorkerService", file = "/WorkerService.xml"))
 public class WorkerService implements PersistentStateComponent<WorkerService> {
-//    private static WorkerService ourInstance = new WorkerService();
     public String clientId;
     public String clientSecret;
     public String token;
 
     public static WorkerService getInstance() {
-//        return ServiceManager.getService(main.stepicConnector.WorkerService.class);
         return ServiceManager.getService(WorkerService.class);
     }
 
@@ -34,8 +28,6 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     public void loadState(WorkerService state) {
         XmlSerializerUtil.copyBean(state, this);
     }
-
-
 
 
 //    setters and getters -------------------------------

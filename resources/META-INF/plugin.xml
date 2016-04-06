@@ -1,8 +1,8 @@
 <idea-plugin version="2">
     <id>com.your.company.unique.plugin.id</id>
-    <name>Plugin display name here</name>
+    <name>Stepic connector -alpha-</name>
     <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="afnm47@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
     <description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -38,6 +38,10 @@
         </action>
         <action id="sing in" class="main.actions.SingIn" text="Sing _in" description="Incert your client and secret id">
             <add-to-group group-id="OtherMenu" anchor="first"/>
+        </action>
+        <action id="ClientInfo" class="main.actions.ClientInfo" text="get client _info"
+                description="return client_id and client_secret">
+            <add-to-group group-id="OtherMenu" anchor="last"/>
         </action>
     </actions>
 

@@ -18,9 +18,9 @@ public class SingIn extends AnAction {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
         WorkerService.getInstance().setClientId(
-                Messages.showInputDialog(project, "Please, input client_id", "Sing in", Messages.getQuestionIcon()));
+                Messages.showInputDialog(project, "Please, input your client_id", "Sing in", Messages.getQuestionIcon()));
         WorkerService.getInstance().setClientSecret(
-                Messages.showInputDialog(project, "Please, input client_secret", "Sing in", Messages.getQuestionIcon()));
+                Messages.showInputDialog(project, "Please, input your client_secret", "Sing in", Messages.getQuestionIcon()));
 
         Commands.initToken();
         String name = Commands.getUserName();
