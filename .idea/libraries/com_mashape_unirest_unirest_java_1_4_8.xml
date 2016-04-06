@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="com.mashape.unirest:unirest-java:1.4.8" type="repository">
+    <properties maven-id="com.mashape.unirest:unirest-java:1.4.8" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/resources/lib/unirest-java-1.4.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/httpclient-4.3.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/httpcore-4.3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/commons-logging-1.1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/commons-codec-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/httpasyncclient-4.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/httpcore-nio-4.3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/httpmime-4.3.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/lib/json-20140107.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/resources/lib/unirest-java-1.4.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
