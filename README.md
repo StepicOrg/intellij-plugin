@@ -6,7 +6,7 @@
 * **Client info** — print your `client_id` and `client_secret`.
 
 ## Install
-You can download this plugin from https://drive.google.com/file/d/0B3r_Au4BpPbwR2RiUktERXpLMTg/view?usp=sharing or build it yourself.
+You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbwQ2x3M1FHRm5BMUk or build it yourself.
 
 ## Build
 1. In order to build this project, you have to setting up an development environment (IntelliJ Platform SDK) as described here: http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html
