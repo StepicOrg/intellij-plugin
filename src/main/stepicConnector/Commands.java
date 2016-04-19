@@ -9,8 +9,20 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.edu.stepic.CourseInfo;
-import org.json.JSONException;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,17 +34,40 @@ public class Commands {
     private static final String api_url = "http://stepic.org/api/";
 
     private static final Logger LOG = Logger.getInstance(Commands.class.getName());
+    private static boolean tokenInit = false;
 
-    public static void initToken() {
-        try {
-            WorkerService.getInstance().setToken(
-                    getToken(WorkerService.getInstance().clientId, WorkerService.getInstance().clientSecret));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+    public static void init() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+// Create a trust manager that does not validate certificate for this connection
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() { return null; }
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+        }};
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustAllCerts, new SecureRandom());
+
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+        CloseableHttpClient httpclient = HttpClients.custom()
+                .setSSLSocketFactory(sslsf)
+                .build();
+        Unirest.setHttpClient(httpclient);
     }
 
-    public static String getToken(String user, String pass) throws JSONException {
+    public static void initToken() {
+        if (!tokenInit) {
+            try {
+                init();
+                tokenInit = true;
+            } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | CertificateException | IOException e) {
+                LOG.error(e);
+            }
+        }
+        WorkerService.getInstance().setToken(
+                getToken(WorkerService.getInstance().clientId, WorkerService.getInstance().clientSecret));
+    }
+
+    public static String getToken(String user, String pass) {
         HttpResponse<JsonNode> jsonResponse = null;
         try {
             jsonResponse = Unirest
@@ -41,7 +76,7 @@ public class Commands {
                     .field("grant_type", "client_credentials")
                     .asJson();
         } catch (UnirestException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return (String) jsonResponse.getBody().getObject().get("access_token");
     }
@@ -63,7 +98,7 @@ public class Commands {
         try {
             return getFromStepic("stepics/1", AuthorWrapper.class);
         } catch (UnirestException e) {
-            System.err.print("Couldn't get author info");
+            LOG.error("Couldn't get author info");
         }
         return null;
     }
@@ -99,9 +134,7 @@ public class Commands {
             }
 
             result.add(info);
-//            }
         }
-//        return false;
         return coursesContainer.meta.containsKey("has_next") && coursesContainer.meta.get("has_next") == Boolean.TRUE;
     }
 
