@@ -8,7 +8,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import main.edu.stepic.CourseInfo;
+import main.edu.stepic.*;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -23,17 +23,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class Commands {
+public class StepicConnector {
 
     private static final String token_url = "https://stepic.org/oauth2/token/";
     private static final String api_url = "http://stepic.org/api/";
 
-    private static final Logger LOG = Logger.getInstance(Commands.class.getName());
+    private static final Logger LOG = Logger.getInstance("#main.stepicConnector.StepicConnector.java");
     private static boolean tokenInit = false;
 
 
@@ -90,7 +88,10 @@ public class Commands {
                 .asString();
         final String responseString = response.getBody();
 
-        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+//        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
         return gson.fromJson(responseString, container);
     }
 
@@ -108,42 +109,98 @@ public class Commands {
         return aw.users.get(0).getName();
     }
 
-    public static List<CourseInfo> getCourses() {
+//    public static List<CourseInfo> getCourses() {
+//        try {
+//            List<CourseInfo> result = new ArrayList<CourseInfo>();
+//            int pageNumber = 1;
+//            while (addCoursesFromStepic(result, pageNumber)) {
+//                pageNumber += 1;
+//            }
+//            return result;
+//        } catch (UnirestException e) {
+//            LOG.error("Cannot load course list " + e.getMessage());
+//        }
+//        return Collections.emptyList();
+//    }
+
+//    private static boolean addCoursesFromStepic(List<CourseInfo> result, int pageNumber) throws UnirestException {
+//        final String url = pageNumber == 0 ? "courses" : "courses?page=" + String.valueOf(pageNumber);
+//        final CoursesContainer coursesContainer = getFromStepic(url, CoursesContainer.class);
+//        final List<CourseInfo> courseInfos = coursesContainer.courses;
+//        for (CourseInfo info : courseInfos) {
+//
+//            for (Integer instructor : info.instructors) {
+//                final CourseInfo.Author author = getFromStepic("users/" + String.valueOf(instructor), AuthorWrapper.class).users.get(0);
+//                info.addAuthor(author);
+//            }
+//
+//            result.add(info);
+//        }
+//        return coursesContainer.meta.containsKey("has_next") && coursesContainer.meta.get("has_next") == Boolean.TRUE;
+//    }
+
+    public static MyCourse getCourse(String courseId) {
+        final String url = "courses/" +courseId;
         try {
-            List<CourseInfo> result = new ArrayList<CourseInfo>();
-            int pageNumber = 1;
-            while (addCoursesFromStepic(result, pageNumber)) {
-                pageNumber += 1;
-            }
-            return result;
+            return getFromStepic(url, CoursesContainer.class).courses.get(0);
         } catch (UnirestException e) {
-            LOG.error("Cannot load course list " + e.getMessage());
+            LOG.error("getCourse error");
+            return null;
         }
-        return Collections.emptyList();
     }
 
-    private static boolean addCoursesFromStepic(List<CourseInfo> result, int pageNumber) throws UnirestException {
-        final String url = pageNumber == 0 ? "courses" : "courses?page=" + String.valueOf(pageNumber);
-        final CoursesContainer coursesContainer = getFromStepic(url, CoursesContainer.class);
-        final List<CourseInfo> courseInfos = coursesContainer.courses;
-        for (CourseInfo info : courseInfos) {
-
-            for (Integer instructor : info.instructors) {
-                final CourseInfo.Author author = getFromStepic("users/" + String.valueOf(instructor), AuthorWrapper.class).users.get(0);
-                info.addAuthor(author);
-            }
-
-            result.add(info);
+    public static MySection getSection(String sectionId) {
+        final String url = "sections/" + sectionId;
+        try {
+            return getFromStepic(url, SectionsContainer.class).sections.get(0);
+        } catch (UnirestException e) {
+            LOG.error("getSection error");
+            return null;
         }
-        return coursesContainer.meta.containsKey("has_next") && coursesContainer.meta.get("has_next") == Boolean.TRUE;
+    }
+
+    public static MyUnit getUnit(String sectionId) {
+        final String url = "units/" + sectionId;
+        try {
+            return getFromStepic(url, UnitsContainer.class).units.get(0);
+        } catch (UnirestException e) {
+            LOG.error("getUnit error");
+            return null;
+        }
+    }
+
+    public static MyLesson getLesson(String lessonId)  {
+        final String url = "lessons/" + lessonId;
+        try {
+            return getFromStepic(url, LessonsContainer.class).lessons.get(0);
+        } catch (UnirestException e) {
+            LOG.error("getLesson error");
+            return null;
+        }
     }
 
     public static class AuthorWrapper {
         public List<CourseInfo.Author> users;
     }
 
-    private static class CoursesContainer {
-        public List<CourseInfo> courses;
+    public static class CoursesContainer {
+        public List<MyCourse> courses;
+        public Map meta;
+    }
+
+    public static class SectionsContainer {
+        public List<MySection> sections;
+        public Map meta;
+    }
+
+
+    public static class UnitsContainer {
+        public List<MyUnit> units;
+        public Map meta;
+    }
+
+    public static class LessonsContainer {
+        public List<MyLesson> lessons;
         public Map meta;
     }
 

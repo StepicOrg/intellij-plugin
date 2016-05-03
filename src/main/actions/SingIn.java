@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import main.stepicConnector.Commands;
+import main.stepicConnector.StepicConnector;
 import main.stepicConnector.WorkerService;
 
 /**
@@ -22,8 +22,8 @@ public class SingIn extends AnAction {
         WorkerService.getInstance().setClientSecret(
                 Messages.showInputDialog(project, "Please, input your client_secret", "Sing in", Messages.getQuestionIcon()));
 
-        Commands.initToken();
-        String name = Commands.getUserName();
+        StepicConnector.initToken();
+        String name = StepicConnector.getUserName();
 
         Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
     }

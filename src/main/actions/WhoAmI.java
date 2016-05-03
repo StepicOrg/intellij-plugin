@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import main.stepicConnector.Commands;
+import main.stepicConnector.StepicConnector;
 import main.stepicConnector.WorkerService;
 
 /**
@@ -19,8 +19,8 @@ public class WhoAmI extends AnAction {
         if (WorkerService.getInstance().getClientId() == null) {
             Messages.showMessageDialog(project, "Sorry, you don't authorize. Please sing in", "Information", Messages.getInformationIcon());
         } else {
-            Commands.initToken();
-            String name = Commands.getUserName();
+            StepicConnector.initToken();
+            String name = StepicConnector.getUserName();
             Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
         }
     }

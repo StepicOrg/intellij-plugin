@@ -150,4 +150,12 @@ public class Course {
     public void setCourseType(String courseType) {
         this.courseType = courseType;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name=" + name +
+                ", lessons='" + lessons + '\'' +
+                '}';
+    }
 }
