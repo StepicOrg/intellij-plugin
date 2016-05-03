@@ -1,8 +1,8 @@
 <idea-plugin version="2">
-    <id>com.your.company.unique.plugin.id</id>
+    <id>stepic.submmit.plugin.id</id>
     <name>Stepic connector -alpha-</name>
     <version>1.0</version>
-    <vendor email="afnm47@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="afnm47@gmail.com" url="https://stepic.org">YourCompany</vendor>
 
     <description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -29,6 +29,14 @@
         <applicationService serviceInterface="main.stepicConnector.WorkerService"
                             serviceImplementation="main.stepicConnector.WorkerService"/>
 
+        <moduleBuilder builderClass="main.projectWizard.StepicModuleBuilder"
+                       id="STEPIC_MODULE_BUILDER"
+                       order="first"/>
+
+        <moduleType id="STEPIC_MODULE_TYPE"
+                    implementationClass="main.projectWizard.StepicModuleType"/>
+
+
     </extensions>
 
     <actions>
@@ -41,6 +49,14 @@
         </action>
         <action id="ClientInfo" class="main.actions.ClientInfo" text="get client _info"
                 description="return client_id and client_secret">
+            <add-to-group group-id="OtherMenu" anchor="last"/>
+        </action>
+        <action id="id.SendMain" class="main.actions.SendMain" text="_Send main"
+                description="Send to Stepic file which call &quot;main&quot;">
+            <add-to-group group-id="OtherMenu" anchor="first"/>
+        </action>
+        <action id="id.GetCourse" class="main.actions.GetCourse" text="Choose a course"
+                description="imput a cousre URL to choose course">
             <add-to-group group-id="OtherMenu" anchor="last"/>
         </action>
     </actions>
