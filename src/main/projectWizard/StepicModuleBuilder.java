@@ -1,7 +1,7 @@
 package main.projectWizard;
 
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.diagnostic.Logger;
@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StepicModuleBuilder extends ModuleBuilder {
+public class StepicModuleBuilder extends JavaModuleBuilder {
     private static final Logger LOG = Logger.getInstance(StepicModuleBuilder.class);
     private String myCompilerOutputPath;
     // Pair<Source Path, Package Prefix>
@@ -67,6 +67,13 @@ public class StepicModuleBuilder extends ModuleBuilder {
             rootModel.inheritSdk();
         }
 
+
+        try {
+            buidCourseStructe();
+        } catch (IOException e) {
+            LOG.error("build course structure error\n" + e.getMessage());
+        }
+
         ContentEntry contentEntry = doAddContentEntry(rootModel);
         if (contentEntry != null) {
             final List<Pair<String, String>> sourcePaths = getSourcePaths();
@@ -83,6 +90,7 @@ public class StepicModuleBuilder extends ModuleBuilder {
                 }
             }
         }
+
 
         if (myCompilerOutputPath != null) {
             // should set only absolute paths
@@ -180,25 +188,49 @@ public class StepicModuleBuilder extends ModuleBuilder {
         return super.commit(project, model, modulesProvider);
     }
 
+
+    private void buidCourseStructe() throws IOException {
+        final VirtualFile root = createAndGetContentEntry();
+
+        PropertiesComponent props = PropertiesComponent.getInstance();
+        String courseLink = props.getValue("courseLink");
+        LOG.warn("build course structure " + courseLink);
+
+        StepicConnector.initToken();
+        MyCourse course = StepicConnector.getCourse(courseLink);
+        course.build();
+        List<String> paths = new ArrayList();
+        course.sections.forEach((x, y) -> {
+            //TODO: clean titles from  { \/*?<>\" }
+//            String sectionTitle = y.position + "." + y.title.replace(':',' ');
+            String sectionTitle = "section" + y.position;
+            y.lessons.forEach((xx, yy) -> {
+//                String lessonTitle =  xx.toString() + "." + yy.title.replace(':',' ');
+                String lessonTitle = "lesson" + xx.toString();
+                yy.steps.forEach((xxx, yyy) -> {
+                    String step = "step" + xxx.toString() + ".java";
+                    String path = root.getPath() + File.separator +
+                            sectionTitle + File.separator +
+                            lessonTitle + File.separator + step;
+                    File f = new File(path);
+                    f.getParentFile().mkdirs();
+                    try {
+                        f.createNewFile();
+                    } catch (IOException e) {
+                        LOG.error("Create file error\n" + e.getMessage());
+                    }
+                });
+            });
+            addSourcePath(Pair.create(root.getPath() + File.separator +
+                    sectionTitle, ""));
+        });
+    }
+
+
     @NotNull
     @Override
     public Module createModule(@NotNull ModifiableModuleModel moduleModel) throws InvalidDataException, IOException, ModuleWithNameAlreadyExists, JDOMException, ConfigurationException {
         Module baseModule = super.createModule(moduleModel);
-        final VirtualFile root = createAndGetContentEntry();
-//        VfsUtil.createDirectories(root.getPath() + "/"+StepicModuleWizardStep.getCourseLink());
-//        LOG.warn("create module  "+StepicModuleWizardStep.getCourseLink());
-        PropertiesComponent props = PropertiesComponent.getInstance();
-        String courseLink = props.getValue("courseLink");
-        LOG.warn("create module  " + courseLink);
-
-        StepicConnector.initToken();
-        MyCourse course = StepicConnector.getCourse(courseLink);
-        VfsUtil.createDirectories(root.getPath() + "/" + courseLink);
-
-        String path = getContentEntryPath() + File.separator + "src" + File.separator + "tFile.java";
-        File f = new File(path);
-        f.getParentFile().mkdirs();
-        f.createNewFile();
 
         return baseModule;
     }

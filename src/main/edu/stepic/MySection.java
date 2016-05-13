@@ -1,7 +1,6 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,18 +15,30 @@ import static main.stepicConnector.StepicConnector.getUnit;
 public class MySection {
     int id;
     int course;
-    String title;
+    public String position;
+    public String title;
     @SerializedName("units")
     List<Integer> unitsId;
 
-    Map<Integer, MyLesson> lessons = new HashMap<>();
+    public transient Map<Integer, MyLesson> lessons = new HashMap<>();
 
 
-    public void build() throws UnirestException {
+    public void build() {
+        int count = 0;
         for (Integer unitId : unitsId) {
             int lessonId = getUnit(Integer.toString(unitId)).getLessonId();
             MyLesson lesson = getLesson(Integer.toString(lessonId));
-            lessons.put(unitId, lesson);
+            lessons.put(++count, lesson);
+            lesson.build();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "\nMySection{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", lessons=" + lessons +
+                '}';
     }
 }

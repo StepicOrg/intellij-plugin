@@ -1,7 +1,6 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,27 +19,19 @@ public class MyCourse {
 
     @SerializedName("sections")
     public List<Integer> sectionsId;
-//    @SerializedName("authors")
-//    public List<Integer> authorsId;
 
-
-    transient Map<Integer, MySection> sections = new HashMap<>();
-//    Map<Integer,Authors> authors = new HashMap<>();
-
-
-    public static MyCourse INVALID_COURSE = new MyCourse();
+    public transient Map<Integer, MySection> sections = new HashMap<>();
 
     public String getTitle() {
         return title;
     }
-
 
     @Override
     public String toString() {
         return "MyCourse{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", sectionsId=" + sectionsId +
+                ", sections=" + sections +
                 '}';
     }
 
@@ -60,7 +51,7 @@ public class MyCourse {
 //        return result;
 //    }
 
-    public void build() throws UnirestException {
+    public void build(){
         for (Integer sectionId : sectionsId) {
             MySection section = getSection(Integer.toString(sectionId));
             sections.put(sectionId, section);

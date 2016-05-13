@@ -59,6 +59,10 @@
                 description="imput a cousre URL to choose course">
             <add-to-group group-id="OtherMenu" anchor="last"/>
         </action>
+        <action id="id.ProjectBuilder" class="main.actions.ProjectBuilder" text="test Project Builder"
+                description="test Project Builder">
+            <add-to-group group-id="OtherMenu" anchor="last"/>
+        </action>
     </actions>
 
 </idea-plugin>

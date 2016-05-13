@@ -26,12 +26,14 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
 
+//import com.intellij.openapi.diagnostic.Logger;
+
 public class StepicConnector {
 
     private static final String token_url = "https://stepic.org/oauth2/token/";
     private static final String api_url = "http://stepic.org/api/";
 
-    private static final Logger LOG = Logger.getInstance("#main.stepicConnector.StepicConnector.java");
+    private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
 
 
@@ -65,7 +67,7 @@ public class StepicConnector {
                 getToken(WorkerService.getInstance().clientId, WorkerService.getInstance().clientSecret));
     }
 
-    public static String getToken(String user, String pass) {
+    private static String getToken(String user, String pass) {
         HttpResponse<JsonNode> jsonResponse = null;
         try {
             jsonResponse = Unirest
@@ -144,7 +146,7 @@ public class StepicConnector {
         try {
             return getFromStepic(url, CoursesContainer.class).courses.get(0);
         } catch (UnirestException e) {
-            LOG.error("getCourse error");
+            LOG.error("getCourse error " + e.getMessage());
             return null;
         }
     }
@@ -154,7 +156,7 @@ public class StepicConnector {
         try {
             return getFromStepic(url, SectionsContainer.class).sections.get(0);
         } catch (UnirestException e) {
-            LOG.error("getSection error");
+            LOG.error("getSection error " + e.getMessage());
             return null;
         }
     }
@@ -164,7 +166,7 @@ public class StepicConnector {
         try {
             return getFromStepic(url, UnitsContainer.class).units.get(0);
         } catch (UnirestException e) {
-            LOG.error("getUnit error");
+            LOG.error("getUnit error " + e.getMessage());
             return null;
         }
     }
@@ -174,7 +176,17 @@ public class StepicConnector {
         try {
             return getFromStepic(url, LessonsContainer.class).lessons.get(0);
         } catch (UnirestException e) {
-            LOG.error("getLesson error");
+            LOG.error("getLesson error " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static MyStep getStep(String stepId)  {
+        final String url = "steps/" + stepId;
+        try {
+            return getFromStepic(url, StepsContainer.class).steps.get(0);
+        } catch (UnirestException e) {
+            LOG.error("getStep error " + e.getMessage());
             return null;
         }
     }
@@ -193,7 +205,6 @@ public class StepicConnector {
         public Map meta;
     }
 
-
     public static class UnitsContainer {
         public List<MyUnit> units;
         public Map meta;
@@ -203,6 +214,12 @@ public class StepicConnector {
         public List<MyLesson> lessons;
         public Map meta;
     }
+
+    public static class StepsContainer {
+        public List<MyStep> steps;
+        public Map meta;
+    }
+
 
 }
 
