@@ -10,9 +10,10 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.roots.*;
+import com.intellij.openapi.roots.CompilerModuleExtension;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
@@ -26,20 +27,28 @@ import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
 import main.stepicConnector.StepicConnector;
 import org.jdom.JDOMException;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.projectWizard.YaTranslator.translateRuToEn;
 
 public class StepicModuleBuilder extends JavaModuleBuilder {
     private static final Logger LOG = Logger.getInstance(StepicModuleBuilder.class);
     private String myCompilerOutputPath;
     // Pair<Source Path, Package Prefix>
-    private List<Pair<String, String>> mySourcePaths;
+//    private List<Pair<String, String>> mySourcePaths;
+    // Pair<Source Path, filename>
+//    private List<Pair<String, String>> myFileList;
+
+    private List<MyFileInfo> myFileInfos;
     // Pair<Library path, Source path>
     private final List<Pair<String, String>> myModuleLibraries = new ArrayList<Pair<String, String>>();
 
@@ -58,22 +67,48 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 //    }
 
     public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
+        try {
+            buildCourseStructe();
+        } catch (IOException e) {
+            LOG.error(e.getMessage());
+        }
+
         final CompilerModuleExtension compilerModuleExtension = rootModel.getModuleExtension(CompilerModuleExtension.class);
         compilerModuleExtension.setExcludeOutput(true);
-        LOG.warn("setup root model");
         if (myJdk != null) {
             rootModel.setSdk(myJdk);
         } else {
             rootModel.inheritSdk();
         }
 
-
-        try {
-            buidCourseStructe();
-        } catch (IOException e) {
-            LOG.error("build course structure error\n" + e.getMessage());
-        }
-
+//        ContentEntry contentEntry = doAddContentEntry(rootModel);
+//        if (contentEntry != null) {
+//            final List<MyFileInfo> fileInfos = getMyFileInfos();
+//
+//            if (fileInfos != null) {
+//                for (final MyFileInfo fileInfo : fileInfos) {
+//                    String path = fileInfo.path;
+//                    String pack = fileInfo.pack;
+//                    String filename = fileInfo.filename;
+//                    File f = new File(path);
+//                    f.getParentFile().mkdirs();
+//
+//                    Path rPath = Paths.get(fileInfo.path);
+//
+//                    try {
+//                        Files.write(rPath, getText(filename, pack), Charset.forName("UTF-8"));
+//                    } catch (IOException e) {
+//                        LOG.error("Create File error\n" + e.getMessage());
+//                    }
+//
+//                    final VirtualFile sourceRoot = LocalFileSystem.getInstance()
+//                            .refreshAndFindFileByPath(FileUtil.toSystemIndependentName(fileInfo.source));
+//                    if (sourceRoot != null) {
+//                        contentEntry.addSourceFolder(sourceRoot, false, "");
+//                    }
+//                }
+//            }
+//        }
         ContentEntry contentEntry = doAddContentEntry(rootModel);
         if (contentEntry != null) {
             final List<Pair<String, String>> sourcePaths = getSourcePaths();
@@ -90,7 +125,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
                 }
             }
         }
-
 
         if (myCompilerOutputPath != null) {
             // should set only absolute paths
@@ -120,13 +154,23 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         }
     }
 
+    private List<String> getText(String name, String pack) {
+        List<String> text = new ArrayList<>();
+        text.add("package " + pack + ";\n");
+        text.add("class " + name + " {");
+        text.add("\tpublic static void main(String[] args){");
+        text.add("\t\t//Write your code here");
+        text.add("\t}\n}");
+        return text;
+    }
+
     private static String getUrlByPath(final String path) {
         return VfsUtil.getUrlForLibraryRoot(new File(path));
     }
 
 
     public ModuleType getModuleType() {
-        return StepicModuleType.STEPIC_MODULE;
+        return StepicModuleType.STEPIC_MODULE_TYPE;
     }
 
     @Override
@@ -142,54 +186,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         return LocalFileSystem.getInstance().refreshAndFindFileByPath(path);
     }
 
-    public List<Pair<String, String>> getSourcePaths() {
-        if (mySourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<Pair<String, String>>();
-            @NonNls final String path = getContentEntryPath() + File.separator + "src";
-            new File(path).mkdirs();
-            paths.add(Pair.create(path, ""));
-            return paths;
-        }
-        return mySourcePaths;
-    }
-
-    public void setSourcePaths(List<Pair<String, String>> sourcePaths) {
-        mySourcePaths = sourcePaths != null ? new ArrayList<Pair<String, String>>(sourcePaths) : null;
-    }
-
-    public void addSourcePath(Pair<String, String> sourcePathInfo) {
-        if (mySourcePaths == null) {
-            mySourcePaths = new ArrayList<Pair<String, String>>();
-        }
-        mySourcePaths.add(sourcePathInfo);
-    }
-
-    public void addModuleLibrary(String moduleLibraryPath, String sourcePath) {
-        myModuleLibraries.add(Pair.create(moduleLibraryPath, sourcePath));
-    }
-
-    @Nullable
-    protected static String getPathForOutputPathStep() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public List<Module> commit(@NotNull Project project, ModifiableModuleModel model, ModulesProvider modulesProvider) {
-        LanguageLevelProjectExtension extension = LanguageLevelProjectExtension.getInstance(ProjectManager.getInstance().getDefaultProject());
-        Boolean aDefault = extension.getDefault();
-        LanguageLevelProjectExtension instance = LanguageLevelProjectExtension.getInstance(project);
-        if (aDefault != null && !aDefault) {
-            instance.setLanguageLevel(extension.getLanguageLevel());
-            instance.setDefault(false);
-        } else {
-            instance.setDefault(true);
-        }
-        return super.commit(project, model, modulesProvider);
-    }
-
-
-    private void buidCourseStructe() throws IOException {
+    private void buildCourseStructe() throws IOException {
         final VirtualFile root = createAndGetContentEntry();
 
         PropertiesComponent props = PropertiesComponent.getInstance();
@@ -209,23 +206,80 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
                 String lessonTitle = "lesson" + xx.toString();
                 yy.steps.forEach((xxx, yyy) -> {
                     String step = "step" + xxx.toString() + ".java";
-                    String path = root.getPath() + File.separator +
+                    String pack = sectionTitle + "." + lessonTitle;
+                    String path = root.getPath() + File.separator + "src" + File.separator +
                             sectionTitle + File.separator +
                             lessonTitle + File.separator + step;
                     File f = new File(path);
                     f.getParentFile().mkdirs();
                     try {
-                        f.createNewFile();
+//                        f.createNewFile();
+                        Path path1 = Paths.get(path);
+                        Files.write(path1, getText("step" + xxx.toString(), pack), Charset.forName("UTF-8"));
                     } catch (IOException e) {
                         LOG.error("Create file error\n" + e.getMessage());
                     }
                 });
             });
-            addSourcePath(Pair.create(root.getPath() + File.separator +
-                    sectionTitle, ""));
+        });
+        addSourcePath(Pair.create(root.getPath() + File.separator + "src", ""));
+    }
+
+    private void buildCourseStructe2() {
+        final VirtualFile root = createAndGetContentEntry();
+
+        PropertiesComponent props = PropertiesComponent.getInstance();
+        String courseLink = props.getValue("courseLink");
+        LOG.warn("build course structure " + courseLink);
+
+        final boolean translate;
+        if (props.getValue("translate").equals("1")) {
+            translate = true;
+        } else {
+            translate = false;
+        }
+        StepicConnector.initToken();
+        MyCourse course = StepicConnector.getCourse(courseLink);
+        course.build();
+        List<String> paths = new ArrayList();
+        course.sections.forEach((x, y) -> {
+            //TODO: clean titles from  { \/*?<>\" }
+            String sectionTitle;
+            if (translate) {
+                sectionTitle = "_" + y.position + "." + translateRuToEn(y.title).replace(':', ' ').replace(' ', '_');
+            } else {
+                sectionTitle = "_" + y.position + "." + y.title.replace(':', ' ').replace(' ', '_');
+            }
+
+            y.lessons.forEach((xx, yy) -> {
+                String lessonTitle;
+
+//                if (translate) {
+//                    lessonTitle = "_" + xx.toString() + "." + translateRuToEn(yy.title).replace(':', ' ').replace(' ', '_');
+//                } else {
+//                    lessonTitle = "_" + xx.toString() + "." + yy.title.replace(':', ' ').replace(' ', '_');
+//                }
+                lessonTitle = "Lesson" + xx.toString();
+
+                String path = root.getPath() + File.separator +
+                        sectionTitle + File.separator +
+                        lessonTitle;
+                yy.steps.forEach((xxx, yyy) -> {
+                    String filename = "Step" + xxx.toString();
+                    String filePath = path + File.separator + filename + ".java";
+                    addFileInfo(new MyFileInfo(filePath, root.getPath() + File.separator +
+                            sectionTitle, lessonTitle, filename));
+                });
+            });
         });
     }
 
+    private void addFileInfo(MyFileInfo myFileInfo) {
+        if (myFileInfos == null) {
+            myFileInfos = new ArrayList<>();
+        }
+        myFileInfos.add(myFileInfo);
+    }
 
     @NotNull
     @Override
@@ -233,5 +287,12 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         Module baseModule = super.createModule(moduleModel);
 
         return baseModule;
+    }
+
+    public List<MyFileInfo> getMyFileInfos() {
+        if (myFileInfos == null) {
+            myFileInfos = new ArrayList<>();
+        }
+        return myFileInfos;
     }
 }

@@ -17,7 +17,7 @@ public class ClientInfo extends AnAction {
         Project project = e.getData(PlatformDataKeys.PROJECT);
         Messages.showMessageDialog(project,
                 "client_id = " + WorkerService.getInstance().getClientId()
-                + "\nclent_secret = " + WorkerService.getInstance().getClientSecret()
+                + "\nusername = " + WorkerService.getInstance().getUsername()
                 , "Information", Messages.getInformationIcon());
     }
 }

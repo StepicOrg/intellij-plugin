@@ -20,7 +20,7 @@ public class WhoAmI extends AnAction {
 
         LOG.warn("action");
         Project project = e.getData(PlatformDataKeys.PROJECT);
-        if (WorkerService.getInstance().getClientId() == null) {
+        if (WorkerService.getInstance().getPassword() == null) {
             Messages.showMessageDialog(project, "Sorry, you don't authorize. Please sing in", "Information", Messages.getInformationIcon());
         } else {
             StepicConnector.initToken();

@@ -12,6 +12,7 @@ import main.edu.stepic.*;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.json.JSONException;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -26,8 +27,6 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
 
-//import com.intellij.openapi.diagnostic.Logger;
-
 public class StepicConnector {
 
     private static final String token_url = "https://stepic.org/oauth2/token/";
@@ -36,13 +35,18 @@ public class StepicConnector {
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
 
-
-    public static void init() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 // Create a trust manager that does not validate certificate for this connection
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-            public X509Certificate[] getAcceptedIssuers() { return null; }
-            public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-            public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {
+            }
+
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {
+            }
         }};
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, trustAllCerts, new SecureRandom());
@@ -57,14 +61,15 @@ public class StepicConnector {
     public static void initToken() {
         if (!tokenInit) {
             try {
-                init();
+                setSSLProperty();
                 tokenInit = true;
             } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | CertificateException | IOException e) {
                 LOG.error(e);
             }
         }
-        WorkerService.getInstance().setToken(
-                getToken(WorkerService.getInstance().clientId, WorkerService.getInstance().clientSecret));
+//        WorkerService.getInstance().setToken(
+//                getToken(WorkerService.getInstance().getClientId(), WorkerService.getInstance().getClientSecret()));
+        setTokenGRP();
     }
 
     private static String getToken(String user, String pass) {
@@ -79,6 +84,32 @@ public class StepicConnector {
             LOG.error(e);
         }
         return (String) jsonResponse.getBody().getObject().get("access_token");
+    }
+
+    private static void setTokenGRP() {
+        WorkerService ws = WorkerService.getInstance();
+        String user = ws.getUsername();
+        String pass = ws.getPassword();
+        HttpResponse<JsonNode> jsonResponse = null;
+        try {
+            jsonResponse = Unirest
+                    .post(token_url)
+                    .field("grant_type", "password")
+                    .field("username", user)
+                    .field("password", pass)
+                    .field("client_id", WorkerService.getInstance().getClientId())
+                    .asJson();
+        } catch (UnirestException e) {
+            LOG.error(e);
+        }
+
+        try {
+            ws.setToken((String) jsonResponse.getBody().getObject().get("access_token"));
+            ws.setRefresh_token((String) jsonResponse.getBody().getObject().get("refresh_token"));
+        } catch (JSONException e){
+            LOG.error("Authorization error");
+            ws.setToken(null);
+        }
     }
 
     private static <T> T getFromStepic(String link, final Class<T> container) throws UnirestException {
@@ -142,7 +173,7 @@ public class StepicConnector {
 //    }
 
     public static MyCourse getCourse(String courseId) {
-        final String url = "courses/" +courseId;
+        final String url = "courses/" + courseId;
         try {
             return getFromStepic(url, CoursesContainer.class).courses.get(0);
         } catch (UnirestException e) {
@@ -171,7 +202,7 @@ public class StepicConnector {
         }
     }
 
-    public static MyLesson getLesson(String lessonId)  {
+    public static MyLesson getLesson(String lessonId) {
         final String url = "lessons/" + lessonId;
         try {
             return getFromStepic(url, LessonsContainer.class).lessons.get(0);
@@ -181,7 +212,7 @@ public class StepicConnector {
         }
     }
 
-    public static MyStep getStep(String stepId)  {
+    public static MyStep getStep(String stepId) {
         final String url = "steps/" + stepId;
         try {
             return getFromStepic(url, StepsContainer.class).steps.get(0);

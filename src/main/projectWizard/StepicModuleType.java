@@ -11,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
-    public static final StepicModuleType STEPIC_MODULE;
+    public static final StepicModuleType STEPIC_MODULE_TYPE;
     static {
-        STEPIC_MODULE = (StepicModuleType) instantiate("main.projectWizard.StepicModuleType");
+        STEPIC_MODULE_TYPE = (StepicModuleType) instantiate("main.projectWizard.StepicModuleType");
     }
-    private static final String ID = "STEPIC_MODULE";
+    private static final String ID = "STEPIC_MODULE_TYPE";
 
     public StepicModuleType() {
         super(ID);

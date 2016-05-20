@@ -17,10 +17,10 @@ public class SingIn extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
-        WorkerService.getInstance().setClientId(
-                Messages.showInputDialog(project, "Please, input your client_id", "Sing in", Messages.getQuestionIcon()));
-        WorkerService.getInstance().setClientSecret(
-                Messages.showInputDialog(project, "Please, input your client_secret", "Sing in", Messages.getQuestionIcon()));
+        WorkerService.getInstance().setUsername(
+                Messages.showInputDialog(project, "Please, input your username", "Sing in", Messages.getQuestionIcon()));
+        WorkerService.getInstance().setPassword(
+                Messages.showInputDialog(project, "Please, input your password", "Sing in", Messages.getQuestionIcon()));
 
         StepicConnector.initToken();
         String name = StepicConnector.getUserName();
