@@ -58,7 +58,7 @@ public class SendFile extends AnAction {
 
         StringBuilder sb = new StringBuilder();
         for (int i = startLine; i < lines.length; i++) {
-            sb.append(lines[i]);
+            sb.append(lines[i] + "\n");
         }
         return sb.toString();
     }
