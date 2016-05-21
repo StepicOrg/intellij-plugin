@@ -12,6 +12,9 @@ import main.stepicConnector.StepicConnector;
 import main.stepicConnector.WS2;
 import main.stepicConnector.WorkerService;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Petr on 19.05.2016.
  */
@@ -47,17 +50,20 @@ public class SendFile extends AnAction {
         Document doc = FileDocumentManager.getInstance().getDocument(vf);
         String[] lines = doc.getText().split("\n");
 
-        int startLine = 0;
+//        int packLine = 0;
+        Set<Integer> skipLine = new HashSet<>();
         for (int i = 0; i < lines.length; i++) {
+            if (lines[i].contains("package")) skipLine.add(i);
             if (lines[i].contains("class Step")) {
                 lines[i] = "class Main {";
-                startLine = i;
+//                startLine = i;
                 break;
             }
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = startLine; i < lines.length; i++) {
+        for (int i = 0; i < lines.length; i++) {
+            if (skipLine.contains(i)) continue;
             sb.append(lines[i] + "\n");
         }
         return sb.toString();

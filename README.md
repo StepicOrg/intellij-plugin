@@ -7,7 +7,7 @@
 * **Choose a course** — print main info about a course.
 
 ## Install
-You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbwbXpLM1p5T0N2eU0 or build it yourself.
+You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbwdjltUlN4cDQ2djA or build it yourself.
 
 ## Build
 1. In order to build this project, you have to setting up an development environment (IntelliJ Platform SDK) as described here: http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html
