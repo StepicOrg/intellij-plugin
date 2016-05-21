@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import com.intellij.ide.util.PropertiesComponent;
 import main.projectWizard.YaTranslator;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,8 @@ public class MyCourse {
         for (Integer sectionId : sectionsId) {
             MySection section = getSection(Integer.toString(sectionId));
             sections.put(++sectionNo, section);
-            section.build(sectionNo, root + File.separator + getName());
+//            section.build(sectionNo, root + File.separator + getName());
+            section.build(sectionNo, root + "/" + getName());
         }
     }
 

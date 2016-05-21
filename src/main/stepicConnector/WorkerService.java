@@ -19,7 +19,9 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private String refresh_token;
 
     // <path, step_id> send a psi-file to Stepic
-    private Map<MyFileInfo, String> metaFileInfo;
+//    private Map<MyFileInfo, String> metaFileInfo;
+    private Map<String, String> mapPathStep;
+//    private Map<String, Pair<String,String>> mapPathStep;
 
     // TODO: 14.05.2016 remove username and password
     private String username;
@@ -40,9 +42,29 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         XmlSerializerUtil.copyBean(state, this);
     }
 
-    public void addMyFileInfo(String path, String courseDir, String s, String filename, String s1) {
-        metaFileInfo.put(new MyFileInfo(path, courseDir, s, filename), s1);
+//    public void addMyFileInfo(String path, String courseDir, String s, String filename, String s1) {
+//        metaFileInfo.put(new MyFileInfo(path, courseDir, s, filename), s1);
+//    }
+
+    public void addPathStep(String path, String stepId) {
+        if (mapPathStep == null)
+            mapPathStep = new HashMap<>();
+        mapPathStep.put(path, stepId);
+//        mapPathStep.put(path, Pair.create(stepId,""));
     }
+
+    public String getStepId(String path) {
+        if (mapPathStep == null)
+            mapPathStep =new HashMap<>();
+        return mapPathStep.getOrDefault(path, "");
+//        Pair<String,String> pair =  mapPathStep.getOrDefault(path, Pair.empty());
+//        return pair.first;
+    }
+
+    public void setAttemptId(String path, String stepId, String attemptId) {
+        mapPathStep.put(path, stepId);
+    }
+
 
     public class MyFileInfo {
 
@@ -106,14 +128,23 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         this.password = password;
     }
 
-    public Map<MyFileInfo, String> getMetaFileInfo() {
-        if (metaFileInfo == null) {
-            metaFileInfo = new HashMap<>();
-        }
-        return metaFileInfo;
+//    public Map<MyFileInfo, String> getMetaFileInfo() {
+//        if (metaFileInfo == null) {
+//            metaFileInfo = new HashMap<>();
+//        }
+//        return metaFileInfo;
+//    }
+
+//    public void setMetaFileInfo(Map<MyFileInfo, String> metaFileInfo) {
+//        this.metaFileInfo = metaFileInfo;
+//    }
+
+    public Map<String, String> getMapPathStep() {
+        return mapPathStep;
     }
 
-    public void setMetaFileInfo(Map<MyFileInfo, String> metaFileInfo) {
-        this.metaFileInfo = metaFileInfo;
+    public void setMapPathStep(Map<String, String> mapPathStep) {
+        this.mapPathStep = mapPathStep;
     }
+
 }

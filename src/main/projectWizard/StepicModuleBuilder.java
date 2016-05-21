@@ -20,7 +20,6 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.WorkerService;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,14 +31,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class StepicModuleBuilder extends JavaModuleBuilder {
     private static final Logger LOG = Logger.getInstance(StepicModuleBuilder.class);
 
     @Override
     public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
-        Map<WorkerService.MyFileInfo,String> map = WorkerService.getInstance().getMetaFileInfo();
+//        Map<WorkerService.MyFileInfo,String> map = WorkerService.getInstance().getMetaFileInfo();
         final VirtualFile root = createAndGetContentEntry();
 
         PropertiesComponent props = PropertiesComponent.getInstance();
@@ -51,7 +49,8 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         MyCourse course = StepicConnector.getCourse(courseLink);
         course.build(root.getPath());
 
-        map.keySet().forEach( (x) ->{
+//        map.keySet().forEach( (x) ->{
+        MyFileInfoList.getInstance().getList().forEach( (x) ->{
             File f = new File(x.path);
             f.getParentFile().mkdirs();
             try {

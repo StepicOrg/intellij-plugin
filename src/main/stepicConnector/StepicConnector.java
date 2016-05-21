@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.Pair;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -12,7 +13,9 @@ import main.edu.stepic.*;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -30,7 +33,7 @@ import java.util.Map;
 public class StepicConnector {
 
     private static final String token_url = "https://stepic.org/oauth2/token/";
-    private static final String api_url = "http://stepic.org/api/";
+    private static final String api_url = "https://stepic.org/api/";
 
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
@@ -104,9 +107,9 @@ public class StepicConnector {
         }
 
         try {
-            ws.setToken((String) jsonResponse.getBody().getObject().get("access_token"));
-            ws.setRefresh_token((String) jsonResponse.getBody().getObject().get("refresh_token"));
-        } catch (JSONException e){
+            ws.setToken(jsonResponse.getBody().getObject().getString("access_token"));
+            ws.setRefresh_token(jsonResponse.getBody().getObject().getString("refresh_token"));
+        } catch (JSONException e) {
             LOG.error("Authorization error");
             ws.setToken(null);
         }
@@ -222,6 +225,106 @@ public class StepicConnector {
         }
     }
 
+    public static String getAttemptId(String stepId) {
+        WorkerService ws = WorkerService.getInstance();
+        String attempts = "attempts";
+        JSONObject first = new JSONObject();
+        JSONObject second = new JSONObject();
+
+        first.put("step", stepId);
+        second.put("attempt", first);
+
+        HttpResponse<JsonNode> response = null;
+        LOG.warn(second.toString());
+        LOG.warn(ws.getToken());
+        try {
+            response = Unirest
+                    .post(api_url + attempts)
+                    .header("Authorization", "Bearer " + ws.getToken())
+                    .header("Content-Type", "application/json")
+                    .body(second)
+                    .asJson();
+
+        } catch (UnirestException e) {
+            LOG.error("Get Attempt Id error\n" + e.getMessage());
+        }
+
+        JSONObject tmp = response.getBody().getObject();
+        JSONArray oo = (JSONArray) tmp.get("attempts");
+        LOG.warn(Integer.toString(oo.getJSONObject(0).getInt("id")));
+        return Integer.toString(oo.getJSONObject(0).getInt("id"));
+    }
+
+    public static String sendFile(String file, String att_id) {
+        WorkerService ws = WorkerService.getInstance();
+
+        JSONObject waper = new JSONObject();
+        JSONObject submission = new JSONObject();
+        JSONObject reply = new JSONObject();
+
+        reply.put("language", "java8");
+        reply.put("code", file);
+
+        submission.put("attempt", att_id);
+        submission.put("reply", reply);
+
+        waper.put("submission", submission);
+
+        HttpResponse<JsonNode> response = null;
+        try {
+            response = Unirest
+                    .post(api_url + "submissions")
+                    .header("Authorization", "Bearer " + ws.getToken())
+                    .header("Content-Type", "application/json")
+                    .body(waper)
+                    .asJson();
+        } catch (UnirestException e) {
+            LOG.error("Send File error\n" + e.getMessage());
+        }
+        JSONObject tmp = response.getBody().getObject();
+        JSONArray oo = (JSONArray) tmp.get("submissions");
+        return Integer.toString(oo.getJSONObject(0).getInt("id"));
+    }
+
+    public static String getStatusTask(String submissionId) {
+        WorkerService ws = WorkerService.getInstance();
+        HttpResponse<JsonNode> response = null;
+        try {
+            response = Unirest
+                    .get(api_url + "submissions/" + submissionId)
+                    .header("Authorization", "Bearer " + ws.getToken())
+                    .asJson();
+        } catch (UnirestException e) {
+            LOG.error("get Task status error\n" + e.getMessage());
+        }
+
+        JSONObject tmp = response.getBody().getObject();
+        JSONArray oo = (JSONArray) tmp.get("submissions");
+        return oo.getJSONObject(0).getString("status");
+//        System.out.println(response.getStatus() + response.getStatusText());
+    }
+
+    public static Submissions getStatusTask(String stepId, Pair<String, String> pair) {
+        WorkerService ws = WorkerService.getInstance();
+        HttpResponse<JsonNode> response = null;
+        try {
+            response = Unirest
+                    .get(api_url + "submissions")
+                    .header("Authorization", "Bearer " + ws.getToken())
+                    .queryString("step", stepId)
+                    .queryString(pair.first, pair.second)
+                    .asJson();
+        } catch (UnirestException e) {
+            LOG.error("get Task status error\n" + e.getMessage());
+        }
+
+
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        return gson.fromJson(response.getBody().getObject().toString(), Submissions.class);
+    }
+
     public static class AuthorWrapper {
         public List<CourseInfo.Author> users;
     }
@@ -251,6 +354,23 @@ public class StepicConnector {
         public Map meta;
     }
 
+    public static class Submissions {
+        public List<SubmissionsNode> submissions;
+        public Map meta;
+    }
 
+
+    public static String parseUrl(String url){
+        if (Character.isDigit(url.charAt(0))){
+            return url;
+        } else {
+            String[] path = url.split("/");
+            if (path[3].equals("course")) {
+                String tmp[] = path[4].split("-");
+                return tmp[tmp.length - 1];
+            }
+        }
+        return "";
+    }
 }
 
