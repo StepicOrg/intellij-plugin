@@ -1,6 +1,8 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
+import com.intellij.ide.util.PropertiesComponent;
+import main.projectWizard.YaTranslator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,17 +21,28 @@ public class MySection {
     public String title;
     @SerializedName("units")
     List<Integer> unitsId;
-
     public transient Map<Integer, MyLesson> lessons = new HashMap<>();
 
+    private int sectionNo;
 
-    public void build() {
-        int count = 0;
+
+    public void build(int sectionNo, String courseDir) {
+        this.sectionNo = sectionNo;
+        int lessonNo = 0;
         for (Integer unitId : unitsId) {
             int lessonId = getUnit(Integer.toString(unitId)).getLessonId();
             MyLesson lesson = getLesson(Integer.toString(lessonId));
-            lessons.put(++count, lesson);
-            lesson.build();
+            lessons.put(++lessonNo, lesson);
+            lesson.build(lessonNo, courseDir, getName(sectionNo));
+        }
+    }
+
+    private String getName(int sectionNo) {
+        PropertiesComponent props = PropertiesComponent.getInstance();
+        if (props.getValue("translate").equals("1")) {
+            return "_" + sectionNo + "." + YaTranslator.translateRuToEn(title).replace('\"',' ').replace(' ','_').replace(':','.');
+        } else {
+            return "section" + sectionNo;
         }
     }
 

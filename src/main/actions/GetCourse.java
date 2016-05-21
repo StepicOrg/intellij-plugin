@@ -23,7 +23,7 @@ public class GetCourse extends AnAction {
         StepicConnector.initToken();
 
         MyCourse course = StepicConnector.getCourse(courseId);
-        course.build();
+//        course.build();
         Messages.showMessageDialog(project, course.toString(), "Information", Messages.getInformationIcon());
 
     }

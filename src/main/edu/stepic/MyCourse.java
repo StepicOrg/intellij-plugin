@@ -1,7 +1,10 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
+import com.intellij.ide.util.PropertiesComponent;
+import main.projectWizard.YaTranslator;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +54,21 @@ public class MyCourse {
 //        return result;
 //    }
 
-    public void build(){
+    public void build(String root) {
+        int sectionNo = 0;
         for (Integer sectionId : sectionsId) {
             MySection section = getSection(Integer.toString(sectionId));
-            sections.put(sectionId, section);
-            section.build();
+            sections.put(++sectionNo, section);
+            section.build(sectionNo, root + File.separator + getName());
+        }
+    }
+
+    private String getName() {
+        PropertiesComponent props = PropertiesComponent.getInstance();
+        if (props.getValue("translate").equals("1")) {
+            return YaTranslator.translateRuToEn(title).replace('\"',' ').replace(' ', '_').replace(':', '.');
+        } else {
+            return "course";
         }
     }
 }

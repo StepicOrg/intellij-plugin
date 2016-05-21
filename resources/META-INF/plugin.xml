@@ -63,7 +63,11 @@
                 description="test Project Builder">
             <add-to-group group-id="OtherMenu" anchor="last"/>
         </action>
-        <action id="ID.SendFile" class="main.actions.SendFile" text="Send it" description="Send the file ti Stepic">
+        <action id="ID.SendFile"
+                class="main.actions.SendFile"
+                text="Send Step"
+                description="Send task to Stepic"
+                icon="main.icons.StepicPluginIcons.STEPIC_LOGO">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
         </action>
