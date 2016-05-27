@@ -68,7 +68,7 @@
                 class="main.actions.SendFile"
                 text="Send Step"
                 description="Send task to Stepic"
-                icon="main.icons.PluginIcons.STEPIC_LOGO">
+                icon="/icons/stepic_logo_green.png">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
         </action>
