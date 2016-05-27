@@ -2,9 +2,10 @@ package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.project.Project;
 import main.projectWizard.MyFileInfoList;
 import main.projectWizard.YaTranslator;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.WS3;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +26,13 @@ public class MyLesson {
     public transient Map<Integer, MyStep> steps = new HashMap<>();
     private int lessonNo;
 
-    public void build(int lessonNo, String courseDir, String sectionDir) {
+    public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
+//    public void build(int lessonNo, String courseDir, String sectionDir) {
         this.lessonNo = lessonNo;
 //        Map<WorkerService.MyFileInfo, String> map = WorkerService.getInstance().getMetaFileInfo();
-        WorkerService ws = WorkerService.getInstance();
+//        WorkerService ws = WorkerService.getInstance();
+        WS3 ws = WS3.getInstance(project);
+//        WS3 ws = WS3.getInstance();
         for (Integer stepId : stepsId) {
             MyStep step = getStep(Integer.toString(stepId));
             if (step.isTask()) {

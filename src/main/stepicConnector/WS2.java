@@ -1,9 +1,7 @@
 package main.stepicConnector;
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.*;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import java.util.HashMap;
@@ -12,17 +10,26 @@ import java.util.Map;
 /**
  * Created by Petr on 21.05.2016.
  */
-@State(name = "WS2", storages = @Storage(id = "WS2", file = "/WS2.xml"))
+
+// TODO: 27.05.2016 Module level
+
+@State(name = "WS2", storages = @Storage(id = "WS2", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/WS2.xml"))
+//@State(name = "WS2", storages = @Storage(id = "WS2"))
 public class WS2 implements PersistentStateComponent<WS2> {
 
     private Map<String, String> map;
 
 
-    public static WS2 getInstance() {
-        return ServiceManager.getService(WS2.class);
+    public static WS2 getInstance(Project project) {
+        return ServiceManager.getService(project, WS2.class);
     }
 
+//    public static WS2 getInstance() {
+//        return ServiceManager.getService(WS2.class);
+//    }
+
     public WS2() {
+        map = new HashMap<>();
     }
 
     public WS2 getState() {

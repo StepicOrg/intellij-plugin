@@ -23,7 +23,7 @@ public class WhoAmI extends AnAction {
         if (WorkerService.getInstance().getPassword() == null) {
             Messages.showMessageDialog(project, "Sorry, you don't authorize. Please sing in", "Information", Messages.getInformationIcon());
         } else {
-            StepicConnector.initToken();
+//            StepicConnector.initToken();
             String name = StepicConnector.getUserName();
             Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
         }

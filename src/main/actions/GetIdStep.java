@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.WS3;
 
 /**
  * Created by Petr on 21.05.2016.
@@ -19,7 +19,9 @@ public class GetIdStep extends AnAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        WorkerService ws = WorkerService.getInstance();
+//        WorkerService ws = WorkerService.getInstance();
+        WS3 ws = WS3.getInstance(project);
+//        WS3 ws = WS3.getInstance();
         String stepId = ws.getStepId(vf.getPath());
         Messages.showMessageDialog(project, stepId, "Information", Messages.getInformationIcon());
     }

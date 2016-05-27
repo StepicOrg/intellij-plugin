@@ -2,6 +2,7 @@ package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
 
 import java.util.HashMap;
@@ -26,14 +27,16 @@ public class MySection {
     private int sectionNo;
 
 
-    public void build(int sectionNo, String courseDir) {
+    public void build(int sectionNo, String courseDir, Project project) {
+//    public void build(int sectionNo, String courseDir) {
         this.sectionNo = sectionNo;
         int lessonNo = 0;
         for (Integer unitId : unitsId) {
             int lessonId = getUnit(Integer.toString(unitId)).getLessonId();
             MyLesson lesson = getLesson(Integer.toString(lessonId));
             lessons.put(++lessonNo, lesson);
-            lesson.build(lessonNo, courseDir, getName(sectionNo));
+            lesson.build(lessonNo, courseDir, getName(sectionNo), project);
+//            lesson.build(lessonNo, courseDir, getName(sectionNo));
         }
     }
 

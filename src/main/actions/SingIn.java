@@ -20,7 +20,7 @@ public class SingIn extends AnAction {
         WorkerService.getInstance().setUsername(
                 Messages.showInputDialog(project, "Please, input your username", "Sing in", Messages.getQuestionIcon()));
         WorkerService.getInstance().setPassword(
-                Messages.showInputDialog(project, "Please, input your password", "Sing in", Messages.getQuestionIcon()));
+                Messages.showPasswordDialog(project, "Please, input your password", "Sing in", Messages.getQuestionIcon()));
 
         StepicConnector.initToken();
         String name = StepicConnector.getUserName();

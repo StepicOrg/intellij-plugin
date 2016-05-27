@@ -6,9 +6,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
+// TODO: 27.05.2016 Project level
 
 //@State(name = "WorkerService", storages = @Storage("WorkerService.xml"))
 @State(name = "WorkerService", storages = @Storage(id = "WorkerService", file = "/WorkerService.xml"))
@@ -18,10 +16,7 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private String token;
     private String refresh_token;
 
-    // <path, step_id> send a psi-file to Stepic
-//    private Map<MyFileInfo, String> metaFileInfo;
-    private Map<String, String> mapPathStep;
-//    private Map<String, Pair<String,String>> mapPathStep;
+//    private Map<String, String> mapPathStep;
 
     // TODO: 14.05.2016 remove username and password
     private String username;
@@ -32,6 +27,7 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     }
 
     public WorkerService() {
+//        mapPathStep = new HashMap<>();
     }
 
     public WorkerService getState() {
@@ -42,44 +38,21 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         XmlSerializerUtil.copyBean(state, this);
     }
 
-//    public void addMyFileInfo(String path, String courseDir, String s, String filename, String s1) {
-//        metaFileInfo.put(new MyFileInfo(path, courseDir, s, filename), s1);
+//    public void addPathStep(String path, String stepId) {
+//        if (mapPathStep == null)
+//            mapPathStep = new HashMap<>();
+//        mapPathStep.put(path, stepId);
 //    }
 
-    public void addPathStep(String path, String stepId) {
-        if (mapPathStep == null)
-            mapPathStep = new HashMap<>();
-        mapPathStep.put(path, stepId);
-//        mapPathStep.put(path, Pair.create(stepId,""));
-    }
+//    public String getStepId(String path) {
+//        if (mapPathStep == null)
+//            mapPathStep =new HashMap<>();
+//        return mapPathStep.getOrDefault(path, "");
+//    }
 
-    public String getStepId(String path) {
-        if (mapPathStep == null)
-            mapPathStep =new HashMap<>();
-        return mapPathStep.getOrDefault(path, "");
-//        Pair<String,String> pair =  mapPathStep.getOrDefault(path, Pair.empty());
-//        return pair.first;
-    }
-
-    public void setAttemptId(String path, String stepId, String attemptId) {
-        mapPathStep.put(path, stepId);
-    }
-
-
-    public class MyFileInfo {
-
-        public MyFileInfo(String path, String source, String pack, String filename) {
-            this.path = path;
-            this.source = source;
-            this.pack = pack;
-            this.filename = filename;
-        }
-
-        public String path;
-        public String source;
-        public String pack;
-        public String filename;
-    }
+//    public void setAttemptId(String path, String stepId, String attemptId) {
+//        mapPathStep.put(path, stepId);
+//    }
 
 
 //    setters and getters -------------------------------
@@ -128,23 +101,13 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         this.password = password;
     }
 
-//    public Map<MyFileInfo, String> getMetaFileInfo() {
-//        if (metaFileInfo == null) {
-//            metaFileInfo = new HashMap<>();
-//        }
-//        return metaFileInfo;
+
+//    public Map<String, String> getMapPathStep() {
+//        return mapPathStep;
 //    }
 
-//    public void setMetaFileInfo(Map<MyFileInfo, String> metaFileInfo) {
-//        this.metaFileInfo = metaFileInfo;
+//    public void setMapPathStep(Map<String, String> mapPathStep) {
+//        this.mapPathStep = mapPathStep;
 //    }
-
-    public Map<String, String> getMapPathStep() {
-        return mapPathStep;
-    }
-
-    public void setMapPathStep(Map<String, String> mapPathStep) {
-        this.mapPathStep = mapPathStep;
-    }
 
 }

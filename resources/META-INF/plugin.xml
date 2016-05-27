@@ -28,8 +28,10 @@
         <!-- Add your extensions here -->
         <applicationService serviceInterface="main.stepicConnector.WorkerService"
                             serviceImplementation="main.stepicConnector.WorkerService"/>
-        <applicationService serviceInterface="main.stepicConnector.WS2"
+        <projectService serviceInterface="main.stepicConnector.WS2"
                             serviceImplementation="main.stepicConnector.WS2"/>
+        <projectService serviceInterface="main.stepicConnector.WS3"
+                            serviceImplementation="main.stepicConnector.WS3"/>
 
         <moduleBuilder builderClass="main.projectWizard.StepicModuleBuilder"
                        id="STEPIC_MODULE_BUILDER"
@@ -42,8 +44,21 @@
     </extensions>
 
     <actions>
+        <!--<group id="Stepic" text="Custom Action Group" popup="true">-->
+            <!--<add-to-group group-id="NewGroup" anchor="last"/>-->
+            <!--<action class="main.actions.PrintMapInfo" id="ID.PrintMapInfo"-->
+                    <!--text="asd"-->
+                    <!--description="asd"/>-->
+        <!--</group>-->
+        <!--<group id="Stepic2" text="Custom Action Group" popup="true">-->
+            <!--<add-to-group group-id="MainToolBar" anchor="last"/>-->
+            <!--<action class="main.actions.PrintMapInfo" id="ID.PrintMapInfo"-->
+                    <!--text="asd"-->
+                    <!--description="asd"/>-->
+        <!--</group>-->
         <!-- Add your actions here -->
         <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
+            <!--<add-to-group group-id="Stepic" anchor="first"/>-->
             <add-to-group group-id="OtherMenu" anchor="first"/>
         </action>
         <action id="sing in" class="main.actions.SingIn" text="Sing _in" description="Incert your client and secret id">
@@ -52,8 +67,8 @@
         <action id="ID.SendFile"
                 class="main.actions.SendFile"
                 text="Send Step"
-                description="Send task to Stepic">
-                <!--icon="main.icons.StepicPluginIcons.STEPIC_LOGO">-->
+                description="Send task to Stepic"
+                icon="main.icons.PluginIcons.STEPIC_LOGO">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
         </action>
@@ -61,12 +76,26 @@
             <add-to-group group-id="OtherMenu" anchor="first"/>
         </action>
         <!--<action id="ID.GetIdStep" class="main.actions.GetIdStep" text="GetIdStep" description="GetIdStep">-->
-            <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
+        <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
         <!--</action>-->
-        <action id="ID.GetStepStatus" class="main.actions.GetStepStatus" text="GetStepStatus"
-                description="GetStepStatus">
+        <action id="ID.GetStepStatus"
+                class="main.actions.GetStepStatus"
+                text="GetStepStatus"
+                description="GetStepStatus"
+                icon="AllIcons.General.TodoQuestion">
+            <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
     </actions>
 
+    <module-components>
+        <component>
+            <implementation-class>main.components.MyModuleComponent</implementation-class>
+        </component>
+    </module-components>
+    <project-components>
+        <component>
+            <implementation-class>main.components.MyProjectComponent</implementation-class>
+        </component>
+    </project-components>
 </idea-plugin>

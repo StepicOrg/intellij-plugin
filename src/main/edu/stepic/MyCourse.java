@@ -2,6 +2,7 @@ package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
 
 import java.util.HashMap;
@@ -53,13 +54,15 @@ public class MyCourse {
 //        return result;
 //    }
 
-    public void build(String root) {
+    public void build(String root, Project project) {
+//    public void build(String root) {
         int sectionNo = 0;
         for (Integer sectionId : sectionsId) {
             MySection section = getSection(Integer.toString(sectionId));
             sections.put(++sectionNo, section);
 //            section.build(sectionNo, root + File.separator + getName());
-            section.build(sectionNo, root + "/" + getName());
+            section.build(sectionNo, root + "/" + getName(), project);
+//            section.build(sectionNo, root + "/" + getName());
         }
     }
 

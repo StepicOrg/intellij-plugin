@@ -10,7 +10,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.stepicConnector.StepicConnector;
 import main.stepicConnector.WS2;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.WS3;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +27,10 @@ public class SendFile extends AnAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        StepicConnector.initToken();
-        WorkerService ws = WorkerService.getInstance();
+//        StepicConnector.initToken();
+//        WorkerService ws = WorkerService.getInstance();
+        WS3 ws = WS3.getInstance(project);
+//        WS3 ws = WS3.getInstance();
         String stepId = ws.getStepId(vf.getPath());
 
         String text = renameMainClass(vf);
@@ -36,13 +38,11 @@ public class SendFile extends AnAction {
 
         String attemptId = StepicConnector.getAttemptId(stepId);
 
-        WS2 ws2 = WS2.getInstance();
+        WS2 ws2 = WS2.getInstance(project);
+//        WS2 ws2 = WS2.getInstance();
         ws2.setAttemptId(stepId, attemptId);
 
         String submissionId = StepicConnector.sendFile(text, attemptId);
-//        ws.set
-//        String status = StepicConnector.getStatusTask(submissionId);
-//        Messages.showMessageDialog(project, status, "Information", Messages.getInformationIcon());
 
     }
 
@@ -50,13 +50,11 @@ public class SendFile extends AnAction {
         Document doc = FileDocumentManager.getInstance().getDocument(vf);
         String[] lines = doc.getText().split("\n");
 
-//        int packLine = 0;
         Set<Integer> skipLine = new HashSet<>();
         for (int i = 0; i < lines.length; i++) {
             if (lines[i].contains("package")) skipLine.add(i);
             if (lines[i].contains("class Step")) {
                 lines[i] = "class Main {";
-//                startLine = i;
                 break;
             }
         }

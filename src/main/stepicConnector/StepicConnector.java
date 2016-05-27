@@ -38,7 +38,7 @@ public class StepicConnector {
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
 
-    public static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    private static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 // Create a trust manager that does not validate certificate for this connection
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
@@ -103,14 +103,14 @@ public class StepicConnector {
                     .field("client_id", WorkerService.getInstance().getClientId())
                     .asJson();
         } catch (UnirestException e) {
-            LOG.error(e);
+                LOG.error(e);
         }
 
         try {
             ws.setToken(jsonResponse.getBody().getObject().getString("access_token"));
             ws.setRefresh_token(jsonResponse.getBody().getObject().getString("refresh_token"));
         } catch (JSONException e) {
-            LOG.error("Authorization error");
+            LOG.error("Authorization error. Please sign in");
             ws.setToken(null);
         }
     }

@@ -7,10 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.StepicConnector;
-import main.stepicConnector.SubmissionsNode;
-import main.stepicConnector.WS2;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.*;
 
 import java.util.List;
 
@@ -25,11 +22,13 @@ public class GetStepStatus extends AnAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        WorkerService ws = WorkerService.getInstance();
+//        WorkerService ws = WorkerService.getInstance();
+        WS3 ws = WS3.getInstance(project);
+//        WS3 ws = WS3.getInstance();
         String stepId = ws.getStepId(vf.getPath());
 
 
-        StepicConnector.initToken();
+//        StepicConnector.initToken();
         String ans = "";
         int size = StepicConnector.getStatusTask(stepId, Pair.pair("status", "correct")).submissions.size();
         if (size > 0) {
@@ -38,7 +37,8 @@ public class GetStepStatus extends AnAction {
             ans = "Step wasn't solved";
         }
 
-        WS2 ws2 = WS2.getInstance();
+        WS2 ws2 = WS2.getInstance(project);
+//        WS2 ws2 = WS2.getInstance();
 
         String attemptId = ws2.getAttemptId(stepId);
 //        String attemptId = "";
