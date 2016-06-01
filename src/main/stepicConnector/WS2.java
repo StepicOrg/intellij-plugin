@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by Petr on 21.05.2016.
  */
-// Storage path -- attempt_it
+//
 // TODO: 27.05.2016 Module level
 
 @State(name = "WS2", storages = @Storage(id = "WS2", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/WS2.xml"))

@@ -37,21 +37,26 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
     @Override
     public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
-//        Map<WorkerService.MyFileInfo,String> map = WorkerService.getInstance().getMetaFileInfo();
-        final VirtualFile root = createAndGetContentEntry();
+        //equal rootModel.getProject().getBasePath()
+//        final VirtualFile root = createAndGetContentEntry();
+        final VirtualFile root = rootModel.getProject().getBaseDir();
 
         PropertiesComponent props = PropertiesComponent.getInstance();
+//        String courseLink = props.getValue("courseLink");
         String courseLink = props.getValue("courseLink");
         LOG.warn("build course structure " + courseLink);
         LOG.warn("build course structure " + root.getPath());
 
-//        StepicConnector.initToken();
         MyCourse course = StepicConnector.getCourse(courseLink);
-        course.build(root.getPath(),rootModel.getProject());
-//        course.build(root.getPath());
+        LOG.warn("root = " + root.getPath());
+//        LOG.warn("root2 = " + createAndGetContentEntry().getPath());
 
-//        map.keySet().forEach( (x) ->{
-        MyFileInfoList.getInstance().getList().forEach( (x) ->{
+        course.build(root.getPath(), rootModel.getProject());
+
+//        MyLesson lesson = StepicConnector.getLesson("28340");
+//        lesson.build(1,root.getPath()+"/course","section",rootModel.getProject());
+
+        MyFileInfoList.getInstance().getList().forEach((x) -> {
             File f = new File(x.path);
             f.getParentFile().mkdirs();
             try {
@@ -60,13 +65,16 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
             } catch (IOException e) {
                 LOG.error("Create file error\n" + e.getMessage());
             }
+//            LOG.warn(x.source + " " + x.pack);
             addSourcePath(Pair.create(x.source, x.pack));
+//            rootModel.addContentEntry(x.source);
         });
+        MyFileInfoList.getInstance().setList(null);
 
         super.setupRootModel(rootModel);
     }
 
-    private List<String> getText(String name, String pack) {
+    public static List<String> getText(String name, String pack) {
         List<String> text = new ArrayList<>();
         text.add("package " + pack + ";\n");
         text.add("class " + name + " {");
