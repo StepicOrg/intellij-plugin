@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by Petr on 27.05.2016.
  */
 
+// storage Path - StepNo
 // TODO: 27.05.2016 Module level
 
 @State(name = "WS3", storages = @Storage(id = "WS3", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/WS3.xml"))

@@ -12,6 +12,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 @State(name = "WorkerService", storages = @Storage(id = "WorkerService", file = "/WorkerService.xml"))
 public class WorkerService implements PersistentStateComponent<WorkerService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
+    private String courseLink;
     private String clientSecret;
     private String token;
     private String refresh_token;
@@ -101,6 +102,13 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         this.password = password;
     }
 
+    public String getCourseLink() {
+        return courseLink;
+    }
+
+    public void setCourseLink(String courseLink) {
+        this.courseLink = courseLink;
+    }
 
 //    public Map<String, String> getMapPathStep() {
 //        return mapPathStep;

@@ -47,13 +47,6 @@ public class MyCourse {
         return false;
     }
 
-//    @Override
-//    public int hashCode() {
-//        int result = myName != null ? myName.hashCode() : 0;
-//        result = 31 * result + (myDescription != null ? myDescription.hashCode() : 0);
-//        return result;
-//    }
-
     public void build(String root, Project project) {
 //    public void build(String root) {
         int sectionNo = 0;

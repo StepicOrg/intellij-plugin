@@ -31,7 +31,7 @@ public class MyLesson {
         this.lessonNo = lessonNo;
 //        Map<WorkerService.MyFileInfo, String> map = WorkerService.getInstance().getMetaFileInfo();
 //        WorkerService ws = WorkerService.getInstance();
-        WS3 ws = WS3.getInstance(project);
+        WS3 ws3 = WS3.getInstance(project);
 //        WS3 ws = WS3.getInstance();
         for (Integer stepId : stepsId) {
             MyStep step = getStep(Integer.toString(stepId));
@@ -41,7 +41,7 @@ public class MyLesson {
                 String path = getPath(courseDir, sectionDir, getName(lessonNo)) + filename + ".java";
 //                ws.addMyFileInfo(path, courseDir, sectionDir + "." + getName(lessonNo), filename, Integer.toString(stepId));
                 MyFileInfoList.getInstance().addFileInfo(path, courseDir, sectionDir + "." + getName(lessonNo), filename);
-                ws.addPathStep(path, Integer.toString(stepId));
+                ws3.addPathStep(path, Integer.toString(stepId));
             }
         }
     }

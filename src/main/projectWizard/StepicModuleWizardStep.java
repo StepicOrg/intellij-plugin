@@ -64,6 +64,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
         WorkerService ws = WorkerService.getInstance();
         ws.setPassword(new String(passwordField1.getPassword()));
         ws.setUsername(textField1.getText());
+        ws.setCourseLink(courseLinkFiled.getText());
     }
 
     private static void saveValue(String key, String value) {
