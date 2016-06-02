@@ -40,6 +40,8 @@
         <moduleType id="STEPIC_MODULE_TYPE"
                     implementationClass="main.projectWizard.StepicModuleType"/>
 
+        <projectStructureDetector implementation="main.projectWizard.StepicProjectStructureDetector" order="first"/>
+
 
     </extensions>
 

@@ -29,7 +29,6 @@ public class UpdateCourse extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
-//        project
 
         final VirtualFile root = project.getBaseDir();
         String courseLink = WorkerService.getInstance().getCourseLink();
@@ -41,15 +40,16 @@ public class UpdateCourse extends AnAction {
 
 //        MyCourse course = StepicConnector.getCourse(courseLink);
 //        course.build(root.getPath(),e.getProject());
-        WS3 ws = WS3.getInstance(e.getProject());
+        WS3 ws3 = WS3.getInstance(e.getProject());
 
-        Set<String> nFiles = ws.getMapPathStep().keySet();
+        Set<String> nFiles = new HashSet<>();
+        nFiles.addAll(ws3.getMapPathStep().keySet());
         Set<String> nnFiles = new HashSet<>();
 
         MyLesson lesson = StepicConnector.getLesson("28340");
-        lesson.build(1,root.getPath()+"/course","section",project);
+        lesson.build(1, root.getPath() + "/course", "section", project);
 
-        MyFileInfoList.getInstance().getList().forEach( (x) ->{
+        MyFileInfoList.getInstance().getList().forEach((x) -> {
             if (nFiles.contains(x.path)) {
 
             } else {
@@ -63,8 +63,33 @@ public class UpdateCourse extends AnAction {
 //                LOG.error("Create file error\n" + ex.getMessage());
                 }
             }
+//            ModuleRootModificationUtil.
+//            ProjectRootUtil.
+//            project
 //            addSourcePath(Pair.create(x.source, x.pack));
         });
+        MyFileInfoList.getInstance().setList(null);
+
+
+//        -----------------
+//        WorkerService ws  = WorkerService.getInstance();
+//        ModifiableRootModel rootModel = ws.getRootModel();
+//        ContentEntry contentEntry = StepicModuleBuilder.doAddContentEntry(rootModel);
+//        if (contentEntry != null) {
+//            final List<Pair<String,String>> sourcePaths = getSourcePaths();
+//
+//            if (sourcePaths != null) {
+//                for (final Pair<String, String> sourcePath : sourcePaths) {
+//                    String first = sourcePath.first;
+//                    new File(first).mkdirs();
+//                    final VirtualFile sourceRoot = LocalFileSystem.getInstance()
+//                            .refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
+//                    if (sourceRoot != null) {
+//                        contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
+//                    }
+//                }
+//            }
+//        --------------------
 
 
         StringBuilder sb = new StringBuilder();

@@ -4,6 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 // TODO: 27.05.2016 Project level
@@ -12,6 +13,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 @State(name = "WorkerService", storages = @Storage(id = "WorkerService", file = "/WorkerService.xml"))
 public class WorkerService implements PersistentStateComponent<WorkerService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
+    private ModifiableRootModel rootModel;
     private String courseLink;
     private String clientSecret;
     private String token;
@@ -118,4 +120,12 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
 //        this.mapPathStep = mapPathStep;
 //    }
 
+
+    public ModifiableRootModel getRootModel() {
+        return rootModel;
+    }
+
+    public void setRootModel(ModifiableRootModel rootModel) {
+        this.rootModel = rootModel;
+    }
 }

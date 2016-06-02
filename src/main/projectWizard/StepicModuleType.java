@@ -1,16 +1,19 @@
 package main.projectWizard;
 
-import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
+import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
+import com.intellij.openapi.util.Condition;
 import main.icons.PluginIcons;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
 public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
+    public static final String MODULE_NAME = "Stepic";
     public static final StepicModuleType STEPIC_MODULE_TYPE;
     static {
         STEPIC_MODULE_TYPE = (StepicModuleType) instantiate("main.projectWizard.StepicModuleType");
@@ -34,7 +37,7 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
     @NotNull
     @Override
     public String getName() {
-        return "Stepic";
+        return MODULE_NAME;
     }
 
     @NotNull
@@ -68,5 +71,16 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
         catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    @Nullable
+    @Override
+    public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep, @NotNull final ModuleBuilder moduleBuilder) {
+        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, new Condition<SdkTypeId>() {
+            @Override
+            public boolean value(SdkTypeId sdkType) {
+                return moduleBuilder.isSuitableSdkType(sdkType);
+            }
+        });
     }
 }

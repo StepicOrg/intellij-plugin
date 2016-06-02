@@ -14,6 +14,7 @@ public class MyProjectComponent implements ProjectComponent {
 
     @Override
     public void initComponent() {
+        StepicConnector.initToken();
         // TODO: insert component initialization logic here
     }
 
@@ -30,7 +31,7 @@ public class MyProjectComponent implements ProjectComponent {
 
     @Override
     public void projectOpened() {
-        StepicConnector.initToken();
+
         // called when project is opened
     }
 

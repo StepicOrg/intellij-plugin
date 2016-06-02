@@ -5,22 +5,14 @@ import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.module.ModifiableModuleModel;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.edu.stepic.MyCourse;
+import main.edu.stepic.MyLesson;
 import main.stepicConnector.StepicConnector;
-import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -47,14 +39,14 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         LOG.warn("build course structure " + courseLink);
         LOG.warn("build course structure " + root.getPath());
 
-        MyCourse course = StepicConnector.getCourse(courseLink);
         LOG.warn("root = " + root.getPath());
 //        LOG.warn("root2 = " + createAndGetContentEntry().getPath());
 
-        course.build(root.getPath(), rootModel.getProject());
+//        MyCourse course = StepicConnector.getCourse(courseLink);
+//        course.build(root.getPath(), rootModel.getProject());
 
-//        MyLesson lesson = StepicConnector.getLesson("28340");
-//        lesson.build(1,root.getPath()+"/course","section",rootModel.getProject());
+        MyLesson lesson = StepicConnector.getLesson("28340");
+        lesson.build(1,root.getPath()+"/course","section",rootModel.getProject());
 
         MyFileInfoList.getInstance().getList().forEach((x) -> {
             File f = new File(x.path);
@@ -67,6 +59,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
             }
 //            LOG.warn(x.source + " " + x.pack);
             addSourcePath(Pair.create(x.source, x.pack));
+//            rootModel.addContentEntry(x.source);
 //            rootModel.addContentEntry(x.source);
         });
         MyFileInfoList.getInstance().setList(null);
@@ -84,11 +77,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         return text;
     }
 
-    private static String getUrlByPath(final String path) {
-        return VfsUtil.getUrlForLibraryRoot(new File(path));
-    }
-
-
     public ModuleType getModuleType() {
         return StepicModuleType.STEPIC_MODULE_TYPE;
     }
@@ -100,18 +88,12 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         return new StepicModuleWizardStep[]{new StepicModuleWizardStep(this, wizardContext)};
     }
 
-    private VirtualFile createAndGetContentEntry() {
-        String path = FileUtil.toSystemIndependentName(getContentEntryPath());
-        new File(path).mkdirs();
-        return LocalFileSystem.getInstance().refreshAndFindFileByPath(path);
-    }
-
-    @NotNull
-    @Override
-    public Module createModule(@NotNull ModifiableModuleModel moduleModel) throws InvalidDataException, IOException, ModuleWithNameAlreadyExists, JDOMException, ConfigurationException {
-        Module baseModule = super.createModule(moduleModel);
-
-        return baseModule;
-    }
+//    @NotNull
+//    @Override
+//    public Module createModule(@NotNull ModifiableModuleModel moduleModel) throws InvalidDataException, IOException, ModuleWithNameAlreadyExists, JDOMException, ConfigurationException {
+//        Module baseModule = super.createModule(moduleModel);
+//
+//        return baseModule;
+//    }
 
 }
