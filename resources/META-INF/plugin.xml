@@ -69,6 +69,14 @@
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 
+        <action id="ID.GetIdStep"
+                class="main.actions.GetIdStep"
+                text="GetIdStep"
+                description="GetIdStep">
+            <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
+            <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
+        </action>
+
         <action id="ID.GetStepStatus"
                 class="main.actions.GetStepStatus"
                 text="GetStepStatus"
@@ -81,6 +89,13 @@
                 class="main.actions.UpdateCourse"
                 text="update course"
                 description="update this course">
+            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
+        </action>
+        <action id="TEST.NegTranslator" class="main.actions.NegTranslator" text="NegTranslator"
+                description="NegTranslator">
+            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
+        </action>
+        <action id="ID.RefreshMap" class="main.actions.RefreshMap" text="RefreshMap" description="RefreshMap">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
     </actions>
