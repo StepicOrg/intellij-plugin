@@ -1,10 +1,17 @@
 # intellij-plugin 0.2
 
+To work with plugin you must to create a project of Stepic type.
+You need to enter login and password your's Stepic account.
+And then input course URL or course number.
+After one minute course will be built.
+
 ## Features
-* **Sing in** — you can input `client_id` and `client_secret`, and then you get OAuth2 token.
+* **Sing in** — you can input login and password, and then you get OAuth2 token.
 * **Who am i** — return `user_name`.
-* **Client info** — print your `client_id` and `client_secret`.
-* **Choose a course** — print main info about a course.
+* **Download last submission** — download your latest submission this step from site.
+* **Get a step status** — return a step status and status of last submission posted from IDE.
+* **Send step** — send this step to platform.
+
 
 ## Install
 You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbwMzE3S1BHbmp5MFk or build it yourself.
