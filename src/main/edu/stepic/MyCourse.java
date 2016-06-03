@@ -60,13 +60,13 @@ public class MyCourse {
     public String getName() {
         if (courseName == null) {
             WorkerService ws = WorkerService.getInstance();
-//            if (ws.isTranslate()) {
-            if (true) {
-                courseName =  YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
+            if (ws.isTranslate()) {
+//            if (true) {
+                courseName =  YaTranslator.translateRuToEn(title);
             } else {
                 courseName =  "course";
             }
         }
-        return courseName;
+        return StringUtils.normilize(courseName);
     }
 }

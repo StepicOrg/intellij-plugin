@@ -359,18 +359,25 @@ public class StepicConnector {
         public Map meta;
     }
 
-
-    public static String parseUrl(String url){
-        if (Character.isDigit(url.charAt(0))){
-            return url;
-        } else {
-            String[] path = url.split("/");
-            if (path[3].equals("course")) {
-                String tmp[] = path[4].split("-");
-                return tmp[tmp.length - 1];
-            }
+    public static Submissions getSubmissions(String stepId) {
+        WorkerService ws = WorkerService.getInstance();
+        HttpResponse<JsonNode> response = null;
+        try {
+            response = Unirest
+                    .get(api_url + "submissions")
+                    .header("Authorization", "Bearer " + ws.getToken())
+                    .queryString("step", stepId)
+                    .asJson();
+        } catch (UnirestException e) {
+            LOG.error("get Submissions error\n" + e.getMessage());
         }
-        return "";
+
+
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        return gson.fromJson(response.getBody().getObject().toString(), Submissions.class);
     }
+
 }
 

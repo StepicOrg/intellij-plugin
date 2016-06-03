@@ -20,6 +20,8 @@ public class MySection {
     int course;
     public String position;
     public String title;
+    private String sectionName;
+
     @SerializedName("units")
     List<Integer> unitsId;
     public transient Map<Integer, MyLesson> lessons = new HashMap<>();
@@ -43,10 +45,11 @@ public class MySection {
     private String getName(int sectionNo) {
         WorkerService ws = WorkerService.getInstance();
         if (ws.isTranslate()) {
-            return "_" + sectionNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
+            sectionName = "_" + sectionNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
         } else {
-            return "section" + sectionNo;
+            sectionName = "section" + sectionNo;
         }
+        return StringUtils.normilize(sectionName);
     }
 
     @Override

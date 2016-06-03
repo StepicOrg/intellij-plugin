@@ -27,10 +27,7 @@ public class SendFile extends AnAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-//        StepicConnector.initToken();
-//        WorkerService ws = WorkerService.getInstance();
         WS3 ws = WS3.getInstance(project);
-//        WS3 ws = WS3.getInstance();
         String stepId = ws.getStepId(vf.getPath());
 
         String text = renameMainClass(vf);
@@ -39,11 +36,9 @@ public class SendFile extends AnAction {
         String attemptId = StepicConnector.getAttemptId(stepId);
 
         WS2 ws2 = WS2.getInstance(project);
-//        WS2 ws2 = WS2.getInstance();
         ws2.setAttemptId(stepId, attemptId);
 
         String submissionId = StepicConnector.sendFile(text, attemptId);
-
     }
 
     private String renameMainClass(VirtualFile vf) {

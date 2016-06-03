@@ -98,6 +98,13 @@
         <action id="ID.RefreshMap" class="main.actions.RefreshMap" text="RefreshMap" description="RefreshMap">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
+        <action id="ID.DownloadLastSubmission"
+                class="main.actions.DownloadLastSubmission"
+                text="Download last submission"
+                description="Download Last Submission">
+            <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
+            <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
+        </action>
     </actions>
 
     <module-components>

@@ -22,6 +22,7 @@ public class MyLesson {
     List<Integer> stepsId;
 
     public String title;
+    private String lessonName;
 
     public transient Map<Integer, MyStep> steps = new HashMap<>();
     private int lessonNo;
@@ -45,10 +46,11 @@ public class MyLesson {
     private String getName(int lessonNo) {
         WorkerService ws = WorkerService.getInstance();
         if (ws.isTranslate()) {
-            return "_" + lessonNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
+            lessonName = "_" + lessonNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
         } else {
-            return "lesson" + lessonNo;
+            lessonName = "lesson" + lessonNo;
         }
+        return StringUtils.normilize(lessonName);
     }
 
 
