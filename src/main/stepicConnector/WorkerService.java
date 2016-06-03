@@ -14,7 +14,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 public class WorkerService implements PersistentStateComponent<WorkerService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
     private ModifiableRootModel rootModel;
-    private String courseLink;
+    private String courseID;
     private String clientSecret;
     private String token;
     private String refresh_token;
@@ -24,6 +24,7 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     // TODO: 14.05.2016 remove username and password
     private String username;
     private String password;
+    private boolean translate;
 
     public static WorkerService getInstance() {
         return ServiceManager.getService(WorkerService.class);
@@ -104,12 +105,12 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         this.password = password;
     }
 
-    public String getCourseLink() {
-        return courseLink;
+    public String getCourseID() {
+        return courseID;
     }
 
-    public void setCourseLink(String courseLink) {
-        this.courseLink = courseLink;
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
     }
 
 //    public Map<String, String> getMapPathStep() {
@@ -127,5 +128,13 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
 
     public void setRootModel(ModifiableRootModel rootModel) {
         this.rootModel = rootModel;
+    }
+
+    public void setTranslator(boolean translator) {
+        this.translate = translator;
+    }
+
+    public boolean isTranslate() {
+        return translate;
     }
 }

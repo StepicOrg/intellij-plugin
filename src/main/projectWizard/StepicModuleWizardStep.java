@@ -36,6 +36,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 
     private void initComponents() {
         panel1.setVisible(true);
+        CheckBox.setSelected(true);
     }
 
     @Override
@@ -59,12 +60,13 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 
     private void saveSettings() {
 //        saveValue(courseLinkFiled.getName(),courseLinkFiled.getText());
-        saveValue("courseLink", courseLinkFiled.getText());
-        saveValue("translate", CheckBox.isSelected() ? "1" : "0");
+//        saveValue("courseLink", courseLinkFiled.getText());
+//        saveValue("translate", CheckBox.isSelected() ? "1" : "0");
         WorkerService ws = WorkerService.getInstance();
         ws.setPassword(new String(passwordField1.getPassword()));
         ws.setUsername(textField1.getText());
-        ws.setCourseLink(courseLinkFiled.getText());
+        ws.setCourseID(parseUrl(courseLinkFiled.getText()));
+        ws.setTranslator(CheckBox.isSelected());
     }
 
     private static void saveValue(String key, String value) {
@@ -79,5 +81,18 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
         textField1 = new JTextField(ws.getUsername());
 //        passwordField1.setText(ws.getPassword());
         passwordField1 = new JPasswordField(ws.getPassword());
+    }
+
+    private static String parseUrl(String url){
+        if (Character.isDigit(url.charAt(0))){
+            return url;
+        } else {
+            String[] path = url.split("/");
+            if (path[3].equals("course")) {
+                String tmp[] = path[4].split("-");
+                return tmp[tmp.length - 1];
+            }
+        }
+        return "";
     }
 }

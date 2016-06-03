@@ -2,10 +2,12 @@ package main.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.edu.stepic.MyLesson;
+import main.edu.stepic.MyCourse;
 import main.projectWizard.MyFileInfoList;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.StepicConnector;
@@ -25,29 +27,26 @@ import java.util.Set;
  * Created by Petr on 31.05.2016.
  */
 public class UpdateCourse extends AnAction {
+    private static final Logger LOG = Logger.getInstance(UpdateCourse.class);
 
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
 
         final VirtualFile root = project.getBaseDir();
-        String courseLink = WorkerService.getInstance().getCourseLink();
-//        LOG.warn("build course structure " + courseLink);
-//        LOG.warn("build course structure " + root.getPath());
+        String courseID = WorkerService.getInstance().getCourseID();
 
-//        Messages.showInputDialog(e.getProject(), , "Sing in", Messages.getQuestionIcon());
+        MyCourse course = StepicConnector.getCourse(courseID);
 
-
-//        MyCourse course = StepicConnector.getCourse(courseLink);
-//        course.build(root.getPath(),e.getProject());
         WS3 ws3 = WS3.getInstance(e.getProject());
 
         Set<String> nFiles = new HashSet<>();
         nFiles.addAll(ws3.getMapPathStep().keySet());
         Set<String> nnFiles = new HashSet<>();
 
-        MyLesson lesson = StepicConnector.getLesson("28340");
-        lesson.build(1, root.getPath() + "/course", "section", project);
+        course.build(root.getPath(),e.getProject());
+//        MyLesson lesson = StepicConnector.getLesson("28340");
+//        lesson.build(1, root.getPath() + "/course", "section", project);
 
         MyFileInfoList.getInstance().getList().forEach((x) -> {
             if (nFiles.contains(x.path)) {
@@ -60,37 +59,12 @@ public class UpdateCourse extends AnAction {
                     Path path1 = Paths.get(x.path);
                     Files.write(path1, StepicModuleBuilder.getText(x.filename, x.pack), Charset.forName("UTF-8"));
                 } catch (IOException ex) {
-//                LOG.error("Create file error\n" + ex.getMessage());
+                LOG.error("Create file error\n" + ex.getMessage());
                 }
             }
-//            ModuleRootModificationUtil.
-//            ProjectRootUtil.
-//            project
-//            addSourcePath(Pair.create(x.source, x.pack));
         });
-        MyFileInfoList.getInstance().setList(null);
-
-
-//        -----------------
-//        WorkerService ws  = WorkerService.getInstance();
-//        ModifiableRootModel rootModel = ws.getRootModel();
-//        ContentEntry contentEntry = StepicModuleBuilder.doAddContentEntry(rootModel);
-//        if (contentEntry != null) {
-//            final List<Pair<String,String>> sourcePaths = getSourcePaths();
-//
-//            if (sourcePaths != null) {
-//                for (final Pair<String, String> sourcePath : sourcePaths) {
-//                    String first = sourcePath.first;
-//                    new File(first).mkdirs();
-//                    final VirtualFile sourceRoot = LocalFileSystem.getInstance()
-//                            .refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
-//                    if (sourceRoot != null) {
-//                        contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
-//                    }
-//                }
-//            }
-//        --------------------
-
+        MyFileInfoList.getInstance().clear();
+        LocalFileSystem.getInstance().refresh(true);
 
         StringBuilder sb = new StringBuilder();
         nnFiles.forEach((x) -> sb.append(x.toString() + "\n"));

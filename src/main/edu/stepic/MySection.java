@@ -1,9 +1,9 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
+import main.stepicConnector.WorkerService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,9 +41,9 @@ public class MySection {
     }
 
     private String getName(int sectionNo) {
-        PropertiesComponent props = PropertiesComponent.getInstance();
-        if (props.getValue("translate").equals("1")) {
-            return "_" + sectionNo + "." + YaTranslator.translateRuToEn(title).replace('\"',' ').replace(' ','_').replace(':','.');
+        WorkerService ws = WorkerService.getInstance();
+        if (ws.isTranslate()) {
+            return "_" + sectionNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
         } else {
             return "section" + sectionNo;
         }

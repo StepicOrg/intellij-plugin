@@ -1,9 +1,9 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
+import main.stepicConnector.WorkerService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +19,7 @@ public class MyCourse {
     public int id;
     public String title;
     public String summary;
+    private String courseName;
 
     @SerializedName("sections")
     public List<Integer> sectionsId;
@@ -48,23 +49,24 @@ public class MyCourse {
     }
 
     public void build(String root, Project project) {
-//    public void build(String root) {
         int sectionNo = 0;
         for (Integer sectionId : sectionsId) {
             MySection section = getSection(Integer.toString(sectionId));
             sections.put(++sectionNo, section);
-//            section.build(sectionNo, root + File.separator + getName());
             section.build(sectionNo, root + "/" + getName(), project);
-//            section.build(sectionNo, root + "/" + getName());
         }
     }
 
-    private String getName() {
-        PropertiesComponent props = PropertiesComponent.getInstance();
-        if (props.getValue("translate").equals("1")) {
-            return YaTranslator.translateRuToEn(title).replace('\"',' ').replace(' ', '_').replace(':', '.');
-        } else {
-            return "course";
+    public String getName() {
+        if (courseName == null) {
+            WorkerService ws = WorkerService.getInstance();
+//            if (ws.isTranslate()) {
+            if (true) {
+                courseName =  YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
+            } else {
+                courseName =  "course";
+            }
         }
+        return courseName;
     }
 }

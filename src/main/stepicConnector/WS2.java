@@ -6,6 +6,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Petr on 21.05.2016.
@@ -58,6 +59,10 @@ public class WS2 implements PersistentStateComponent<WS2> {
 
     public void setMap(Map<String, String> map) {
         this.map = map;
+    }
+
+    public void removeAll(Set<String> removed) {
+        map.keySet().removeAll(removed);
     }
 }
 

@@ -6,6 +6,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Petr on 27.05.2016.
@@ -61,4 +62,7 @@ public class WS3 implements PersistentStateComponent<WS3> {
     }
 
 
+    public void removeAll(Set<String> removed) {
+        mapPathStep.keySet().removeAll(removed);
+    }
 }

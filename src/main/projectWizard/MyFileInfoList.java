@@ -28,6 +28,10 @@ public class MyFileInfoList {
         return list;
     }
 
+    public void clear(){
+        list = null;
+    }
+
     public void setList(List<MyFileInfo> list) {
         this.list = list;
     }
