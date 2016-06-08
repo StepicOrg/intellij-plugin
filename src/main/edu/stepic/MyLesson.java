@@ -50,7 +50,7 @@ public class MyLesson {
         } else {
             lessonName = "lesson" + lessonNo;
         }
-        return StringUtils.normilize(lessonName);
+        return StringUtils.normalize(lessonName);
     }
 
 

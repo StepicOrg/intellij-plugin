@@ -29,10 +29,9 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
     @Override
     public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
-        //equal rootModel.getProject().getBasePath()
-//        final VirtualFile root = createAndGetContentEntry();
         final VirtualFile root = rootModel.getProject().getBaseDir();
 
+        StepicConnector.initToken();
         String courseId = WorkerService.getInstance().getCourseID();
         LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());
@@ -41,9 +40,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
         MyCourse course = StepicConnector.getCourse(courseId);
         course.build(root.getPath(), rootModel.getProject());
-
-//        MyLesson lesson = StepicConnector.getLesson("28340");
-//        lesson.build(1,root.getPath()+"/course","section",rootModel.getProject());
 
         MyFileInfoList.getInstance().getList().forEach((x) -> {
             File f = new File(x.path);

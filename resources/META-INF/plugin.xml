@@ -51,12 +51,6 @@
         </group>
 
         <!-- Add your actions here -->
-        <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
-        </action>
-        <action id="sing in" class="main.actions.SingIn" text="Sing _in" description="Incert your client and secret id">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
-        </action>
         <action id="ID.SendFile"
                 class="main.actions.SendFile"
                 text="Send Step"
@@ -64,17 +58,6 @@
                 icon="/icons/stepic_logo_green.png">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
-        </action>
-        <action id="ID.PrintMapInfo" class="main.actions.PrintMapInfo" text="PrintMapInfo" description="PrintMapInfo">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
-        </action>
-
-        <action id="ID.GetIdStep"
-                class="main.actions.GetIdStep"
-                text="GetIdStep"
-                description="GetIdStep">
-            <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
-            <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
         <action id="ID.GetStepStatus"
@@ -85,25 +68,48 @@
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
+
+        <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
+            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
+        </action>
+        <action id="Sing in" class="main.actions.SingIn" text="Sing _in" description="Incert your client and secret id">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        </action>
         <action id="ID.Update"
                 class="main.actions.UpdateCourse"
-                text="update course"
+                text="Update course"
                 description="update this course">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
-        <action id="TEST.NegTranslator" class="main.actions.NegTranslator" text="NegTranslator"
-                description="NegTranslator">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
-        </action>
+
         <action id="ID.RefreshMap" class="main.actions.RefreshMap" text="RefreshMap" description="RefreshMap">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
         <action id="ID.DownloadLastSubmission"
                 class="main.actions.DownloadLastSubmission"
-                text="Download last submission"
-                description="Download Last Submission">
+                text="Download latest submission"
+                description="Download latest submission from site">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
+        </action>
+
+
+        <!--###########################################################################-->
+        <action id="ID.PrintMapInfo"
+                class="main.actions.PrintMapInfo"
+                text="PrintMapInfo" description="PrintMapInfo">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        </action>
+        <action id="TEST.NegTranslator" class="main.actions.NegTranslator" text="NegTranslator"
+                description="NegTranslator">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        </action>
+        <action id="ID.GetIdStep"
+                class="main.actions.GetIdStep"
+                text="GetIdStep"
+                description="GetIdStep">
+            <!--<add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>-->
+            <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
         </action>
     </actions>
 

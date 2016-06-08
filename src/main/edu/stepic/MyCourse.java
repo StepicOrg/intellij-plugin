@@ -67,6 +67,6 @@ public class MyCourse {
                 courseName =  "course";
             }
         }
-        return StringUtils.normilize(courseName);
+        return StringUtils.normalize(courseName);
     }
 }

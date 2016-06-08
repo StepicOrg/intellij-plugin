@@ -24,8 +24,6 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
     private final WizardContext myContext;
     private ProjectData myParent;
 
-    private boolean translate = false;
-
     public StepicModuleWizardStep(StepicModuleBuilder builder, WizardContext context) {
         myProjectOrNull = context.getProject();
         myBuilder = builder;
@@ -63,8 +61,8 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 //        saveValue("courseLink", courseLinkFiled.getText());
 //        saveValue("translate", CheckBox.isSelected() ? "1" : "0");
         WorkerService ws = WorkerService.getInstance();
+        ws.setLogin(textField1.getText());
         ws.setPassword(new String(passwordField1.getPassword()));
-        ws.setUsername(textField1.getText());
         ws.setCourseID(parseUrl(courseLinkFiled.getText()));
         ws.setTranslator(CheckBox.isSelected());
     }
@@ -77,13 +75,14 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
     private void createUIComponents() {
         // TODO: place custom component creation code here
         WorkerService ws = WorkerService.getInstance();
-//        textField1.setText(ws.getUsername());
-        textField1 = new JTextField(ws.getUsername());
+//        textField1.setText(ws.getLogin());
+        textField1 = new JTextField(ws.getLogin());
 //        passwordField1.setText(ws.getPassword());
         passwordField1 = new JPasswordField(ws.getPassword());
     }
 
     private static String parseUrl(String url){
+        if (url.isEmpty()) return "";
         if (Character.isDigit(url.charAt(0))){
             return url;
         } else {

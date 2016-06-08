@@ -37,6 +37,7 @@ public class StepicConnector {
 
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
+    private static WorkerService ws = WorkerService.getInstance();
 
     private static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 // Create a trust manager that does not validate certificate for this connection
@@ -90,8 +91,7 @@ public class StepicConnector {
     }
 
     private static void setTokenGRP() {
-        WorkerService ws = WorkerService.getInstance();
-        String user = ws.getUsername();
+        String user = ws.getLogin();
         String pass = ws.getPassword();
         HttpResponse<JsonNode> jsonResponse = null;
         try {
@@ -117,14 +117,13 @@ public class StepicConnector {
 
     private static <T> T getFromStepic(String link, final Class<T> container) throws UnirestException {
 
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
                 .header("Authorization", "Bearer " + WorkerService.getInstance().getToken())
                 .asString();
         final String responseString = response.getBody();
 
-//        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
@@ -144,36 +143,6 @@ public class StepicConnector {
         AuthorWrapper aw = getCurrentUser();
         return aw.users.get(0).getName();
     }
-
-//    public static List<CourseInfo> getCourses() {
-//        try {
-//            List<CourseInfo> result = new ArrayList<CourseInfo>();
-//            int pageNumber = 1;
-//            while (addCoursesFromStepic(result, pageNumber)) {
-//                pageNumber += 1;
-//            }
-//            return result;
-//        } catch (UnirestException e) {
-//            LOG.error("Cannot load course list " + e.getMessage());
-//        }
-//        return Collections.emptyList();
-//    }
-
-//    private static boolean addCoursesFromStepic(List<CourseInfo> result, int pageNumber) throws UnirestException {
-//        final String url = pageNumber == 0 ? "courses" : "courses?page=" + String.valueOf(pageNumber);
-//        final CoursesContainer coursesContainer = getFromStepic(url, CoursesContainer.class);
-//        final List<CourseInfo> courseInfos = coursesContainer.courses;
-//        for (CourseInfo info : courseInfos) {
-//
-//            for (Integer instructor : info.instructors) {
-//                final CourseInfo.Author author = getFromStepic("users/" + String.valueOf(instructor), AuthorWrapper.class).users.get(0);
-//                info.addAuthor(author);
-//            }
-//
-//            result.add(info);
-//        }
-//        return coursesContainer.meta.containsKey("has_next") && coursesContainer.meta.get("has_next") == Boolean.TRUE;
-//    }
 
     public static MyCourse getCourse(String courseId) {
         final String url = "courses/" + courseId;
@@ -226,7 +195,6 @@ public class StepicConnector {
     }
 
     public static String getAttemptId(String stepId) {
-        WorkerService ws = WorkerService.getInstance();
         String attempts = "attempts";
         JSONObject first = new JSONObject();
         JSONObject second = new JSONObject();
@@ -256,9 +224,8 @@ public class StepicConnector {
     }
 
     public static String sendFile(String file, String att_id) {
-        WorkerService ws = WorkerService.getInstance();
 
-        JSONObject waper = new JSONObject();
+        JSONObject wrapper = new JSONObject();
         JSONObject submission = new JSONObject();
         JSONObject reply = new JSONObject();
 
@@ -268,7 +235,7 @@ public class StepicConnector {
         submission.put("attempt", att_id);
         submission.put("reply", reply);
 
-        waper.put("submission", submission);
+        wrapper.put("submission", submission);
 
         HttpResponse<JsonNode> response = null;
         try {
@@ -276,7 +243,7 @@ public class StepicConnector {
                     .post(api_url + "submissions")
                     .header("Authorization", "Bearer " + ws.getToken())
                     .header("Content-Type", "application/json")
-                    .body(waper)
+                    .body(wrapper)
                     .asJson();
         } catch (UnirestException e) {
             LOG.error("Send File error\n" + e.getMessage());
@@ -287,7 +254,6 @@ public class StepicConnector {
     }
 
     public static String getStatusTask(String submissionId) {
-        WorkerService ws = WorkerService.getInstance();
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest
@@ -301,11 +267,9 @@ public class StepicConnector {
         JSONObject tmp = response.getBody().getObject();
         JSONArray oo = (JSONArray) tmp.get("submissions");
         return oo.getJSONObject(0).getString("status");
-//        System.out.println(response.getStatus() + response.getStatusText());
     }
 
     public static Submissions getStatusTask(String stepId, Pair<String, String> pair) {
-        WorkerService ws = WorkerService.getInstance();
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest
@@ -360,7 +324,6 @@ public class StepicConnector {
     }
 
     public static Submissions getSubmissions(String stepId) {
-        WorkerService ws = WorkerService.getInstance();
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest

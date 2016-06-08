@@ -17,7 +17,7 @@ public class SingIn extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
-        WorkerService.getInstance().setUsername(
+        WorkerService.getInstance().setLogin(
                 Messages.showInputDialog(project, "Please, input your username", "Sing in", Messages.getQuestionIcon()));
         WorkerService.getInstance().setPassword(
                 Messages.showPasswordDialog(project, "Please, input your password", "Sing in", Messages.getQuestionIcon()));

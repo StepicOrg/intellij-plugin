@@ -1,11 +1,15 @@
 package main.stepicConnector;
 
+import com.intellij.ide.passwordSafe.PasswordSafe;
+import com.intellij.ide.passwordSafe.PasswordSafeException;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.NotNull;
 
 // TODO: 27.05.2016 Project level
 
@@ -19,11 +23,10 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private String token;
     private String refresh_token;
 
-//    private Map<String, String> mapPathStep;
 
-    // TODO: 14.05.2016 remove username and password
-    private String username;
-    private String password;
+    // TODO: 14.05.2016 remove login and password
+    private String login;
+//    private String password;
     private boolean translate;
 
     public static WorkerService getInstance() {
@@ -31,7 +34,6 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     }
 
     public WorkerService() {
-//        mapPathStep = new HashMap<>();
     }
 
     public WorkerService getState() {
@@ -42,24 +44,38 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         XmlSerializerUtil.copyBean(state, this);
     }
 
-//    public void addPathStep(String path, String stepId) {
-//        if (mapPathStep == null)
-//            mapPathStep = new HashMap<>();
-//        mapPathStep.put(path, stepId);
-//    }
-
-//    public String getStepId(String path) {
-//        if (mapPathStep == null)
-//            mapPathStep =new HashMap<>();
-//        return mapPathStep.getOrDefault(path, "");
-//    }
-
-//    public void setAttemptId(String path, String stepId, String attemptId) {
-//        mapPathStep.put(path, stepId);
-//    }
+    private String getPasswordKey(){
+        return "STEPIC_SETTINGS_PASSWORD_KEY: "+ getLogin();
+    }
 
 
 //    setters and getters -------------------------------
+
+    @NotNull
+    public String getPassword() {
+        final String login = getLogin();
+        if (StringUtil.isEmptyOrSpaces(login)) return "";
+
+        String password;
+        try {
+            password = PasswordSafe.getInstance().getPassword(null, WorkerService.class, getPasswordKey());
+        }
+        catch (PasswordSafeException e) {
+//            LOG.info("Couldn't get password for key [" + STEPIC_SETTINGS_PASSWORD_KEY + "]", e);
+            password = "";
+        }
+
+        return StringUtil.notNullize(password);
+    }
+
+    public void setPassword(@NotNull String password) {
+        try {
+            PasswordSafe.getInstance().storePassword(null, WorkerService.class, getPasswordKey(), password);
+        }
+        catch (PasswordSafeException e) {
+//            LOG.info("Couldn't set password for key [" + STEPIC_SETTINGS_PASSWORD_KEY + "]", e);
+        }
+    }
 
     public String getClientId() {
         return clientId;
@@ -89,21 +105,21 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         this.refresh_token = refresh_token;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 
     public String getCourseID() {
         return courseID;
@@ -112,15 +128,6 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     public void setCourseID(String courseID) {
         this.courseID = courseID;
     }
-
-//    public Map<String, String> getMapPathStep() {
-//        return mapPathStep;
-//    }
-
-//    public void setMapPathStep(Map<String, String> mapPathStep) {
-//        this.mapPathStep = mapPathStep;
-//    }
-
 
     public ModifiableRootModel getRootModel() {
         return rootModel;

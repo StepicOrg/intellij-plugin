@@ -49,7 +49,7 @@ public class MySection {
         } else {
             sectionName = "section" + sectionNo;
         }
-        return StringUtils.normilize(sectionName);
+        return StringUtils.normalize(sectionName);
     }
 
     @Override
