@@ -1,22 +1,22 @@
 package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.MyFileInfoList;
-import main.projectWizard.YaTranslator;
+import main.stepicConnector.StepicConnector;
 import main.stepicConnector.WS3;
-import main.stepicConnector.WorkerService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.stepicConnector.StepicConnector.getStep;
-
 /**
  * Created by Petr on 02.05.2016.
  */
 public class MyLesson {
+
+    private static final Logger LOG = Logger.getInstance(MyLesson.class);
     int id;
     @SerializedName("steps")
     List<Integer> stepsId;
@@ -30,34 +30,28 @@ public class MyLesson {
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
         this.lessonNo = lessonNo;
         WS3 ws3 = WS3.getInstance(project);
-        for (Integer stepId : stepsId) {
-            MyStep step = getStep(Integer.toString(stepId));
+
+        List<MyStep> myStepsList = StepicConnector.getSteps(StepicConnector.getIdQuery(stepsId));
+
+
+        for (MyStep step : myStepsList) {
             if (step.isTask()) {
                 steps.put(step.position, step);
                 String filename = "Step" + step.position;
-                String path = getPath(courseDir, sectionDir, getName(lessonNo)) + filename + ".java";
-                MyFileInfoList.getInstance().addFileInfo(path, courseDir, sectionDir + "." + getName(lessonNo), filename);
-                ws3.addPathStep(path, Integer.toString(stepId));
+                String path = getPath(courseDir, sectionDir, lessonName) + filename + ".java";
+                MyFileInfoList.getInstance().addFileInfo(path, courseDir, sectionDir + "." + lessonName, filename);
+                ws3.addPathStep(path, Integer.toString(step.id));
             }
         }
     }
 
-
-    private String getName(int lessonNo) {
-        WorkerService ws = WorkerService.getInstance();
-        if (ws.isTranslate()) {
-            lessonName = "_" + lessonNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
-        } else {
-            lessonName = "lesson" + lessonNo;
-        }
-        return StringUtils.normalize(lessonName);
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
     }
-
 
     private String getPath(String... titles) {
         StringBuilder sb = new StringBuilder();
         for (String title : titles) {
-//            sb.append(title + File.separator);
             sb.append(title + "/");
         }
         return sb.toString();

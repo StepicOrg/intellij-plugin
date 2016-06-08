@@ -3,14 +3,14 @@ package main.edu.stepic;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.StepicConnector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.stepicConnector.StepicConnector.getLesson;
-import static main.stepicConnector.StepicConnector.getUnit;
+import static main.stepicConnector.StepicConnector.getIdQuery;
 
 /**
  * Created by Petr on 02.05.2016.
@@ -30,26 +30,28 @@ public class MySection {
 
 
     public void build(int sectionNo, String courseDir, Project project) {
-//    public void build(int sectionNo, String courseDir) {
         this.sectionNo = sectionNo;
         int lessonNo = 0;
-        for (Integer unitId : unitsId) {
-            int lessonId = getUnit(Integer.toString(unitId)).getLessonId();
-            MyLesson lesson = getLesson(Integer.toString(lessonId));
+
+        List<MyUnit> myUnits = StepicConnector.getUnits(getIdQuery(unitsId));
+        if (myUnits == null) return;
+        List<Integer> lessonsId = new ArrayList<>();
+        List<String> lessonNames = new ArrayList<>();
+        myUnits.forEach(x -> lessonsId.add(x.getLessonId()));
+        List<MyLesson> myLessons = StepicConnector.getLessons(getIdQuery(lessonsId));
+        myLessons.forEach(x -> lessonNames.add(x.title));
+
+        List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson");
+
+        for (MyLesson lesson : myLessons) {
+            lesson.setLessonName(newLessonNames.get(lessonNo));
             lessons.put(++lessonNo, lesson);
-            lesson.build(lessonNo, courseDir, getName(sectionNo), project);
-//            lesson.build(lessonNo, courseDir, getName(sectionNo));
+            lesson.build(lessonNo, courseDir, sectionName, project);
         }
     }
 
-    private String getName(int sectionNo) {
-        WorkerService ws = WorkerService.getInstance();
-        if (ws.isTranslate()) {
-            sectionName = "_" + sectionNo + "." + YaTranslator.translateRuToEn(title).replace('\"', ' ').replace(' ', '_').replace(':', '.');
-        } else {
-            sectionName = "section" + sectionNo;
-        }
-        return StringUtils.normalize(sectionName);
+    public String getSectionName() {
+        return sectionName;
     }
 
     @Override
@@ -59,5 +61,9 @@ public class MySection {
                 ", title='" + title + '\'' +
                 ", lessons=" + lessons +
                 '}';
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
     }
 }

@@ -3,13 +3,15 @@ package main.edu.stepic;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
+import main.stepicConnector.StepicConnector;
 import main.stepicConnector.WorkerService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.stepicConnector.StepicConnector.getSection;
+import static main.stepicConnector.StepicConnector.getSections;
 
 /**
  * Implementation of class which contains information to be shawn in course description in tool window
@@ -50,8 +52,14 @@ public class MyCourse {
 
     public void build(String root, Project project) {
         int sectionNo = 0;
-        for (Integer sectionId : sectionsId) {
-            MySection section = getSection(Integer.toString(sectionId));
+        List<MySection> mySectionList = getSections(StepicConnector.getIdQuery(sectionsId));
+        List<String> sectionNames = new ArrayList<>();
+        mySectionList.forEach(x -> sectionNames.add(x.title));
+
+        List<String> newSectionNames = YaTranslator.translateNames(sectionNames, "section");
+
+        for (MySection section : mySectionList) {
+            section.setSectionName(newSectionNames.get(sectionNo));
             sections.put(++sectionNo, section);
             section.build(sectionNo, root + "/" + getName(), project);
         }
@@ -61,7 +69,6 @@ public class MyCourse {
         if (courseName == null) {
             WorkerService ws = WorkerService.getInstance();
             if (ws.isTranslate()) {
-//            if (true) {
                 courseName =  YaTranslator.translateRuToEn(title);
             } else {
                 courseName =  "course";

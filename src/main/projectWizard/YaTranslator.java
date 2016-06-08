@@ -4,6 +4,12 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import main.edu.stepic.StringUtils;
+import main.stepicConnector.WorkerService;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Petr on 14.05.2016.
@@ -23,13 +29,45 @@ public class YaTranslator {
             response = Unirest
                     .post(api_url)
                     .field(KEY, app_key)
-                    .field(TEXT, text)
                     .field(LANG, RU_EN)
+                    .field(TEXT, text)
                     .asJson();
         } catch (UnirestException e) {
             e.printStackTrace();
         }
 
         return (String) response.getBody().getObject().getJSONArray(TEXT).get(0);
+    }
+
+    public static JSONArray translateRuToEn(List<String> list) {
+        HttpResponse<JsonNode> response = null;
+        try {
+            response = Unirest
+                    .post(api_url)
+                    .field(KEY, app_key)
+                    .field(LANG, RU_EN)
+                    .field(TEXT, list)
+                    .asJson();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        return response.getBody().getObject().getJSONArray(TEXT);
+    }
+
+    public static List<String> translateNames(List<String> names, String level) {
+        WorkerService ws = WorkerService.getInstance();
+        List<String> ans = new ArrayList<>();
+        if (ws.isTranslate()) {
+            JSONArray arr = YaTranslator.translateRuToEn(names);
+            for (int i = 0; i < names.size(); i++) {
+                ans.add("_" + (i + 1) + "_" + StringUtils.normalize(arr.getString(i)));
+            }
+        } else {
+            for (int i = 0; i < names.size(); i++) {
+                ans.add(level + (i + 1));
+            }
+        }
+        return ans;
     }
 }

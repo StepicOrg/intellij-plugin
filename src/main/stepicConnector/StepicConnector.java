@@ -27,6 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,7 +104,7 @@ public class StepicConnector {
                     .field("client_id", WorkerService.getInstance().getClientId())
                     .asJson();
         } catch (UnirestException e) {
-                LOG.error(e);
+            LOG.error(e);
         }
 
         try {
@@ -164,6 +165,16 @@ public class StepicConnector {
         }
     }
 
+    public static List<MySection> getSections(String idsQuery) {
+        final String url = "sections" + idsQuery;
+        try {
+            return getFromStepic(url, SectionsContainer.class).sections;
+        } catch (UnirestException e) {
+            LOG.error("getSection error " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
     public static MyUnit getUnit(String sectionId) {
         final String url = "units/" + sectionId;
         try {
@@ -171,6 +182,16 @@ public class StepicConnector {
         } catch (UnirestException e) {
             LOG.error("getUnit error " + e.getMessage());
             return null;
+        }
+    }
+
+    public static List<MyUnit> getUnits(String idsQuery) {
+        final String url = "units" + idsQuery;
+        try {
+            return getFromStepic(url, UnitsContainer.class).units;
+        } catch (UnirestException e) {
+            LOG.error("getUnit error " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 
@@ -184,10 +205,30 @@ public class StepicConnector {
         }
     }
 
+    public static List<MyLesson> getLessons(String idsQuery) {
+        final String url = "lessons?" + idsQuery;
+        try {
+            return getFromStepic(url, LessonsContainer.class).lessons;
+        } catch (UnirestException e) {
+            LOG.error("getLesson error " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
     public static MyStep getStep(String stepId) {
         final String url = "steps/" + stepId;
         try {
             return getFromStepic(url, StepsContainer.class).steps.get(0);
+        } catch (UnirestException e) {
+            LOG.error("getStep error " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static List<MyStep> getSteps(String stepIdQuery) {
+        final String url = "steps" + stepIdQuery;
+        try {
+            return getFromStepic(url, StepsContainer.class).steps;
         } catch (UnirestException e) {
             LOG.error("getStep error " + e.getMessage());
             return null;
@@ -340,6 +381,15 @@ public class StepicConnector {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
         return gson.fromJson(response.getBody().getObject().toString(), Submissions.class);
+    }
+
+    public static String getIdQuery(List<Integer> list) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("?");
+        for (Integer id : list) {
+            sb.append("ids[]=" + id + "&");
+        }
+        return sb.toString();
     }
 
 }

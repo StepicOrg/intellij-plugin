@@ -57,9 +57,6 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
     }
 
     private void saveSettings() {
-//        saveValue(courseLinkFiled.getName(),courseLinkFiled.getText());
-//        saveValue("courseLink", courseLinkFiled.getText());
-//        saveValue("translate", CheckBox.isSelected() ? "1" : "0");
         WorkerService ws = WorkerService.getInstance();
         ws.setLogin(textField1.getText());
         ws.setPassword(new String(passwordField1.getPassword()));
@@ -75,9 +72,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
     private void createUIComponents() {
         // TODO: place custom component creation code here
         WorkerService ws = WorkerService.getInstance();
-//        textField1.setText(ws.getLogin());
         textField1 = new JTextField(ws.getLogin());
-//        passwordField1.setText(ws.getPassword());
         passwordField1 = new JPasswordField(ws.getPassword());
     }
 

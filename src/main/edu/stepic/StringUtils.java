@@ -10,7 +10,8 @@ public class StringUtils {
         for (int i = 0; i < words.length - 1; i++) {
             sb.append(words[i] + "_");
         }
-        sb.append(words[words.length - 1]);
+        if (words.length > 0)
+            sb.append(words[words.length - 1]);
         return sb.toString();
     }
 }

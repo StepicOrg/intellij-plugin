@@ -6,9 +6,11 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.NotNull;
 
 // TODO: 27.05.2016 Project level
@@ -23,10 +25,13 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private String token;
     private String refresh_token;
 
+    @Transient
+    private static final Logger LOG = Logger.getInstance(WorkerService.class);
+
 
     // TODO: 14.05.2016 remove login and password
     private String login;
-//    private String password;
+    //    private String password;
     private boolean translate;
 
     public static WorkerService getInstance() {
@@ -44,8 +49,8 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         XmlSerializerUtil.copyBean(state, this);
     }
 
-    private String getPasswordKey(){
-        return "STEPIC_SETTINGS_PASSWORD_KEY: "+ getLogin();
+    private String getPasswordKey() {
+        return "STEPIC_SETTINGS_PASSWORD_KEY: " + getLogin();
     }
 
 
@@ -59,9 +64,8 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         String password;
         try {
             password = PasswordSafe.getInstance().getPassword(null, WorkerService.class, getPasswordKey());
-        }
-        catch (PasswordSafeException e) {
-//            LOG.info("Couldn't get password for key [" + STEPIC_SETTINGS_PASSWORD_KEY + "]", e);
+        } catch (PasswordSafeException e) {
+            LOG.info("Couldn't get password for key [" + getPasswordKey() + "]", e);
             password = "";
         }
 
@@ -71,9 +75,8 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     public void setPassword(@NotNull String password) {
         try {
             PasswordSafe.getInstance().storePassword(null, WorkerService.class, getPasswordKey(), password);
-        }
-        catch (PasswordSafeException e) {
-//            LOG.info("Couldn't set password for key [" + STEPIC_SETTINGS_PASSWORD_KEY + "]", e);
+        } catch (PasswordSafeException e) {
+            LOG.info("Couldn't set password for key [" + getPasswordKey() + "]", e);
         }
     }
 
