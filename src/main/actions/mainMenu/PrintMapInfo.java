@@ -1,6 +1,5 @@
 package main.actions.mainMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
@@ -13,7 +12,7 @@ import java.util.Map;
 /**
  * Created by Petr on 21.05.2016.
  */
-public class PrintMapInfo extends AnAction {
+public class PrintMapInfo extends MainMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {

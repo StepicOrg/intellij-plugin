@@ -1,6 +1,5 @@
 package main.actions.mainMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -12,7 +11,7 @@ import java.util.Set;
 /**
  * Created by Petr on 03.06.2016.
  */
-public class RefreshMap extends AnAction {
+public class RefreshMap extends MainMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {

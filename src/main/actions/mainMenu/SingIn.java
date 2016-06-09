@@ -1,6 +1,5 @@
 package main.actions.mainMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
@@ -11,7 +10,7 @@ import main.stepicConnector.WorkerService;
 /**
  * Created by Petr on 01.04.2016.
  */
-public class SingIn extends AnAction {
+public class SingIn extends MainMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {

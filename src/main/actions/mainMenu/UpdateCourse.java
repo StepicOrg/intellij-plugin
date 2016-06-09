@@ -1,6 +1,5 @@
 package main.actions.mainMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -26,7 +25,7 @@ import java.util.Set;
 /**
  * Created by Petr on 31.05.2016.
  */
-public class UpdateCourse extends AnAction {
+public class UpdateCourse extends MainMenuAction {
     private static final Logger LOG = Logger.getInstance(UpdateCourse.class);
 
     @Override

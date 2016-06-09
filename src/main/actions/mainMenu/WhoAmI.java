@@ -12,7 +12,7 @@ import main.stepicConnector.WorkerService;
 /**
  * Created by Petr on 22.03.2016.
  */
-public class WhoAmI extends AnAction {
+public class WhoAmI extends MainMenuAction {
     private static final Logger LOG = Logger.getInstance(AnAction.class);
 
     @Override

@@ -52,7 +52,7 @@
 
         <!-- Add your actions here -->
         <action id="ID.SendFile"
-                class="main.actions.SendFile"
+                class="main.actions.popupMenu.SendFile"
                 text="Send Step"
                 description="Send task to Stepic"
                 icon="/icons/stepic_logo_green.png">
@@ -61,7 +61,7 @@
         </action>
 
         <action id="ID.GetStepStatus"
-                class="main.actions.GetStepStatus"
+                class="main.actions.popupMenu.GetStepStatus"
                 text="GetStepStatus"
                 description="GetStepStatus"
                 icon="AllIcons.General.TodoQuestion">
@@ -69,48 +69,55 @@
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
-        <action id="WhoAmI" class="main.actions.WhoAmI" text="_Who am i" description="return username">
+        <action id="WhoAmI" class="main.actions.mainMenu.WhoAmI" text="_Who am i" description="return username">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
-        <action id="Sing in" class="main.actions.SingIn" text="Sing _in" description="Incert your client and secret id">
+        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in" description="Incert your client and secret id">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
         <action id="ID.Update"
-                class="main.actions.UpdateCourse"
+                class="main.actions.mainMenu.UpdateCourse"
                 text="Update course"
                 description="update this course">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 
-        <action id="ID.RefreshMap" class="main.actions.RefreshMap" text="RefreshMap" description="RefreshMap">
+        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="RefreshMap" description="RefreshMap">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
         <action id="ID.DownloadLastSubmission"
-                class="main.actions.DownloadLastSubmission"
+                class="main.actions.popupMenu.DownloadLastSubmission"
                 text="Download latest submission"
                 description="Download latest submission from site">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
+        <action id="ID.TEST.SomeAction"
+                class="main.actions.mainMenu.SomeAction"
+                text="SomeAction"
+                description="SomeAction">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        </action>
 
         <!--###########################################################################-->
         <action id="ID.PrintMapInfo"
-                class="main.actions.PrintMapInfo"
+                class="main.actions.mainMenu.PrintMapInfo"
                 text="PrintMapInfo" description="PrintMapInfo">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
-        <action id="TEST.NegTranslator" class="main.actions.NegTranslator" text="NegTranslator"
+        <action id="TEST.NegTranslator" class="main.actions.mainMenu.NegTranslator" text="NegTranslator"
                 description="NegTranslator">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
         <action id="ID.GetIdStep"
-                class="main.actions.GetIdStep"
+                class="main.actions.popupMenu.GetIdStep"
                 text="GetIdStep"
                 description="GetIdStep">
             <!--<add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>-->
             <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
         </action>
+
     </actions>
 
     <module-components>
