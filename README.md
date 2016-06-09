@@ -14,7 +14,7 @@ After one minute course will be built.
 
 
 ## Install
-You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbwZHBMc3VHMFBjaXc or build it yourself.
+You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbweXJhYWpYWTdkZnc or build it yourself.
 
 ## Build
 1. In order to build this project, you have to setting up an development environment (IntelliJ Platform SDK) as described here: http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html
