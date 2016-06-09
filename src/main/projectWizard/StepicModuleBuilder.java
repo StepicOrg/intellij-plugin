@@ -6,6 +6,7 @@ import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.Pair;
@@ -29,8 +30,10 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
     @Override
     public void setupRootModel(ModifiableRootModel rootModel) throws ConfigurationException {
-        final VirtualFile root = rootModel.getProject().getBaseDir();
+        Project project = rootModel.getProject();
+        final VirtualFile root = project.getBaseDir();
 
+        WorkerService.getInstance().setProjectName(project.getName());
         StepicConnector.initToken();
         String courseId = WorkerService.getInstance().getCourseID();
         LOG.warn("build course structure " + courseId);
@@ -38,7 +41,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
         LOG.warn("root = " + root.getPath());
 
-        MyCourse course = StepicConnector.getCourse(courseId);
+        MyCourse course = StepicConnector.getCourses(courseId).get(0);
         course.build(root.getPath(), rootModel.getProject());
 
         MyFileInfoList.getInstance().getList().forEach((x) -> {

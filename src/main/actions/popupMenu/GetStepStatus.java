@@ -1,20 +1,22 @@
-package main.actions;
+package main.actions.popupMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.*;
+import main.stepicConnector.StepicConnector;
+import main.edu.stepic.SubmissionsNode;
+import main.stepicConnector.WS2;
+import main.stepicConnector.WS3;
 
 import java.util.List;
 
 /**
  * Created by Petr on 21.05.2016.
  */
-public class GetStepStatus extends AnAction {
+public class GetStepStatus extends PopupMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -30,7 +32,7 @@ public class GetStepStatus extends AnAction {
 
 //        StepicConnector.initToken();
         String ans = "";
-        int size = StepicConnector.getStatusTask(stepId, Pair.pair("status", "correct")).submissions.size();
+        int size = StepicConnector.getStatusTask(stepId, Pair.pair("status", "correct")).size();
         if (size > 0) {
             ans = "Step was solved";
         } else {
@@ -43,7 +45,7 @@ public class GetStepStatus extends AnAction {
         String attemptId = ws2.getAttemptId(stepId);
 //        String attemptId = "";
         if (!attemptId.equals("")) {
-            List<SubmissionsNode> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId)).submissions;
+            List<SubmissionsNode> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId));
             if (!list.isEmpty()) {
                 SubmissionsNode max = list.get(0);
                 for (SubmissionsNode node : list) {

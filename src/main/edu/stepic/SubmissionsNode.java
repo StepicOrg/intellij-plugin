@@ -1,4 +1,4 @@
-package main.stepicConnector;
+package main.edu.stepic;
 
 import java.util.Map;
 

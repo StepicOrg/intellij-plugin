@@ -1,6 +1,5 @@
-package main.actions;
+package main.actions.popupMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Document;
@@ -18,7 +17,7 @@ import java.util.Set;
 /**
  * Created by Petr on 19.05.2016.
  */
-public class SendFile extends AnAction {
+public class SendFile extends PopupMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -66,4 +65,5 @@ public class SendFile extends AnAction {
     public void setDefaultIcon(boolean isDefaultIconSet) {
         super.setDefaultIcon(isDefaultIconSet);
     }
+
 }

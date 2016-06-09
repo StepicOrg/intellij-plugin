@@ -28,6 +28,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,6 +132,23 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
+    private static <T> T getFromStepic(String link, Map<String, Object> queryMap, final Class<T> container)
+            throws UnirestException {
+
+        HttpResponse<String> response;
+        response = Unirest
+                .get(api_url + link)
+                .header("Authorization", "Bearer " + WorkerService.getInstance().getToken())
+                .queryString(queryMap)
+                .asString();
+        final String responseString = response.getBody();
+
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        return gson.fromJson(responseString, container);
+    }
+
     public static AuthorWrapper getCurrentUser() {
         try {
             return getFromStepic("stepics/1", AuthorWrapper.class);
@@ -145,23 +163,13 @@ public class StepicConnector {
         return aw.users.get(0).getName();
     }
 
-    public static MyCourse getCourse(String courseId) {
+    public static List<MyCourse> getCourses(String courseId) {
         final String url = "courses/" + courseId;
         try {
-            return getFromStepic(url, CoursesContainer.class).courses.get(0);
+            return getFromStepic(url, CoursesContainer.class).courses;
         } catch (UnirestException e) {
-            LOG.error("getCourse error " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static MySection getSection(String sectionId) {
-        final String url = "sections/" + sectionId;
-        try {
-            return getFromStepic(url, SectionsContainer.class).sections.get(0);
-        } catch (UnirestException e) {
-            LOG.error("getSection error " + e.getMessage());
-            return null;
+            LOG.error("getCourses error " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 
@@ -175,16 +183,6 @@ public class StepicConnector {
         }
     }
 
-    public static MyUnit getUnit(String sectionId) {
-        final String url = "units/" + sectionId;
-        try {
-            return getFromStepic(url, UnitsContainer.class).units.get(0);
-        } catch (UnirestException e) {
-            LOG.error("getUnit error " + e.getMessage());
-            return null;
-        }
-    }
-
     public static List<MyUnit> getUnits(String idsQuery) {
         final String url = "units" + idsQuery;
         try {
@@ -195,33 +193,13 @@ public class StepicConnector {
         }
     }
 
-    public static MyLesson getLesson(String lessonId) {
-        final String url = "lessons/" + lessonId;
-        try {
-            return getFromStepic(url, LessonsContainer.class).lessons.get(0);
-        } catch (UnirestException e) {
-            LOG.error("getLesson error " + e.getMessage());
-            return null;
-        }
-    }
-
     public static List<MyLesson> getLessons(String idsQuery) {
-        final String url = "lessons?" + idsQuery;
+        final String url = "lessons" + idsQuery;
         try {
             return getFromStepic(url, LessonsContainer.class).lessons;
         } catch (UnirestException e) {
             LOG.error("getLesson error " + e.getMessage());
             return new ArrayList<>();
-        }
-    }
-
-    public static MyStep getStep(String stepId) {
-        final String url = "steps/" + stepId;
-        try {
-            return getFromStepic(url, StepsContainer.class).steps.get(0);
-        } catch (UnirestException e) {
-            LOG.error("getStep error " + e.getMessage());
-            return null;
         }
     }
 
@@ -231,7 +209,7 @@ public class StepicConnector {
             return getFromStepic(url, StepsContainer.class).steps;
         } catch (UnirestException e) {
             LOG.error("getStep error " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -310,7 +288,7 @@ public class StepicConnector {
         return oo.getJSONObject(0).getString("status");
     }
 
-    public static Submissions getStatusTask(String stepId, Pair<String, String> pair) {
+    public static List<SubmissionsNode> getStatusTask(String stepId, Pair<String, String> pair) {
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest
@@ -327,7 +305,7 @@ public class StepicConnector {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
-        return gson.fromJson(response.getBody().getObject().toString(), Submissions.class);
+        return gson.fromJson(response.getBody().getObject().toString(), SubmissionsContainer.class).submissions;
     }
 
     public static class AuthorWrapper {
@@ -359,28 +337,22 @@ public class StepicConnector {
         public Map meta;
     }
 
-    public static class Submissions {
+    public static class SubmissionsContainer {
         public List<SubmissionsNode> submissions;
         public Map meta;
     }
 
-    public static Submissions getSubmissions(String stepId) {
-        HttpResponse<JsonNode> response = null;
+
+
+    public static List<SubmissionsNode> getSubmissions(String stepId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("step", stepId);
         try {
-            response = Unirest
-                    .get(api_url + "submissions")
-                    .header("Authorization", "Bearer " + ws.getToken())
-                    .queryString("step", stepId)
-                    .asJson();
+            return getFromStepic("submissions", map, SubmissionsContainer.class).submissions;
         } catch (UnirestException e) {
-            LOG.error("get Submissions error\n" + e.getMessage());
+            LOG.error("getSubmissions error " + e.getMessage());
+            return new ArrayList<>();
         }
-
-
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        return gson.fromJson(response.getBody().getObject().toString(), Submissions.class);
     }
 
     public static String getIdQuery(List<Integer> list) {

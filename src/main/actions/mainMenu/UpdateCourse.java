@@ -1,4 +1,4 @@
-package main.actions;
+package main.actions.mainMenu;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -36,7 +36,7 @@ public class UpdateCourse extends AnAction {
         final VirtualFile root = project.getBaseDir();
         String courseID = WorkerService.getInstance().getCourseID();
 
-        MyCourse course = StepicConnector.getCourse(courseID);
+        MyCourse course = StepicConnector.getCourses(courseID).get(0);
 
         WS3 ws3 = WS3.getInstance(e.getProject());
 

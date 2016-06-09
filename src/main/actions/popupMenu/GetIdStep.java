@@ -1,6 +1,5 @@
-package main.actions;
+package main.actions.popupMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
@@ -11,7 +10,7 @@ import main.stepicConnector.WS3;
 /**
  * Created by Petr on 21.05.2016.
  */
-public class GetIdStep extends AnAction {
+public class GetIdStep extends PopupMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -25,4 +24,5 @@ public class GetIdStep extends AnAction {
         String stepId = ws.getStepId(vf.getPath());
         Messages.showMessageDialog(project, stepId, "Information", Messages.getInformationIcon());
     }
+
 }
