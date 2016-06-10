@@ -55,8 +55,8 @@
         <!-- Add your actions here -->
         <action id="ID.SendFile"
                 class="main.actions.popupMenu.SendFile"
-                text="Send Step"
-                description="Send task to Stepic"
+                text="Submit Solution"
+                description="Send your solution to Stepic"
                 icon="/icons/stepic_logo_green.png">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
@@ -64,8 +64,8 @@
 
         <action id="ID.GetStepStatus"
                 class="main.actions.popupMenu.GetStepStatus"
-                text="GetStepStatus"
-                description="GetStepStatus"
+                text="Check Step Status"
+                description="Get status of the step (e.g. wrong/correct)"
                 icon="AllIcons.General.TodoQuestion">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
@@ -79,18 +79,18 @@
         </action>
         <action id="ID.Update"
                 class="main.actions.mainMenu.UpdateCourse"
-                text="Update course"
-                description="update this course">
+                text="Update Course"
+                description="Update this course">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 
-        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="RefreshMap" description="RefreshMap">
+        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="Refresh Map" description="Refresh Map">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
         <action id="ID.DownloadLastSubmission"
                 class="main.actions.popupMenu.DownloadLastSubmission"
-                text="Download latest submission"
-                description="Download latest submission from site">
+                text="Download Latest Submission"
+                description="Download your latest submission from Stepic">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
