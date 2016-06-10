@@ -1,22 +1,24 @@
 <idea-plugin version="2">
     <id>stepic.submmit.plugin.id</id>
-    <name>Stepic connector -alpha-</name>
-    <version>1.0</version>
-    <vendor email="afnm47@gmail.com" url="https://stepic.org">YourCompany</vendor>
+    <name>Stepic Java submitter -beta-</name>
+    <version>0.42</version>
+    <vendor email="afnm47@gmail.com" url="https://stepic.org"> Stepic </vendor>
 
     <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Stepic plugin for code challenges on Java.<br>
+      To use this plugin you have to have Stepic account and follow the course.<br>
+      <br>
+      It used Yandex.Translator to translate lesson names on Russian to package names on English.<br>
     ]]></description>
 
-    <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-    </change-notes>
+    <!--<change-notes><![CDATA[-->
+      <!--Add change notes here.<br>-->
+      <!--<em>most HTML tags may be used</em>-->
+    <!--]]>-->
+    <!--</change-notes>-->
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="141.0"/>
+    <idea-version since-build="131.0"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
