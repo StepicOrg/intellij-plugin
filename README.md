@@ -12,9 +12,17 @@ After one minute course will be built.
 * **Get a step status** — return a step status and status of last submission posted from IDE.
 * **Send step** — send this step to platform.
 
-
 ## Install
-You can download this plugin from https://drive.google.com/open?id=0B3r_Au4BpPbweXJhYWpYWTdkZnc or build it yourself.
+
+0. Download and install IntelliJ IDEA 2016 (https://www.jetbrains.com/idea/)
+1. Download latest version of the plugin from https://drive.google.com/open?id=0B3r_Au4BpPbweXJhYWpYWTdkZnc (intellij-plugin.zip) or build it yourself from the source code.
+2. Open IntelliJ IDEA
+3. Menu IntelliJ IDEA > Preferences > Plugins > Install plugin from disk... > intellij-plugin.zip
+4. Restart IDEA
+
+##  Usage
+1. File > New > Project > Stepic
+2. Enter your login/password and a course link (in a form of https://stepic.org/course/some-course-name-ID/ or just ID)
 
 ## Build
 1. In order to build this project, you have to setting up an development environment (IntelliJ Platform SDK) as described here: http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html
