@@ -2,12 +2,8 @@ package main.stepicConnector;
 
 import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.ide.passwordSafe.PasswordSafeException;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Transient;
@@ -16,24 +12,22 @@ import org.jetbrains.annotations.NotNull;
 // TODO: 27.05.2016 Project level
 
 //@State(name = "WorkerService", storages = @Storage("WorkerService.xml"))
-@State(name = "WorkerService", storages = @Storage(id = "WorkerService", file = "/WorkerService.xml"))
+@State(name = "WorkerService", storages = @Storage(id = "WorkerService", file = StoragePathMacros.APP_CONFIG + "/WorkerService.xml"))
 public class WorkerService implements PersistentStateComponent<WorkerService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
-    private ModifiableRootModel rootModel;
     private String courseID;
     private String clientSecret;
     private String token;
     private String refresh_token;
+    private String login;
+
     private String projectName;
+    private boolean translate;
+
+
 
     @Transient
     private static final Logger LOG = Logger.getInstance(WorkerService.class);
-
-
-    // TODO: 14.05.2016 remove login and password
-    private String login;
-    //    private String password;
-    private boolean translate;
 
     public static WorkerService getInstance() {
         return ServiceManager.getService(WorkerService.class);
@@ -131,14 +125,6 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
 
     public void setCourseID(String courseID) {
         this.courseID = courseID;
-    }
-
-    public ModifiableRootModel getRootModel() {
-        return rootModel;
-    }
-
-    public void setRootModel(ModifiableRootModel rootModel) {
-        this.rootModel = rootModel;
     }
 
     public void setTranslator(boolean translator) {
