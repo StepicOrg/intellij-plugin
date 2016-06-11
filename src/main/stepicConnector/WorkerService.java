@@ -21,10 +21,7 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private String refresh_token;
     private String login;
 
-    private String projectName;
     private boolean translate;
-
-
 
     @Transient
     private static final Logger LOG = Logger.getInstance(WorkerService.class);
@@ -135,11 +132,4 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
         return translate;
     }
 
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
 }

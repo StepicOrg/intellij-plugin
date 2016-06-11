@@ -20,6 +20,7 @@ import java.util.Set;
 public class WS3 implements PersistentStateComponent<WS3> {
 
     private Map<String, String> mapPathStep;
+    private String projectName;
 
     public static WS3 getInstance(Project project) {
 //    public static WS3 getInstance() {
@@ -64,5 +65,13 @@ public class WS3 implements PersistentStateComponent<WS3> {
 
     public void removeAll(Set<String> removed) {
         mapPathStep.keySet().removeAll(removed);
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }

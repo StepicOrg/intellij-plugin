@@ -1,6 +1,12 @@
 package main.actions;
 
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.project.Project;
+import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +14,8 @@ import java.util.Map;
 /**
  * Created by Petr on 09.06.2016.
  */
-public class ActionVisibleProperties {
+@State(name = "ActionVisibleProperties", storages = @Storage(id = "ActionVisibleProperties", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/ActionVisibleProperties.xml"))
+public class ActionVisibleProperties implements PersistentStateComponent<ActionVisibleProperties> {
     private static final Map<String, Wrapper> multitone = new HashMap<>();
 
     public static Wrapper getInstance(Project project) {
@@ -23,6 +30,17 @@ public class ActionVisibleProperties {
     }
 
     private ActionVisibleProperties() {
+    }
+
+    @Nullable
+    @Override
+    public ActionVisibleProperties getState() {
+        return this;
+    }
+
+    @Override
+    public void loadState(ActionVisibleProperties state) {
+        XmlSerializerUtil.copyBean(state, this);
     }
 
     public static class Wrapper {

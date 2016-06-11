@@ -13,6 +13,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.WS3;
 import main.stepicConnector.WorkerService;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +34,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         Project project = rootModel.getProject();
         final VirtualFile root = project.getBaseDir();
 
-        WorkerService.getInstance().setProjectName(project.getName());
+        WS3.getInstance(project).setProjectName(project.getName());
         StepicConnector.initToken();
         String courseId = WorkerService.getInstance().getCourseID();
         LOG.warn("build course structure " + courseId);
