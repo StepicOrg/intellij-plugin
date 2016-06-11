@@ -52,12 +52,12 @@ public class GetStepStatus extends PopupMenuAction {
                         max = node;
                 }
 
-                ans += "\nlast sending is " + max.getStatus();
+                ans += "\nlast submission is " + max.getStatus();
             } else {
-                ans += "\nlast sending is unknown";
+                ans += "\nlast submission is unknown";
             }
         } else {
-            ans += "\nlast sending is unknown";
+            ans += "\nlast submission is unknown";
         }
 
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());

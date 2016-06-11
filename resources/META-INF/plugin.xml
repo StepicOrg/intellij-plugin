@@ -2,7 +2,7 @@
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
     <version>0.42</version>
-    <vendor email="afnm47@gmail.com" url="https://stepic.org"> Stepic </vendor>
+    <vendor email="afnm47@gmail.com" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[
       Stepic plugin for code challenges on Java.<br>
@@ -12,8 +12,8 @@
     ]]></description>
 
     <!--<change-notes><![CDATA[-->
-      <!--Add change notes here.<br>-->
-      <!--<em>most HTML tags may be used</em>-->
+    <!--Add change notes here.<br>-->
+    <!--<em>most HTML tags may be used</em>-->
     <!--]]>-->
     <!--</change-notes>-->
 
@@ -31,9 +31,9 @@
         <applicationService serviceInterface="main.stepicConnector.ApplicationService"
                             serviceImplementation="main.stepicConnector.ApplicationService"/>
         <projectService serviceInterface="main.stepicConnector.ProjectService"
-                            serviceImplementation="main.stepicConnector.ProjectService"/>
+                        serviceImplementation="main.stepicConnector.ProjectService"/>
         <projectService serviceInterface="main.actions.ActionVisibleProperties"
-                            serviceImplementation="main.actions.ActionVisibleProperties"/>
+                        serviceImplementation="main.actions.ActionVisibleProperties"/>
 
         <moduleBuilder builderClass="main.projectWizard.StepicModuleBuilder"
                        id="STEPIC_MODULE_BUILDER"
@@ -55,8 +55,8 @@
         <!-- Add your actions here -->
         <action id="ID.SendFile"
                 class="main.actions.popupMenu.SendFile"
-                text="Send Step"
-                description="Send task to Stepic"
+                text="Submit Solution"
+                description="Send your solution to Stepic"
                 icon="/icons/stepic_logo_green.png">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
@@ -64,8 +64,8 @@
 
         <action id="ID.GetStepStatus"
                 class="main.actions.popupMenu.GetStepStatus"
-                text="GetStepStatus"
-                description="GetStepStatus"
+                text="Check Step Status"
+                description="Get status of the step (e.g. wrong/correct)"
                 icon="AllIcons.General.TodoQuestion">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
@@ -74,21 +74,22 @@
         <action id="WhoAmI" class="main.actions.mainMenu.WhoAmI" text="_Who am I" description="return username">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
-        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in" description="Insert your client and secret id">
+        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in"
+                description="Insert your client and secret id">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
         <action id="ID.Update"
                 class="main.actions.mainMenu.UpdateCourse"
-                text="Update course"
-                description="Download new week from site">
+                text="Update Course"
+                description="Update this course">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 
 
         <action id="ID.DownloadLastSubmission"
                 class="main.actions.popupMenu.DownloadLastSubmission"
-                text="Download latest submission"
-                description="Download latest submission from site">
+                text="Download Latest Submission"
+                description="Download your latest submission from Stepic">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
@@ -117,7 +118,8 @@
             <!--<add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>-->
             <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
         </action>
-        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="RefreshMap" description="RefreshMap">
+        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="Refresh Map"
+                description="Refresh Map">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
 
