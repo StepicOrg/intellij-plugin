@@ -85,7 +85,6 @@
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 
-
         <action id="ID.DownloadLastSubmission"
                 class="main.actions.popupMenu.DownloadLastSubmission"
                 text="Download Latest Submission"
