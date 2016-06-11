@@ -3,7 +3,7 @@ package main.actions.mainMenu;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
-import main.stepicConnector.WS3;
+import main.stepicConnector.ProjectService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,17 +16,17 @@ public class RefreshMap extends MainMenuAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
-        WS3 ws3 = WS3.getInstance(project);
+        ProjectService projectService = ProjectService.getInstance(project);
 
         LocalFileSystem lfs = LocalFileSystem.getInstance();
-        Set<String> set = ws3.getMapPathStep().keySet();
+        Set<String> set = projectService.getMapPathStep().keySet();
         Set<String> removed = new HashSet<>();
         set.forEach(x -> {
             if (lfs.findFileByPath(x) == null)
                 removed.add(x);
         });
 
-        ws3.removeAll(removed);
+        projectService.removeAll(removed);
 //        set.removeAll(removed);
 
     }

@@ -12,43 +12,36 @@ import java.util.Set;
  * Created by Petr on 27.05.2016.
  */
 
-// storage Path - StepNo
-// TODO: 27.05.2016 Module level
+// storage Path - StepInfo
 
-@State(name = "WS3", storages = @Storage(id = "WS3", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/WS3.xml"))
-//@State(name = "WS3", storages = @Storage(id = "WS3"))
-public class WS3 implements PersistentStateComponent<WS3> {
+@State(name = "ProjectService", storages = @Storage(id = "ProjectService", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/ProjectService.xml"))
+public class ProjectService implements PersistentStateComponent<ProjectService> {
 
     private Map<String, String> mapPathStep;
+    private Map<String, String> pathAttId;
     private String projectName;
 
-    public static WS3 getInstance(Project project) {
-//    public static WS3 getInstance() {
-        return ServiceManager.getService(project, WS3.class);
+    public static ProjectService getInstance(Project project) {
+        return ServiceManager.getService(project, ProjectService.class);
     }
 
-    public WS3() {
+    public ProjectService() {
         mapPathStep = new HashMap<>();
     }
 
-    public WS3 getState() {
+    public ProjectService getState() {
         return this;
     }
 
-    public void loadState(WS3 state) {
+    public void loadState(ProjectService state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 
     public void addPathStep(String path, String stepId) {
-//        if (mapPathStep == null)
-//            mapPathStep = new HashMap<>();
         mapPathStep.put(path, stepId);
     }
 
     public Map<String, String> getMapPathStep() {
-//        if (mapPathStep == null) {
-//            mapPathStep = new HashMap<>();
-//        }
         return mapPathStep;
     }
 
@@ -57,8 +50,6 @@ public class WS3 implements PersistentStateComponent<WS3> {
     }
 
     public String getStepId(String path) {
-//        if (mapPathStep == null)
-//            mapPathStep = new HashMap<>();
         return mapPathStep.getOrDefault(path, "");
     }
 
@@ -74,4 +65,14 @@ public class WS3 implements PersistentStateComponent<WS3> {
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
+
+
+    public String getAttemptId(String path) {
+        return pathAttId.getOrDefault(path, "");
+    }
+
+    public void setAttemptId(String path, String attemptId) {
+       pathAttId.put(path, attemptId);
+    }
+
 }

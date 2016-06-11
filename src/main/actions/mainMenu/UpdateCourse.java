@@ -10,8 +10,8 @@ import main.edu.stepic.MyCourse;
 import main.projectWizard.MyFileInfoList;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.WS3;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.ProjectService;
+import main.stepicConnector.ApplicationService;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,16 +31,17 @@ public class UpdateCourse extends MainMenuAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
+        StepicConnector.initToken();
 
         final VirtualFile root = project.getBaseDir();
-        String courseID = WorkerService.getInstance().getCourseID();
+        String courseID = ApplicationService.getInstance().getCourseID();
 
         MyCourse course = StepicConnector.getCourses(courseID).get(0);
 
-        WS3 ws3 = WS3.getInstance(e.getProject());
+        ProjectService projectService = ProjectService.getInstance(e.getProject());
 
         Set<String> nFiles = new HashSet<>();
-        nFiles.addAll(ws3.getMapPathStep().keySet());
+        nFiles.addAll(projectService.getMapPathStep().keySet());
         Set<String> nnFiles = new HashSet<>();
 
         course.build(root.getPath(),e.getProject());
@@ -71,5 +72,8 @@ public class UpdateCourse extends MainMenuAction {
 
     }
 
-
+    @Override
+    public void update(AnActionEvent e) {
+        super.update(e);
+    }
 }

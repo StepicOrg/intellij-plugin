@@ -9,11 +9,10 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: 27.05.2016 Project level
 
-//@State(name = "WorkerService", storages = @Storage("WorkerService.xml"))
-@State(name = "WorkerService", storages = @Storage(id = "WorkerService", file = StoragePathMacros.APP_CONFIG + "/WorkerService.xml"))
-public class WorkerService implements PersistentStateComponent<WorkerService> {
+//@State(name = "ApplicationService", storages = @Storage("ApplicationService.xml"))
+@State(name = "ApplicationService", storages = @Storage(id = "ApplicationService", file = StoragePathMacros.APP_CONFIG + "/ApplicationService.xml"))
+public class ApplicationService implements PersistentStateComponent<ApplicationService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
     private String courseID;
     private String clientSecret;
@@ -24,20 +23,20 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
     private boolean translate;
 
     @Transient
-    private static final Logger LOG = Logger.getInstance(WorkerService.class);
+    private static final Logger LOG = Logger.getInstance(ApplicationService.class);
 
-    public static WorkerService getInstance() {
-        return ServiceManager.getService(WorkerService.class);
+    public static ApplicationService getInstance() {
+        return ServiceManager.getService(ApplicationService.class);
     }
 
-    public WorkerService() {
+    public ApplicationService() {
     }
 
-    public WorkerService getState() {
+    public ApplicationService getState() {
         return this;
     }
 
-    public void loadState(WorkerService state) {
+    public void loadState(ApplicationService state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 
@@ -55,7 +54,7 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
 
         String password;
         try {
-            password = PasswordSafe.getInstance().getPassword(null, WorkerService.class, getPasswordKey());
+            password = PasswordSafe.getInstance().getPassword(null, ApplicationService.class, getPasswordKey());
         } catch (PasswordSafeException e) {
             LOG.info("Couldn't get password for key [" + getPasswordKey() + "]", e);
             password = "";
@@ -66,7 +65,7 @@ public class WorkerService implements PersistentStateComponent<WorkerService> {
 
     public void setPassword(@NotNull String password) {
         try {
-            PasswordSafe.getInstance().storePassword(null, WorkerService.class, getPasswordKey(), password);
+            PasswordSafe.getInstance().storePassword(null, ApplicationService.class, getPasswordKey(), password);
         } catch (PasswordSafeException e) {
             LOG.info("Couldn't set password for key [" + getPasswordKey() + "]", e);
         }

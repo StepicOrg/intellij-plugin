@@ -39,7 +39,7 @@ public class StepicConnector {
 
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
-    private static WorkerService ws = WorkerService.getInstance();
+    private static ApplicationService ws = ApplicationService.getInstance();
 
     private static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 // Create a trust manager that does not validate certificate for this connection
@@ -73,8 +73,8 @@ public class StepicConnector {
                 LOG.error(e);
             }
         }
-//        WorkerService.getInstance().setToken(
-//                getToken(WorkerService.getInstance().getClientId(), WorkerService.getInstance().getClientSecret()));
+//        ApplicationService.getInstance().setToken(
+//                getToken(ApplicationService.getInstance().getClientId(), ApplicationService.getInstance().getClientSecret()));
         setTokenGRP();
     }
 
@@ -102,7 +102,7 @@ public class StepicConnector {
                     .field("grant_type", "password")
                     .field("username", user)
                     .field("password", pass)
-                    .field("client_id", WorkerService.getInstance().getClientId())
+                    .field("client_id", ApplicationService.getInstance().getClientId())
                     .asJson();
         } catch (UnirestException e) {
             LOG.error(e);
@@ -122,7 +122,7 @@ public class StepicConnector {
         HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
-                .header("Authorization", "Bearer " + WorkerService.getInstance().getToken())
+                .header("Authorization", "Bearer " + ApplicationService.getInstance().getToken())
                 .asString();
         final String responseString = response.getBody();
 
@@ -138,7 +138,7 @@ public class StepicConnector {
         HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
-                .header("Authorization", "Bearer " + WorkerService.getInstance().getToken())
+                .header("Authorization", "Bearer " + ApplicationService.getInstance().getToken())
                 .queryString(queryMap)
                 .asString();
         final String responseString = response.getBody();

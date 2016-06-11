@@ -5,7 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.MyFileInfoList;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.WS3;
+import main.stepicConnector.ProjectService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MyLesson {
 
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
         this.lessonNo = lessonNo;
-        WS3 ws3 = WS3.getInstance(project);
+        ProjectService projectService = ProjectService.getInstance(project);
 
         List<MyStep> myStepsList = StepicConnector.getSteps(StepicConnector.getIdQuery(stepsId));
 
@@ -40,7 +40,7 @@ public class MyLesson {
                 String filename = "Step" + step.position;
                 String path = getPath(courseDir, sectionDir, lessonName) + filename + ".java";
                 MyFileInfoList.getInstance().addFileInfo(path, courseDir, sectionDir + "." + lessonName, filename);
-                ws3.addPathStep(path, Integer.toString(step.id));
+                projectService.addPathStep(path, Integer.toString(step.id));
             }
         }
     }

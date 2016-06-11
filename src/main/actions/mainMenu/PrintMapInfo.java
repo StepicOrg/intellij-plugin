@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.WS3;
+import main.stepicConnector.ProjectService;
 
 import java.util.Map;
 
@@ -21,9 +21,9 @@ public class PrintMapInfo extends MainMenuAction {
 
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
 
-//        WorkerService ws = WorkerService.getInstance();
-        WS3 ws = WS3.getInstance(e.getProject());
-//        WS3 ws = WS3.getInstance();
+//        ApplicationService ws = ApplicationService.getInstance();
+        ProjectService ws = ProjectService.getInstance(e.getProject());
+//        ProjectService ws = ProjectService.getInstance();
         final String[] text = {""};
 
         Map map = ws.getMapPathStep();

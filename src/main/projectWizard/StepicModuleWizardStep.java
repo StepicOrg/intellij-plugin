@@ -5,7 +5,7 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.externalSystem.model.project.ProjectData;
 import com.intellij.openapi.project.Project;
-import main.stepicConnector.WorkerService;
+import main.stepicConnector.ApplicationService;
 
 import javax.swing.*;
 
@@ -57,7 +57,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
     }
 
     private void saveSettings() {
-        WorkerService ws = WorkerService.getInstance();
+        ApplicationService ws = ApplicationService.getInstance();
         ws.setLogin(textField1.getText());
         ws.setPassword(new String(passwordField1.getPassword()));
         ws.setCourseID(parseUrl(courseLinkFiled.getText()));
@@ -71,7 +71,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        WorkerService ws = WorkerService.getInstance();
+        ApplicationService ws = ApplicationService.getInstance();
         textField1 = new JTextField(ws.getLogin());
         passwordField1 = new JPasswordField(ws.getPassword());
     }
