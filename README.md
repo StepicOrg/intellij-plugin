@@ -12,9 +12,9 @@ In the same way you can to download last submissions and get the status of step.
 ## Features
 * **Sing in** — you can input login and password, and then you get OAuth2 token.
 * **Who am i** — return `user_name`.
-* **Download last submission** — download your latest submission this step from site.
-* **Get a step status** — return a step status and status of last submission posted from IDE.
-* **Send step** — send this step to platform.
+* **Download Latest Submission** — download your latest submission this step from site.
+* **Check Step Status** — return a step status and status of last submission posted from IDE.
+* **Submit Solution** — send this step to platform.
 
 ## Install
 0. Download and install IntelliJ IDEA 2016 (https://www.jetbrains.com/idea/)

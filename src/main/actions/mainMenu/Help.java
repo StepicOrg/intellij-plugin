@@ -15,7 +15,7 @@ public class Help extends MainMenuAction {
             "And then input course URL or course number.\n" +
             "After twenty seconds course will be built.\n" +
             "\n" +
-            "To send task click the left mouse button on file. In the shortcut menu choose \"Send step\".\n" +
+            "To send task click the left mouse button on file. In the shortcut menu choose \"Submit Solution\".\n" +
             "In the same way you can to download last submissions and get the status of step.\n" +
             "\n" +
             "\"Who am I\" -- returns your user_name.\n" +
@@ -28,7 +28,7 @@ public class Help extends MainMenuAction {
             "Затем ввести ссылку на курс или его номер.\n" +
             "Через двадцать секунд проект будет построен.\n" +
             "\n" +
-            "Для отправки задачи кликните левой кнопкой мыши на файле. В контекстном меню выберете \"Send step\".\n" +
+            "Для отправки задачи кликните левой кнопкой мыши на файле. В контекстном меню выберете \"Submit Solution\".\n" +
             "Тем же способом вы можете загрузить последний отправленный вариант или узнать статус задачи.\n" +
             "\n" +
             "\"Who am I\" -- возвращает user_name.\n" +
