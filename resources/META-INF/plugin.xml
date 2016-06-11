@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin version="4">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
     <version>0.42</version>
@@ -28,12 +28,10 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <applicationService serviceInterface="main.stepicConnector.WorkerService"
-                            serviceImplementation="main.stepicConnector.WorkerService"/>
-        <projectService serviceInterface="main.stepicConnector.WS2"
-                            serviceImplementation="main.stepicConnector.WS2"/>
-        <projectService serviceInterface="main.stepicConnector.WS3"
-                            serviceImplementation="main.stepicConnector.WS3"/>
+        <applicationService serviceInterface="main.stepicConnector.ApplicationService"
+                            serviceImplementation="main.stepicConnector.ApplicationService"/>
+        <projectService serviceInterface="main.stepicConnector.ProjectService"
+                            serviceImplementation="main.stepicConnector.ProjectService"/>
         <projectService serviceInterface="main.actions.ActionVisibleProperties"
                             serviceImplementation="main.actions.ActionVisibleProperties"/>
 
@@ -51,7 +49,7 @@
 
     <actions>
         <group id="ID.StepicGroup" text="_Stepic" popup="true">
-            <add-to-group group-id="MainMenu" anchor="last"/>
+            <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
         </group>
 
         <!-- Add your actions here -->
@@ -73,22 +71,20 @@
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
-        <action id="WhoAmI" class="main.actions.mainMenu.WhoAmI" text="_Who am i" description="return username">
+        <action id="WhoAmI" class="main.actions.mainMenu.WhoAmI" text="_Who am I" description="return username">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
-        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in" description="Incert your client and secret id">
+        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in" description="Insert your client and secret id">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
         <action id="ID.Update"
                 class="main.actions.mainMenu.UpdateCourse"
                 text="Update course"
-                description="update this course">
+                description="Download new week from site">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 
-        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="RefreshMap" description="RefreshMap">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
-        </action>
+
         <action id="ID.DownloadLastSubmission"
                 class="main.actions.popupMenu.DownloadLastSubmission"
                 text="Download latest submission"
@@ -121,7 +117,13 @@
             <!--<add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>-->
             <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
         </action>
+        <action id="ID.RefreshMap" class="main.actions.mainMenu.RefreshMap" text="RefreshMap" description="RefreshMap">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        </action>
 
+        <action id="ID.Help" class="main.actions.mainMenu.Help" text="_Help" description="Help">
+            <add-to-group group-id="ID.StepicGroup" anchor="last"/>
+        </action>
     </actions>
 
     <module-components>

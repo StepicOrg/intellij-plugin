@@ -6,10 +6,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.StepicConnector;
 import main.edu.stepic.SubmissionsNode;
-import main.stepicConnector.WS2;
-import main.stepicConnector.WS3;
+import main.stepicConnector.ProjectService;
+import main.stepicConnector.StepicConnector;
 
 import java.util.List;
 
@@ -24,9 +23,9 @@ public class GetStepStatus extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-//        WorkerService ws = WorkerService.getInstance();
-        WS3 ws = WS3.getInstance(project);
-//        WS3 ws = WS3.getInstance();
+//        ApplicationService ws = ApplicationService.getInstance();
+        ProjectService ws = ProjectService.getInstance(project);
+//        ProjectService ws = ProjectService.getInstance();
         String stepId = ws.getStepId(vf.getPath());
 
 
@@ -39,10 +38,10 @@ public class GetStepStatus extends PopupMenuAction {
             ans = "Step wasn't solved";
         }
 
-        WS2 ws2 = WS2.getInstance(project);
+//        WS2 ws2 = WS2.getInstance(project);
 //        WS2 ws2 = WS2.getInstance();
 
-        String attemptId = ws2.getAttemptId(stepId);
+        String attemptId = ws.getAttemptId(vf.getPath());
 //        String attemptId = "";
         if (!attemptId.equals("")) {
             List<SubmissionsNode> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId));

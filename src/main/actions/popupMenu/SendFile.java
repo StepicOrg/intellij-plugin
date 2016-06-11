@@ -7,9 +7,8 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
+import main.stepicConnector.ProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.WS2;
-import main.stepicConnector.WS3;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,16 +25,14 @@ public class SendFile extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        WS3 ws = WS3.getInstance(project);
-        String stepId = ws.getStepId(vf.getPath());
+        ProjectService projectService = ProjectService.getInstance(project);
+        String stepId = projectService.getStepId(vf.getPath());
 
         String text = renameMainClass(vf);
         Messages.showMessageDialog(project, text, "Information", Messages.getInformationIcon());
 
         String attemptId = StepicConnector.getAttemptId(stepId);
-
-        WS2 ws2 = WS2.getInstance(project);
-        ws2.setAttemptId(stepId, attemptId);
+        projectService.setAttemptId(vf.getPath(), attemptId);
 
         String submissionId = StepicConnector.sendFile(text, attemptId);
     }

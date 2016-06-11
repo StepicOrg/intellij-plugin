@@ -9,7 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.stepicConnector.StepicConnector;
 import main.edu.stepic.SubmissionsNode;
-import main.stepicConnector.WS3;
+import main.stepicConnector.ProjectService;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class DownloadLastSubmission extends PopupMenuAction {
 
 
         List<SubmissionsNode> submissions =
-                StepicConnector.getSubmissions(WS3.getInstance(project).getStepId(vf.getPath()));
+                StepicConnector.getSubmissions(ProjectService.getInstance(project).getStepId(vf.getPath()));
 
         String code = submissions.get(submissions.size() -1 ).getCode();
 

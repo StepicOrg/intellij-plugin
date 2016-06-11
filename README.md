@@ -3,7 +3,11 @@
 To work with plugin you must to create a project of Stepic type.
 You need to enter login and password your Stepic account.
 And then input course URL or course number.
-After one minute course will be built.
+After twenty seconds course will be built.
+
+To send task click the left mouse button on file. In the shortcut menu choose "Send step".
+In the same way you can to download last submissions and get the status of step.
+
 
 ## Features
 * **Sing in** — you can input login and password, and then you get OAuth2 token.
