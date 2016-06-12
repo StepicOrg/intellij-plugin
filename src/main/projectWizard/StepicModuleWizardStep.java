@@ -5,7 +5,7 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.externalSystem.model.project.ProjectData;
 import com.intellij.openapi.project.Project;
-import main.stepicConnector.ApplicationService;
+import main.stepicConnector.StepicApplicationService;
 
 import javax.swing.*;
 
@@ -57,11 +57,17 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
     }
 
     private void saveSettings() {
-        ApplicationService ws = ApplicationService.getInstance();
+        StepicApplicationService ws = StepicApplicationService.getInstance();
         ws.setLogin(textField1.getText());
         ws.setPassword(new String(passwordField1.getPassword()));
-        ws.setCourseID(parseUrl(courseLinkFiled.getText()));
-        ws.setTranslator(CheckBox.isSelected());
+//        ws.setCourseID(parseUrl(courseLinkFiled.getText()));
+
+//        ws.setTranslator(CheckBox.isSelected());
+//        StepicProjectService projectService = StepicProjectService.getInstance(myProjectOrNull);
+//        projectService.setTranslator(CheckBox.isSelected());
+        PropertiesComponent props = PropertiesComponent.getInstance();
+        props.setValue("translate", CheckBox.isSelected());
+        props.setValue("courseId",parseUrl(courseLinkFiled.getText()));
     }
 
     private static void saveValue(String key, String value) {
@@ -71,7 +77,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        ApplicationService ws = ApplicationService.getInstance();
+        StepicApplicationService ws = StepicApplicationService.getInstance();
         textField1 = new JTextField(ws.getLogin());
         passwordField1 = new JPasswordField(ws.getPassword());
     }

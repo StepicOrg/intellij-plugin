@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import main.stepicConnector.ProjectService;
+import main.stepicConnector.StepicProjectService;
 import main.stepicConnector.StepicConnector;
 
 import java.util.HashSet;
@@ -28,12 +28,18 @@ public class SendFile extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        ProjectService projectService = ProjectService.getInstance(project);
+        StepicProjectService projectService = StepicProjectService.getInstance(project);
         String stepId = projectService.getStepId(vf.getPath());
 
         String text = renameMainClass(vf);
 
-        String attemptId = StepicConnector.getAttemptId(stepId);
+        String attemptId = null;
+        try {
+            attemptId = StepicConnector.getAttemptId(stepId);
+        } catch (UnirestException e1) {
+            Messages.showMessageDialog(project, error, "Error", Messages.getErrorIcon());
+            return;
+        }
         projectService.setAttemptId(vf.getPath(), attemptId);
 
         try {

@@ -3,8 +3,8 @@ package main.edu.stepic;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
-import main.stepicConnector.ApplicationService;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.StepicProjectService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,18 +56,18 @@ public class MyCourse {
         List<String> sectionNames = new ArrayList<>();
         mySectionList.forEach(x -> sectionNames.add(x.title));
 
-        List<String> newSectionNames = YaTranslator.translateNames(sectionNames, "section");
+        List<String> newSectionNames = YaTranslator.translateNames(sectionNames, "section", project);
 
         for (MySection section : mySectionList) {
             section.setSectionName(newSectionNames.get(sectionNo));
             sections.put(++sectionNo, section);
-            section.build(sectionNo, root + "/" + getName(), project);
+            section.build(sectionNo, root + "/" + getName(project), project);
         }
     }
 
-    public String getName() {
+    public String getName(Project project) {
         if (courseName == null) {
-            ApplicationService ws = ApplicationService.getInstance();
+            StepicProjectService ws = StepicProjectService.getInstance(project);
             if (ws.isTranslate()) {
                 courseName =  YaTranslator.translateRuToEn(title);
             } else {

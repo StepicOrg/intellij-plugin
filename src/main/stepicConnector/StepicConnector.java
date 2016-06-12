@@ -39,7 +39,7 @@ public class StepicConnector {
 
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean tokenInit = false;
-    private static ApplicationService ws = ApplicationService.getInstance();
+    private static StepicApplicationService ws = StepicApplicationService.getInstance();
 
     private static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 // Create a trust manager that does not validate certificate for this connection
@@ -73,8 +73,8 @@ public class StepicConnector {
                 LOG.error(e);
             }
         }
-//        ApplicationService.getInstance().setToken(
-//                getToken(ApplicationService.getInstance().getClientId(), ApplicationService.getInstance().getClientSecret()));
+//        StepicApplicationService.getInstance().setToken(
+//                getToken(StepicApplicationService.getInstance().getClientId(), StepicApplicationService.getInstance().getClientSecret()));
         setTokenGRP();
     }
 
@@ -102,7 +102,7 @@ public class StepicConnector {
                     .field("grant_type", "password")
                     .field("username", user)
                     .field("password", pass)
-                    .field("client_id", ApplicationService.getInstance().getClientId())
+                    .field("client_id", StepicApplicationService.getInstance().getClientId())
                     .asJson();
         } catch (UnirestException e) {
             LOG.error(e);
@@ -122,7 +122,7 @@ public class StepicConnector {
         HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
-                .header("Authorization", "Bearer " + ApplicationService.getInstance().getToken())
+                .header("Authorization", "Bearer " + StepicApplicationService.getInstance().getToken())
                 .asString();
         final String responseString = response.getBody();
 
@@ -138,7 +138,7 @@ public class StepicConnector {
         HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
-                .header("Authorization", "Bearer " + ApplicationService.getInstance().getToken())
+                .header("Authorization", "Bearer " + StepicApplicationService.getInstance().getToken())
                 .queryString(queryMap)
                 .asString();
         final String responseString = response.getBody();
@@ -213,7 +213,7 @@ public class StepicConnector {
         }
     }
 
-    public static String getAttemptId(String stepId) {
+    public static String getAttemptId(String stepId) throws UnirestException {
         String attempts = "attempts";
         JSONObject first = new JSONObject();
         JSONObject second = new JSONObject();
@@ -224,7 +224,7 @@ public class StepicConnector {
         HttpResponse<JsonNode> response = null;
         LOG.warn(second.toString());
         LOG.warn(ws.getToken());
-        try {
+//        try {
             response = Unirest
                     .post(api_url + attempts)
                     .header("Authorization", "Bearer " + ws.getToken())
@@ -232,9 +232,9 @@ public class StepicConnector {
                     .body(second)
                     .asJson();
 
-        } catch (UnirestException e) {
-            LOG.error("Get Attempt Id error\n" + e.getMessage());
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("Get Attempt Id error\n" + e.getMessage());
+//        }
 
         JSONObject tmp = response.getBody().getObject();
         JSONArray oo = (JSONArray) tmp.get("attempts");

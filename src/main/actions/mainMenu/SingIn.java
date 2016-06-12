@@ -4,8 +4,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import main.stepicConnector.StepicApplicationService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.ApplicationService;
 
 /**
  * Created by Petr on 01.04.2016.
@@ -16,9 +16,9 @@ public class SingIn extends MainMenuAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
-        ApplicationService.getInstance().setLogin(
+        StepicApplicationService.getInstance().setLogin(
                 Messages.showInputDialog(project, "Please, input your username", "Sing in", Messages.getQuestionIcon()));
-        ApplicationService.getInstance().setPassword(
+        StepicApplicationService.getInstance().setPassword(
                 Messages.showPasswordDialog(project, "Please, input your password", "Sing in", Messages.getQuestionIcon()));
 
         StepicConnector.initToken();

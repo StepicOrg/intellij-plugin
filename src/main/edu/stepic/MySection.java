@@ -41,7 +41,7 @@ public class MySection {
         List<MyLesson> myLessons = StepicConnector.getLessons(getIdQuery(lessonsId));
         myLessons.forEach(x -> lessonNames.add(x.title));
 
-        List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson");
+        List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson", project);
 
         for (MyLesson lesson : myLessons) {
             lesson.setLessonName(newLessonNames.get(lessonNo));

@@ -1,7 +1,7 @@
 <idea-plugin version="6">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
-    <version>0.4.2</version>
+    <version>0.4.4</version>
     <vendor email="afnm47@gmail.com" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[
@@ -28,10 +28,10 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <applicationService serviceInterface="main.stepicConnector.ApplicationService"
-                            serviceImplementation="main.stepicConnector.ApplicationService"/>
-        <projectService serviceInterface="main.stepicConnector.ProjectService"
-                        serviceImplementation="main.stepicConnector.ProjectService"/>
+        <applicationService serviceInterface="main.stepicConnector.StepicApplicationService"
+                            serviceImplementation="main.stepicConnector.StepicApplicationService"/>
+        <projectService serviceInterface="main.stepicConnector.StepicProjectService"
+                        serviceImplementation="main.stepicConnector.StepicProjectService"/>
         <projectService serviceInterface="main.actions.ActionVisibleProperties"
                         serviceImplementation="main.actions.ActionVisibleProperties"/>
 

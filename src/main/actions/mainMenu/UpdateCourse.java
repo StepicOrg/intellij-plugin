@@ -10,8 +10,7 @@ import main.edu.stepic.MyCourse;
 import main.projectWizard.MyFileInfoList;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.ProjectService;
-import main.stepicConnector.ApplicationService;
+import main.stepicConnector.StepicProjectService;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +26,10 @@ import java.util.Set;
  */
 public class UpdateCourse extends MainMenuAction {
     private static final Logger LOG = Logger.getInstance(UpdateCourse.class);
+    private static String success = "Course is successfully updated.";
+    private static String error = "Course was not updated.";
+    private static String old = "No new lessons.";
+    private static String nnew = "New lessons are created.";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -34,11 +37,11 @@ public class UpdateCourse extends MainMenuAction {
         StepicConnector.initToken();
 
         final VirtualFile root = project.getBaseDir();
-        String courseID = ApplicationService.getInstance().getCourseID();
+        StepicProjectService projectService = StepicProjectService.getInstance(e.getProject());
+        String courseID = projectService.getCourseID();
 
         MyCourse course = StepicConnector.getCourses(courseID).get(0);
 
-        ProjectService projectService = ProjectService.getInstance(e.getProject());
 
         Set<String> nFiles = new HashSet<>();
         nFiles.addAll(projectService.getMapPathStep().keySet());
@@ -67,7 +70,13 @@ public class UpdateCourse extends MainMenuAction {
         LocalFileSystem.getInstance().refresh(true);
 
         StringBuilder sb = new StringBuilder();
-        nnFiles.forEach((x) -> sb.append(x.toString() + "\n"));
+        sb.append(success+"\n");
+        if (nnFiles.isEmpty()){
+            sb.append(old);
+        } else {
+            sb.append(nnew);
+        }
+//        nnFiles.forEach((x) -> sb.append(x.toString() + "\n"));
         Messages.showMessageDialog(project, sb.toString(), "Information", Messages.getInformationIcon());
 
     }

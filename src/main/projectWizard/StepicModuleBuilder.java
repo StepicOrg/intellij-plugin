@@ -1,5 +1,6 @@
 package main.projectWizard;
 
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
@@ -13,8 +14,7 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.ProjectService;
-import main.stepicConnector.ApplicationService;
+import main.stepicConnector.StepicProjectService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -34,9 +34,14 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         Project project = rootModel.getProject();
         final VirtualFile root = project.getBaseDir();
 
-        ProjectService.getInstance(project).setProjectName(project.getName());
+        PropertiesComponent props = PropertiesComponent.getInstance();
+        StepicProjectService.getInstance(project).setTranslator(props.getBoolean("translate"));
+        StepicProjectService.getInstance(project).setCourseID(props.getValue("courseId"));
+
+
+        StepicProjectService.getInstance(project).setProjectName(project.getName());
         StepicConnector.initToken();
-        String courseId = ApplicationService.getInstance().getCourseID();
+        String courseId = StepicProjectService.getInstance(project).getCourseID();
         LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());
 
@@ -55,7 +60,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
                 LOG.error("Create file error\n" + e.getMessage());
             }
         });
-        addSourcePath(Pair.create(root.getPath() + "/" + course.getName(),""));
+        addSourcePath(Pair.create(root.getPath() + "/" + course.getName(project),""));
         MyFileInfoList.getInstance().clear();
 
         super.setupRootModel(rootModel);

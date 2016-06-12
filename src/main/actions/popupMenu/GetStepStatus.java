@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.SubmissionsNode;
-import main.stepicConnector.ProjectService;
+import main.stepicConnector.StepicProjectService;
 import main.stepicConnector.StepicConnector;
 
 import java.util.List;
@@ -23,9 +23,9 @@ public class GetStepStatus extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-//        ApplicationService ws = ApplicationService.getInstance();
-        ProjectService ws = ProjectService.getInstance(project);
-//        ProjectService ws = ProjectService.getInstance();
+//        StepicApplicationService ws = StepicApplicationService.getInstance();
+        StepicProjectService ws = StepicProjectService.getInstance(project);
+//        StepicProjectService ws = StepicProjectService.getInstance();
         String stepId = ws.getStepId(vf.getPath());
 
 
@@ -54,10 +54,10 @@ public class GetStepStatus extends PopupMenuAction {
 
                 ans += "\nlast submission is " + max.getStatus();
             } else {
-                ans += "\nlast submission is unknown";
+                ans += "\nlast submission from IDEA is unknown";
             }
         } else {
-            ans += "\nlast submission is unknown";
+            ans += "\nlast submission from IDEA is unknown";
         }
 
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());

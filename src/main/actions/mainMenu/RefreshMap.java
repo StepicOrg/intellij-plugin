@@ -3,7 +3,7 @@ package main.actions.mainMenu;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
-import main.stepicConnector.ProjectService;
+import main.stepicConnector.StepicProjectService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ public class RefreshMap extends MainMenuAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
-        ProjectService projectService = ProjectService.getInstance(project);
+        StepicProjectService projectService = StepicProjectService.getInstance(project);
 
         LocalFileSystem lfs = LocalFileSystem.getInstance();
         Set<String> set = projectService.getMapPathStep().keySet();

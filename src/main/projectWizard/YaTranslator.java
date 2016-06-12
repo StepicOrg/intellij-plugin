@@ -1,11 +1,12 @@
 package main.projectWizard;
 
+import com.intellij.openapi.project.Project;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.edu.stepic.StringUtils;
-import main.stepicConnector.ApplicationService;
+import main.stepicConnector.StepicProjectService;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -55,8 +56,8 @@ public class YaTranslator {
         return response.getBody().getObject().getJSONArray(TEXT);
     }
 
-    public static List<String> translateNames(List<String> names, String level) {
-        ApplicationService ws = ApplicationService.getInstance();
+    public static List<String> translateNames(List<String> names, String level, Project project) {
+        StepicProjectService ws = StepicProjectService.getInstance(project);
         List<String> ans = new ArrayList<>();
         if (ws.isTranslate()) {
             JSONArray arr = YaTranslator.translateRuToEn(names);

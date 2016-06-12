@@ -10,33 +10,30 @@ import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.NotNull;
 
 
-//@State(name = "ApplicationService", storages = @Storage("ApplicationService.xml"))
-@State(name = "ApplicationService", storages = @Storage(id = "ApplicationService", file = StoragePathMacros.APP_CONFIG + "/ApplicationService.xml"))
-public class ApplicationService implements PersistentStateComponent<ApplicationService> {
+//@State(name = "StepicApplicationService", storages = @Storage("StepicApplicationService.xml"))
+@State(name = "StepicApplicationService", storages = @Storage(id = "StepicApplicationService", file = StoragePathMacros.APP_CONFIG + "/StepicApplicationService.xml"))
+public class StepicApplicationService implements PersistentStateComponent<StepicApplicationService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
-    private String courseID;
     private String clientSecret;
     private String token;
     private String refresh_token;
     private String login;
 
-    private boolean translate;
-
     @Transient
-    private static final Logger LOG = Logger.getInstance(ApplicationService.class);
+    private static final Logger LOG = Logger.getInstance(StepicApplicationService.class);
 
-    public static ApplicationService getInstance() {
-        return ServiceManager.getService(ApplicationService.class);
+    public static StepicApplicationService getInstance() {
+        return ServiceManager.getService(StepicApplicationService.class);
     }
 
-    public ApplicationService() {
+    public StepicApplicationService() {
     }
 
-    public ApplicationService getState() {
+    public StepicApplicationService getState() {
         return this;
     }
 
-    public void loadState(ApplicationService state) {
+    public void loadState(StepicApplicationService state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 
@@ -54,7 +51,7 @@ public class ApplicationService implements PersistentStateComponent<ApplicationS
 
         String password;
         try {
-            password = PasswordSafe.getInstance().getPassword(null, ApplicationService.class, getPasswordKey());
+            password = PasswordSafe.getInstance().getPassword(null, StepicApplicationService.class, getPasswordKey());
         } catch (PasswordSafeException e) {
             LOG.info("Couldn't get password for key [" + getPasswordKey() + "]", e);
             password = "";
@@ -65,7 +62,7 @@ public class ApplicationService implements PersistentStateComponent<ApplicationS
 
     public void setPassword(@NotNull String password) {
         try {
-            PasswordSafe.getInstance().storePassword(null, ApplicationService.class, getPasswordKey(), password);
+            PasswordSafe.getInstance().storePassword(null, StepicApplicationService.class, getPasswordKey(), password);
         } catch (PasswordSafeException e) {
             LOG.info("Couldn't set password for key [" + getPasswordKey() + "]", e);
         }
@@ -115,20 +112,7 @@ public class ApplicationService implements PersistentStateComponent<ApplicationS
 //        this.password = password;
 //    }
 
-    public String getCourseID() {
-        return courseID;
-    }
 
-    public void setCourseID(String courseID) {
-        this.courseID = courseID;
-    }
 
-    public void setTranslator(boolean translator) {
-        this.translate = translator;
-    }
-
-    public boolean isTranslate() {
-        return translate;
-    }
 
 }

@@ -14,27 +14,32 @@ import java.util.Set;
 
 // storage Path - StepInfo
 
-@State(name = "ProjectService", storages = @Storage(id = "ProjectService", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/ProjectService.xml"))
-public class ProjectService implements PersistentStateComponent<ProjectService> {
+@State(name = "StepicProjectService", storages = @Storage(id = "StepicProjectService", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/StepicProjectService.xml"))
+public class StepicProjectService implements PersistentStateComponent<StepicProjectService> {
 
     private Map<String, String> mapPathStep;
     private Map<String, String> pathAttId;
+    private Map<String, String> pathPackage;
+    private String courseID;
+    private boolean translate;
+
     private String projectName;
 
-    public static ProjectService getInstance(Project project) {
-        return ServiceManager.getService(project, ProjectService.class);
+    public static StepicProjectService getInstance(Project project) {
+        return ServiceManager.getService(project, StepicProjectService.class);
     }
 
-    public ProjectService() {
+    public StepicProjectService() {
         mapPathStep = new HashMap<>();
         pathAttId = new HashMap<>();
+        pathPackage = new HashMap<>();
     }
 
-    public ProjectService getState() {
+    public StepicProjectService getState() {
         return this;
     }
 
-    public void loadState(ProjectService state) {
+    public void loadState(StepicProjectService state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 
@@ -73,7 +78,7 @@ public class ProjectService implements PersistentStateComponent<ProjectService> 
     }
 
     public void setAttemptId(String path, String attemptId) {
-       pathAttId.put(path, attemptId);
+        pathAttId.put(path, attemptId);
     }
 
     public Map<String, String> getPathAttId() {
@@ -83,4 +88,37 @@ public class ProjectService implements PersistentStateComponent<ProjectService> 
     public void setPathAttId(Map<String, String> pathAttId) {
         this.pathAttId = pathAttId;
     }
+
+    public void addPathPackage(String path, String pack) {
+        pathPackage.put(path, pack);
+    }
+
+    public String getPackage(String path){
+        return pathPackage.getOrDefault(path, "");
+    }
+
+    public Map<String, String> getPathPackage() {
+        return pathPackage;
+    }
+
+    public void setPathPackage(Map<String, String> pathPackage) {
+        this.pathPackage = pathPackage;
+    }
+
+    public void setTranslator(boolean translator) {
+        this.translate = translator;
+    }
+
+    public boolean isTranslate() {
+        return translate;
+    }
+
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
+    }
+
 }

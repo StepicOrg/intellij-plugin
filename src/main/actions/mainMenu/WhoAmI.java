@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import main.stepicConnector.ApplicationService;
+import main.stepicConnector.StepicApplicationService;
 import main.stepicConnector.StepicConnector;
 
 /**
@@ -20,7 +20,7 @@ public class WhoAmI extends MainMenuAction {
 
         LOG.warn("action");
         Project project = e.getData(PlatformDataKeys.PROJECT);
-        if (ApplicationService.getInstance().getPassword() == null) {
+        if (StepicApplicationService.getInstance().getPassword() == null) {
             Messages.showMessageDialog(project, "Sorry, you don't authorize. Please sing in", "Information", Messages.getInformationIcon());
         } else {
 //            StepicConnector.initToken();
