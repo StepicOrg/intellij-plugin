@@ -7,6 +7,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.ProjectService;
 import main.stepicConnector.StepicConnector;
 
@@ -17,6 +18,8 @@ import java.util.Set;
  * Created by Petr on 19.05.2016.
  */
 public class SendFile extends PopupMenuAction {
+    private static String success = "the Step successfully sent";
+    private static String error = "the Step is not sent";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -29,12 +32,16 @@ public class SendFile extends PopupMenuAction {
         String stepId = projectService.getStepId(vf.getPath());
 
         String text = renameMainClass(vf);
-        Messages.showMessageDialog(project, text, "Information", Messages.getInformationIcon());
 
         String attemptId = StepicConnector.getAttemptId(stepId);
         projectService.setAttemptId(vf.getPath(), attemptId);
 
-        String submissionId = StepicConnector.sendFile(text, attemptId);
+        try {
+            String submissionId = StepicConnector.sendFile(text, attemptId);
+            Messages.showMessageDialog(project, success, "Information", Messages.getInformationIcon());
+        } catch (UnirestException e1) {
+            Messages.showMessageDialog(project, error, "Error", Messages.getErrorIcon());
+        }
     }
 
     private String renameMainClass(VirtualFile vf) {

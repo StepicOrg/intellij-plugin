@@ -242,7 +242,7 @@ public class StepicConnector {
         return Integer.toString(oo.getJSONObject(0).getInt("id"));
     }
 
-    public static String sendFile(String file, String att_id) {
+    public static String sendFile(String file, String att_id) throws UnirestException {
 
         JSONObject wrapper = new JSONObject();
         JSONObject submission = new JSONObject();
@@ -257,16 +257,16 @@ public class StepicConnector {
         wrapper.put("submission", submission);
 
         HttpResponse<JsonNode> response = null;
-        try {
+//        try {
             response = Unirest
                     .post(api_url + "submissions")
                     .header("Authorization", "Bearer " + ws.getToken())
                     .header("Content-Type", "application/json")
                     .body(wrapper)
                     .asJson();
-        } catch (UnirestException e) {
-            LOG.error("Send File error\n" + e.getMessage());
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("Send File error\n" + e.getMessage());
+//        }
         JSONObject tmp = response.getBody().getObject();
         JSONArray oo = (JSONArray) tmp.get("submissions");
         return Integer.toString(oo.getJSONObject(0).getInt("id"));
