@@ -27,6 +27,7 @@ public class ProjectService implements PersistentStateComponent<ProjectService> 
 
     public ProjectService() {
         mapPathStep = new HashMap<>();
+        pathAttId = new HashMap<>();
     }
 
     public ProjectService getState() {
@@ -75,4 +76,11 @@ public class ProjectService implements PersistentStateComponent<ProjectService> 
        pathAttId.put(path, attemptId);
     }
 
+    public Map<String, String> getPathAttId() {
+        return pathAttId;
+    }
+
+    public void setPathAttId(Map<String, String> pathAttId) {
+        this.pathAttId = pathAttId;
+    }
 }

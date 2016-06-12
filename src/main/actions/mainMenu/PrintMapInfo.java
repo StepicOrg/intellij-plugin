@@ -28,11 +28,20 @@ public class PrintMapInfo extends MainMenuAction {
 
         Map map = ws.getMapPathStep();
         if (map == null){
-            Messages.showMessageDialog(project, "map is null", "Information", Messages.getInformationIcon());
+            Messages.showMessageDialog(project, "path--step is null", "Information", Messages.getInformationIcon());
+        } else {
+            map.keySet().forEach((x) -> text[0] += x + "\n");
+            Messages.showMessageDialog(project, text[0], "Information", Messages.getInformationIcon());
         }
 
-        ws.getMapPathStep().keySet().forEach((x) -> text[0] += x+"\n");
-//        Messages.showMessageDialog(project, vf.getPath(), "Information", Messages.getInformationIcon());
-        Messages.showMessageDialog(project, text[0], "Information", Messages.getInformationIcon());
+
+        text[0] = "";
+        map = ws.getPathAttId();
+        if (map == null){
+            Messages.showMessageDialog(project, "Path--Id is null", "Information", Messages.getInformationIcon());
+        } else {
+            map.keySet().forEach((x) -> text[0] += x + "\n");
+            Messages.showMessageDialog(project, text[0], "Information", Messages.getInformationIcon());
+        }
     }
 }
