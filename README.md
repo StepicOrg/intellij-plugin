@@ -1,4 +1,4 @@
-# intellij-plugin 0.4.6
+# intellij-plugin 0.4.7
 
 To work with plugin you must to create a project of Stepic type.
 You need to enter login and password your Stepic account.

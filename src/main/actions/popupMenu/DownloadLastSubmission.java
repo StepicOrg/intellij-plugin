@@ -3,6 +3,7 @@ package main.actions.popupMenu;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
@@ -36,18 +37,20 @@ public class DownloadLastSubmission extends PopupMenuAction {
 
         String stepName = vf.getName().split("\\.")[0];
         String pack = StepicProjectService.getInstance(project).getPackage(vf.getPath());
-//        MyLogger.getInstance().getLOG().warn("StepName =" + stepName);
 
         String code2 = renameFromMainToStep(code, stepName, pack);
 
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+        CommandProcessor.getInstance().executeCommand(project, new Runnable() {
             @Override
             public void run() {
-                doc.setText(code2);
+                ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        doc.setText(code2);
+                    }
+                });
             }
-        });
-
-//        doc.setText(code);
+        }, "Download last submission", "Download last submission");
 
     }
 
