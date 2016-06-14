@@ -18,10 +18,8 @@ public class GetIdStep extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-//        StepicApplicationService ws = StepicApplicationService.getInstance();
-        NewProjectService ws = NewProjectService.getInstance(project);
-//        StepicProjectService ws = StepicProjectService.getInstance();
-        String stepId = ws.getStepID(vf.getPath());
+        NewProjectService projectService = NewProjectService.getInstance(project);
+        String stepId = projectService.getStepID(vf.getPath());
         Messages.showMessageDialog(project, stepId, "Information", Messages.getInformationIcon());
     }
 

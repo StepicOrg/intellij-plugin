@@ -33,7 +33,7 @@ public class SendFile extends PopupMenuAction {
 
         String text = renameMainClass(vf);
 
-        String attemptId = null;
+        String attemptId;
         try {
             attemptId = StepicConnector.getAttemptId(stepId);
         } catch (UnirestException e1) {

@@ -17,9 +17,9 @@ public class SingIn extends MainMenuAction {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
         StepicApplicationService.getInstance().setLogin(
-                Messages.showInputDialog(project, "Please, input your username", "Sing in", Messages.getQuestionIcon()));
+                Messages.showInputDialog(project, "Please, input your E-mail", "Sing in", Messages.getQuestionIcon()));
         StepicApplicationService.getInstance().setPassword(
-                Messages.showPasswordDialog(project, "Please, input your password", "Sing in", Messages.getQuestionIcon()));
+                Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon()));
 
         StepicConnector.initToken();
         String name = StepicConnector.getUserName();

@@ -23,13 +23,9 @@ public class GetStepStatus extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-//        StepicApplicationService ws = StepicApplicationService.getInstance();
-        NewProjectService ws = NewProjectService.getInstance(project);
-//        StepicProjectService ws = StepicProjectService.getInstance();
-        String stepId = ws.getStepID(vf.getPath());
+        NewProjectService projectService = NewProjectService.getInstance(project);
+        String stepId = projectService.getStepID(vf.getPath());
 
-
-//        StepicConnector.initToken();
         String ans = "";
         int size = StepicConnector.getStatusTask(stepId, Pair.pair("status", "correct")).size();
         if (size > 0) {
@@ -38,20 +34,16 @@ public class GetStepStatus extends PopupMenuAction {
             ans = "Step wasn't solved";
         }
 
-//        WS2 ws2 = WS2.getInstance(project);
-//        WS2 ws2 = WS2.getInstance();
-
-        String attemptId = ws.getAttemptID(vf.getPath());
-//        String attemptId = "";
+        String attemptId = projectService.getAttemptID(vf.getPath());
         if (!attemptId.equals("")) {
             List<SubmissionsNode> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId));
             if (!list.isEmpty()) {
                 SubmissionsNode max = list.get(0);
                 for (SubmissionsNode node : list) {
-                    if (max.getTime().compareTo(node.getTime()) < 0)
+                    if (max.getTime().compareTo(node.getTime()) < 0){
                         max = node;
+                    }
                 }
-
                 ans += "\nlast submission is " + max.getStatus();
             } else {
                 ans += "\nlast submission from IDEA is unknown";
@@ -61,6 +53,5 @@ public class GetStepStatus extends PopupMenuAction {
         }
 
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());
-
     }
 }

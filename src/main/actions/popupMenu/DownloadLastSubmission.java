@@ -27,17 +27,15 @@ public class DownloadLastSubmission extends PopupMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        Document doc = FileDocumentManager.getInstance().getDocument(vf);
-
+        NewProjectService projectService = NewProjectService.getInstance(project);
+        String stepName = vf.getName().split("\\.")[0];
 
         List<SubmissionsNode> submissions =
-                StepicConnector.getSubmissions(NewProjectService.getInstance(project).getStepID(vf.getPath()));
+                StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()));
 
         String code = submissions.get(submissions.size() - 1).getCode();
-
-        String stepName = vf.getName().split("\\.")[0];
         String pack = NewProjectService.getInstance(project).getPackageName(vf.getPath());
-
+        Document doc = FileDocumentManager.getInstance().getDocument(vf);
         String code2 = renameFromMainToStep(code, stepName, pack);
 
         CommandProcessor.getInstance().executeCommand(project, new Runnable() {
@@ -74,5 +72,4 @@ public class DownloadLastSubmission extends PopupMenuAction {
         }
         return sb.toString();
     }
-
 }

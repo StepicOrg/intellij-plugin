@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Petr on 14.06.2016.
@@ -129,5 +130,9 @@ public class NewProjectService implements PersistentStateComponent<Element> {
 
     public Map<String, StepInfo> getMapPathInfo() {
         return mapPathInfo;
+    }
+
+    public void removeAll(Set<String> removed) {
+        mapPathInfo.keySet().removeAll(removed);
     }
 }

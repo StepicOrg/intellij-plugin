@@ -11,8 +11,6 @@ public class NegTranslator extends MainMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        // TODO: insert action logic here
-//        StepicProjectService ws = StepicProjectService.getInstance(e.getProject());
         NewProjectService ws = NewProjectService.getInstance(e.getProject());
 
         ws.setTranslate(!ws.isTranslate());

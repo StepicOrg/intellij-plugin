@@ -106,7 +106,7 @@
         <action id="ID.PrintMapInfo"
                 class="main.actions.mainMenu.PrintMapInfo"
                 text="PrintMapInfo" description="PrintMapInfo">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
         <action id="TEST.NegTranslator" class="main.actions.mainMenu.NegTranslator" text="NegTranslator"
                 description="NegTranslator">

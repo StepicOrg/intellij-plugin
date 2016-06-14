@@ -37,20 +37,14 @@ public class UpdateCourse extends MainMenuAction {
         StepicConnector.initToken();
 
         final VirtualFile root = project.getBaseDir();
-//        StepicProjectService projectService = StepicProjectService.getInstance(e.getProject());
-        NewProjectService projectService = NewProjectService.getInstance(e.getProject());
+        NewProjectService projectService = NewProjectService.getInstance(project);
         String courseID = projectService.getCourseID();
-
         MyCourse course = StepicConnector.getCourses(courseID).get(0);
 
-
-        Set<String> nFiles = new HashSet<>();
-        nFiles.addAll(projectService.getMapPathInfo().keySet());
+        Set<String> nFiles = projectService.getMapPathInfo().keySet();
         Set<String> nnFiles = new HashSet<>();
 
-        course.build(root.getPath(),e.getProject());
-//        MyLesson lesson = StepicConnector.getLesson("28340");
-//        lesson.build(1, root.getPath() + "/course", "section", project);
+        course.build(root.getPath(), project);
 
         MyFileInfoList.getInstance().getList().forEach((x) -> {
             if (nFiles.contains(x.path)) {

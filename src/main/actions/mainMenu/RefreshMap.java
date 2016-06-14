@@ -16,19 +16,18 @@ public class RefreshMap extends MainMenuAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
-//        StepicProjectService projectService = StepicProjectService.getInstance(project);
         NewProjectService projectService = NewProjectService.getInstance(project);
 
         LocalFileSystem lfs = LocalFileSystem.getInstance();
-//        Set<String> set = projectService.getMapPathStep().keySet();
+        Set<String> set = projectService.getMapPathInfo().keySet();
         Set<String> removed = new HashSet<>();
-//        set.forEach(x -> {
-//            if (lfs.findFileByPath(x) == null)
-//                removed.add(x);
-//        });
-//
-//        projectService.removeAll(removed);
-//        set.removeAll(removed);
+        set.forEach(x -> {
+            if (lfs.findFileByPath(x) == null)
+                removed.add(x);
+        });
+
+        projectService.removeAll(removed);
+        set.removeAll(removed);
 
     }
 }
