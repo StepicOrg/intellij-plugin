@@ -2,7 +2,7 @@ package main.actions.mainMenu;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-import main.actions.Utils;
+import main.Utils;
 
 /**
  * Created by Petr on 03.06.2016.

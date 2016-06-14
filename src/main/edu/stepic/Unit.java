@@ -2,7 +2,7 @@ package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MyUnit {
+public class Unit {
     int id;
     @SerializedName("lesson")
     private int lessonId;

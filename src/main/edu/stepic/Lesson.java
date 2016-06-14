@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyLesson {
+public class Lesson {
 
-    private static final Logger LOG = Logger.getInstance(MyLesson.class);
+    private static final Logger LOG = Logger.getInstance(Lesson.class);
     int id;
     @SerializedName("steps")
     List<Integer> stepsId;
@@ -20,16 +20,16 @@ public class MyLesson {
     public String title;
     private String lessonName;
 
-    public transient Map<Integer, MyStep> steps = new HashMap<>();
+    public transient Map<Integer, Step> steps = new HashMap<>();
     private int lessonNo;
 
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
         this.lessonNo = lessonNo;
         NewProjectService projectService = NewProjectService.getInstance(project);
 
-        List<MyStep> myStepsList = StepicConnector.getSteps(StepicConnector.getIdQuery(stepsId));
+        List<Step> stepsList = StepicConnector.getSteps(StepicConnector.getIdQuery(stepsId));
 
-        for (MyStep step : myStepsList) {
+        for (Step step : stepsList) {
             if (step.isTask()) {
                 steps.put(step.position, step);
                 String filename = "Step" + step.position;
@@ -54,7 +54,7 @@ public class MyLesson {
 
     @Override
     public String toString() {
-        return "\n\tMyLesson{" +
+        return "\n\tLesson{" +
                 "id=" + id +
                 ", steps=" + steps +
                 '}';

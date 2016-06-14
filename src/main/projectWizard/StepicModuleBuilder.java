@@ -12,7 +12,7 @@ import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.edu.stepic.MyCourse;
+import main.edu.stepic.Course;
 import main.edu.stepic.StepInfo;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
@@ -50,7 +50,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
         LOG.warn("root = " + root.getPath());
 
-        MyCourse course = StepicConnector.getCourses(courseId).get(0);
+        Course course = StepicConnector.getCourses(courseId).get(0);
         course.build(root.getPath(), rootModel.getProject());
 
         projectService.mapPathInfo.entrySet().forEach(x -> {

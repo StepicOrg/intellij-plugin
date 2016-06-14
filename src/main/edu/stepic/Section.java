@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static main.stepicConnector.StepicConnector.getIdQuery;
 
-public class MySection {
+public class Section {
     int id;
     int course;
     public String position;
@@ -21,7 +21,7 @@ public class MySection {
 
     @SerializedName("units")
     List<Integer> unitsId;
-    public transient Map<Integer, MyLesson> lessons = new HashMap<>();
+    public transient Map<Integer, Lesson> lessons = new HashMap<>();
 
     private int sectionNo;
 
@@ -30,19 +30,19 @@ public class MySection {
         this.sectionNo = sectionNo;
         int lessonNo = 0;
 
-        List<MyUnit> myUnits = StepicConnector.getUnits(getIdQuery(unitsId));
-        if (myUnits == null) return;
+        List<Unit> units = StepicConnector.getUnits(getIdQuery(unitsId));
+        if (units == null) return;
         List<Integer> lessonsId = new ArrayList<>();
         List<String> lessonNames = new ArrayList<>();
-        myUnits.forEach(x -> lessonsId.add(x.getLessonId()));
-        List<MyLesson> myLessons = StepicConnector.getLessons(getIdQuery(lessonsId));
-        myLessons.forEach(x -> lessonNames.add(x.title));
+        units.forEach(x -> lessonsId.add(x.getLessonId()));
+        List<Lesson> lessons = StepicConnector.getLessons(getIdQuery(lessonsId));
+        lessons.forEach(x -> lessonNames.add(x.title));
 
         List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson", project);
 
-        for (MyLesson lesson : myLessons) {
+        for (Lesson lesson : lessons) {
             lesson.setLessonName(newLessonNames.get(lessonNo));
-            lessons.put(++lessonNo, lesson);
+            this.lessons.put(++lessonNo, lesson);
             lesson.build(lessonNo, courseDir, sectionName, project);
         }
     }
@@ -53,7 +53,7 @@ public class MySection {
 
     @Override
     public String toString() {
-        return "\nMySection{" +
+        return "\nSection{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", lessons=" + lessons +

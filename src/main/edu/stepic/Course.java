@@ -2,6 +2,7 @@ package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
+import main.Utils;
 import main.projectWizard.YaTranslator;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 import static main.stepicConnector.StepicConnector.getSections;
 
-public class MyCourse {
+public class Course {
     public int id;
     public String title;
     public String summary;
@@ -22,7 +23,7 @@ public class MyCourse {
     @SerializedName("sections")
     public List<Integer> sectionsId;
 
-    public transient Map<Integer, MySection> sections = new HashMap<>();
+    public transient Map<Integer, Section> sections = new HashMap<>();
 
     public String getTitle() {
         return title;
@@ -30,7 +31,7 @@ public class MyCourse {
 
     @Override
     public String toString() {
-        return "MyCourse{" +
+        return "Course{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", sections=" + sections +
@@ -41,20 +42,20 @@ public class MyCourse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MyCourse that = (MyCourse) o;
+        Course that = (Course) o;
         if (that.id == this.id) return true;
         return false;
     }
 
     public void build(String root, Project project) {
         int sectionNo = 0;
-        List<MySection> mySectionList = getSections(StepicConnector.getIdQuery(sectionsId));
+        List<Section> sectionList = getSections(StepicConnector.getIdQuery(sectionsId));
         List<String> sectionNames = new ArrayList<>();
-        mySectionList.forEach(x -> sectionNames.add(x.title));
+        sectionList.forEach(x -> sectionNames.add(x.title));
 
         List<String> newSectionNames = YaTranslator.translateNames(sectionNames, "section", project);
 
-        for (MySection section : mySectionList) {
+        for (Section section : sectionList) {
             section.setSectionName(newSectionNames.get(sectionNo));
             sections.put(++sectionNo, section);
             section.build(sectionNo, root + "/" + getName(project), project);
@@ -70,6 +71,6 @@ public class MyCourse {
                 courseName =  "course";
             }
         }
-        return StringUtils.normalize(courseName);
+        return Utils.normalize(courseName);
     }
 }

@@ -2,7 +2,7 @@ package main.edu.stepic;
 
 import java.util.Map;
 
-public class SubmissionsNode {
+public class Submission {
     private String status;
     private String time;
     private Map<String,String> reply;

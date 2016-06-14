@@ -7,10 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Implementation of class which contains information to be shawn in course description in tool window
- * and when project is being created
- */
 public class CourseInfo {
     boolean is_public;
     public List<Integer> sections;

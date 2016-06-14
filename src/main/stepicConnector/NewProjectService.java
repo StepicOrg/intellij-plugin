@@ -20,7 +20,6 @@ public class NewProjectService implements PersistentStateComponent<Element> {
     private boolean translate;
     private String projectName;
 
-    //    public static final String COURSE_ELEMENT = "courseElement";
     public static final String MAIN_ELEMENT = "ProjectService";
 
     public static NewProjectService getInstance(@NotNull final Project project) {
@@ -31,11 +30,9 @@ public class NewProjectService implements PersistentStateComponent<Element> {
     @Override
     public Element getState() {
         Element el = new Element("projectService");
-//        if (myCourse != null) {
         Element courseElement = new Element(MAIN_ELEMENT);
         XmlSerializer.serializeInto(this, courseElement);
         el.addContent(courseElement);
-//        }
         return el;
     }
 
@@ -95,6 +92,7 @@ public class NewProjectService implements PersistentStateComponent<Element> {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setAttemptID(attemptID);
     }
+
     public void setPackageName(String path, String packageName){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setPackageName(packageName);
@@ -104,7 +102,6 @@ public class NewProjectService implements PersistentStateComponent<Element> {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setFilename(filename);
     }
-
 
     public void addStepInfo(String path, StepInfo stepInfo) {
         mapPathInfo.put(path, stepInfo);

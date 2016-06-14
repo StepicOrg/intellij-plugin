@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.edu.stepic.SubmissionsNode;
+import main.edu.stepic.Submission;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 
@@ -36,10 +36,10 @@ public class GetStepStatus extends PopupMenuAction {
 
         String attemptId = projectService.getAttemptID(vf.getPath());
         if (!attemptId.equals("")) {
-            List<SubmissionsNode> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId));
+            List<Submission> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId));
             if (!list.isEmpty()) {
-                SubmissionsNode max = list.get(0);
-                for (SubmissionsNode node : list) {
+                Submission max = list.get(0);
+                for (Submission node : list) {
                     if (max.getTime().compareTo(node.getTime()) < 0){
                         max = node;
                     }

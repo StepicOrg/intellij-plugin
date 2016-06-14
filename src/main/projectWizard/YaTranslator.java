@@ -5,7 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import main.edu.stepic.StringUtils;
+import main.Utils;
 import main.stepicConnector.NewProjectService;
 import org.json.JSONArray;
 
@@ -59,7 +59,7 @@ public class YaTranslator {
         if (ws.isTranslate()) {
             JSONArray arr = YaTranslator.translateRuToEn(names);
             for (int i = 0; i < names.size(); i++) {
-                ans.add("_" + (i + 1) + "_" + StringUtils.normalize(arr.getString(i)));
+                ans.add("_" + (i + 1) + "_" + Utils.normalize(arr.getString(i)));
             }
         } else {
             for (int i = 0; i < names.size(); i++) {

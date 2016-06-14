@@ -163,7 +163,7 @@ public class StepicConnector {
         return aw.users.get(0).getName();
     }
 
-    public static List<MyCourse> getCourses(String courseId) {
+    public static List<Course> getCourses(String courseId) {
         final String url = "courses/" + courseId;
         try {
             return getFromStepic(url, CoursesContainer.class).courses;
@@ -173,7 +173,7 @@ public class StepicConnector {
         }
     }
 
-    public static List<MySection> getSections(String idsQuery) {
+    public static List<Section> getSections(String idsQuery) {
         final String url = "sections" + idsQuery;
         try {
             return getFromStepic(url, SectionsContainer.class).sections;
@@ -183,7 +183,7 @@ public class StepicConnector {
         }
     }
 
-    public static List<MyUnit> getUnits(String idsQuery) {
+    public static List<Unit> getUnits(String idsQuery) {
         final String url = "units" + idsQuery;
         try {
             return getFromStepic(url, UnitsContainer.class).units;
@@ -193,7 +193,7 @@ public class StepicConnector {
         }
     }
 
-    public static List<MyLesson> getLessons(String idsQuery) {
+    public static List<Lesson> getLessons(String idsQuery) {
         final String url = "lessons" + idsQuery;
         try {
             return getFromStepic(url, LessonsContainer.class).lessons;
@@ -203,7 +203,7 @@ public class StepicConnector {
         }
     }
 
-    public static List<MyStep> getSteps(String stepIdQuery) {
+    public static List<Step> getSteps(String stepIdQuery) {
         final String url = "steps" + stepIdQuery;
         try {
             return getFromStepic(url, StepsContainer.class).steps;
@@ -288,7 +288,7 @@ public class StepicConnector {
         return oo.getJSONObject(0).getString("status");
     }
 
-    public static List<SubmissionsNode> getStatusTask(String stepId, Pair<String, String> pair) {
+    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair) {
         HttpResponse<JsonNode> response = null;
         try {
             response = Unirest
@@ -313,38 +313,36 @@ public class StepicConnector {
     }
 
     public static class CoursesContainer {
-        public List<MyCourse> courses;
+        public List<Course> courses;
         public Map meta;
     }
 
     public static class SectionsContainer {
-        public List<MySection> sections;
+        public List<Section> sections;
         public Map meta;
     }
 
     public static class UnitsContainer {
-        public List<MyUnit> units;
+        public List<Unit> units;
         public Map meta;
     }
 
     public static class LessonsContainer {
-        public List<MyLesson> lessons;
+        public List<Lesson> lessons;
         public Map meta;
     }
 
     public static class StepsContainer {
-        public List<MyStep> steps;
+        public List<Step> steps;
         public Map meta;
     }
 
     public static class SubmissionsContainer {
-        public List<SubmissionsNode> submissions;
+        public List<Submission> submissions;
         public Map meta;
     }
 
-
-
-    public static List<SubmissionsNode> getSubmissions(String stepId) {
+    public static List<Submission> getSubmissions(String stepId) {
         Map<String, Object> map = new HashMap<>();
         map.put("step", stepId);
         try {

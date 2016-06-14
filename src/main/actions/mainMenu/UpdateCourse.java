@@ -6,8 +6,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.actions.Utils;
-import main.edu.stepic.MyCourse;
+import main.Utils;
+import main.edu.stepic.Course;
 import main.edu.stepic.StepInfo;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.NewProjectService;
@@ -39,7 +39,7 @@ public class UpdateCourse extends MainMenuAction {
         final VirtualFile root = project.getBaseDir();
         NewProjectService projectService = NewProjectService.getInstance(project);
         String courseID = projectService.getCourseID();
-        MyCourse course = StepicConnector.getCourses(courseID).get(0);
+        Course course = StepicConnector.getCourses(courseID).get(0);
 
         Set<String> newFiles = new HashSet<>();
 

@@ -2,7 +2,7 @@ package main.edu.stepic;
 
 import java.util.Map;
 
-public class MyStep {
+public class Step {
     int id;
     int lesson;
     int position;
@@ -17,7 +17,7 @@ public class MyStep {
 
     @Override
     public String toString() {
-        return "\n\t\tMyStep{" +
+        return "\n\t\tStep{" +
                 "position=" + position +
                 '}';
     }
