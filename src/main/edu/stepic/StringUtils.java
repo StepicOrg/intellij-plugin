@@ -1,8 +1,5 @@
 package main.edu.stepic;
 
-/**
- * Created by Petr on 03.06.2016.
- */
 public class StringUtils {
     public static String normalize(String text) {
         String[] words = text.split("\\W+");

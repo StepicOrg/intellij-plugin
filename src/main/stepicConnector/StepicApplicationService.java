@@ -10,7 +10,6 @@ import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.NotNull;
 
 
-//@State(name = "StepicApplicationService", storages = @Storage("StepicApplicationService.xml"))
 @State(name = "StepicApplicationService", storages = @Storage(id = "StepicApplicationService", file = StoragePathMacros.APP_CONFIG + "/StepicApplicationService.xml"))
 public class StepicApplicationService implements PersistentStateComponent<StepicApplicationService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";

@@ -2,9 +2,6 @@ package main.edu.stepic;
 
 import java.util.Map;
 
-/**
- * Created by Petr on 04.05.2016.
- */
 public class MyStep {
     int id;
     int lesson;

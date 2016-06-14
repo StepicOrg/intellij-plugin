@@ -2,13 +2,11 @@ package main.edu.stepic;
 
 import java.io.Serializable;
 
-/**
- * Created by Petr on 14.06.2016.
- */
 public class StepInfo implements Serializable {
     private String stepID;
     private String attemptID;
     private String packageName;
+    private String filename;
 
 //    public static final StepInfo EMPTY = new StepInfo("");
 
@@ -25,10 +23,11 @@ public class StepInfo implements Serializable {
         packageName = "";
     }
 
-    public StepInfo(String stepID, String packageName) {
+    public StepInfo(String stepID, String packageName, String filename) {
         this.stepID = stepID;
         this.packageName = packageName;
-        attemptID = "";
+        this.attemptID = "";
+        this.filename = filename;
     }
 
     public String getStepID() {
@@ -62,5 +61,13 @@ public class StepInfo implements Serializable {
                 ", attemptID='" + attemptID + '\'' +
                 ", packageName='" + packageName + '\'' +
                 '}';
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

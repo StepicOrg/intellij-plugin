@@ -11,9 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Petr on 09.06.2016.
- */
 @State(name = "ActionVisibleProperties", storages = @Storage(id = "ActionVisibleProperties", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/ActionVisibleProperties.xml"))
 public class ActionVisibleProperties implements PersistentStateComponent<ActionVisibleProperties> {
     private static final Map<String, Wrapper> multitone = new HashMap<>();

@@ -9,9 +9,6 @@ import main.stepicConnector.StepicApplicationService;
 
 import javax.swing.*;
 
-/**
- * Created by Petr on 29.04.2016.
- */
 public class StepicModuleWizardStep extends ModuleWizardStep {
     private JPanel panel1;
     private JTextField textField1;

@@ -4,9 +4,6 @@ import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.Module;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Created by Petr on 26.05.2016.
- */
 public class MyModuleComponent implements ModuleComponent {
     public MyModuleComponent(Module module) {
     }

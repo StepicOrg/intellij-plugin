@@ -12,9 +12,6 @@ import java.util.Map;
 
 import static main.stepicConnector.StepicConnector.getIdQuery;
 
-/**
- * Created by Petr on 02.05.2016.
- */
 public class MySection {
     int id;
     int course;

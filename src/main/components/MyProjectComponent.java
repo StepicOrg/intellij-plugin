@@ -7,9 +7,6 @@ import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Created by Petr on 26.05.2016.
- */
 public class MyProjectComponent implements ProjectComponent {
     Project project;
 
@@ -19,7 +16,6 @@ public class MyProjectComponent implements ProjectComponent {
 
     @Override
     public void initComponent() {
-//        ActionVisibleProperties prop = ActionVisibleProperties.getInstance();
         ActionVisibleProperties.Wrapper prop = ActionVisibleProperties.getInstance(project);
         prop.setEnabled(false);
         prop.setVisible(false);
@@ -41,22 +37,17 @@ public class MyProjectComponent implements ProjectComponent {
 
     @Override
     public void projectOpened() {
-//        MyLogger.getInstance().getLOG().warn("name = " + project.getName());
-        //        ActionVisibleProperties prop = ActionVisibleProperties.getInstance();
         ActionVisibleProperties.Wrapper prop = ActionVisibleProperties.getInstance(project);
 
         if (project.getName().equals(NewProjectService.getInstance(project).getProjectName())) {
-//            ActionVisibleProperties prop = ActionVisibleProperties.getInstance();
             prop.setEnabled(true);
             prop.setVisible(true);
             StepicConnector.initToken();
         }
-        // called when project is opened
     }
 
     @Override
     public void projectClosed() {
-        //        ActionVisibleProperties prop = ActionVisibleProperties.getInstance();
         ActionVisibleProperties.Wrapper prop = ActionVisibleProperties.getInstance(project);
         prop.setEnabled(false);
         prop.setVisible(false);

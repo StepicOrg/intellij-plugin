@@ -13,6 +13,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
+import main.edu.stepic.StepInfo;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 import org.jetbrains.annotations.NotNull;
@@ -34,16 +35,16 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         Project project = rootModel.getProject();
         final VirtualFile root = project.getBaseDir();
 
+        NewProjectService projectService = NewProjectService.getInstance(project);
+
         PropertiesComponent props = PropertiesComponent.getInstance();
-//        StepicProjectService.getInstance(project).setTranslator(props.getBoolean("translate"));
-        NewProjectService.getInstance(project).setTranslate(props.getBoolean("translate"));
-//        StepicProjectService.getInstance(project).setCourseID(props.getValue("courseId"));
-        NewProjectService.getInstance(project).setCourseID(props.getValue("courseId"));
+        projectService.setTranslate(props.getBoolean("translate"));
+        projectService.setCourseID(props.getValue("courseId"));
+        projectService.setProjectName(project.getName());
 
 
-        NewProjectService.getInstance(project).setProjectName(project.getName());
         StepicConnector.initToken();
-        String courseId = NewProjectService.getInstance(project).getCourseID();
+        String courseId = projectService.getCourseID();
         LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());
 
@@ -52,18 +53,21 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         MyCourse course = StepicConnector.getCourses(courseId).get(0);
         course.build(root.getPath(), rootModel.getProject());
 
-        MyFileInfoList.getInstance().getList().forEach((x) -> {
-            File f = new File(x.path);
-            f.getParentFile().mkdirs();
+        projectService.mapPathInfo.entrySet().forEach(x -> {
+            String path = x.getKey();
+            StepInfo stepInfo = x.getValue();
+
+            File file = new File(path);
+            file.getParentFile().mkdirs();
             try {
-                Path path1 = Paths.get(x.path);
-                Files.write(path1, getText(x.filename, x.pack), Charset.forName("UTF-8"));
+                Path path1 = Paths.get(path);
+                Files.write(path1, getText(stepInfo.getFilename(), stepInfo.getPackageName()), Charset.forName("UTF-8"));
             } catch (IOException e) {
                 LOG.error("Create file error\n" + e.getMessage());
             }
         });
-        addSourcePath(Pair.create(root.getPath() + "/" + course.getName(project),""));
-        MyFileInfoList.getInstance().clear();
+
+        addSourcePath(Pair.create(root.getPath() + "/" + course.getName(project), ""));
 
         super.setupRootModel(rootModel);
     }

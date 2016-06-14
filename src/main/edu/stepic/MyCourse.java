@@ -13,10 +13,6 @@ import java.util.Map;
 
 import static main.stepicConnector.StepicConnector.getSections;
 
-/**
- * Implementation of class which contains information to be shawn in course description in tool window
- * and when project is being created
- */
 public class MyCourse {
     public int id;
     public String title;

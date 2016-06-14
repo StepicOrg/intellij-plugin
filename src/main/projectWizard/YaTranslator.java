@@ -12,9 +12,6 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Petr on 14.05.2016.
- */
 public class YaTranslator {
     final static private String api_url = "https://translate.yandex.net/api/v1.5/tr.json/translate";
     final static private String app_key = "trnsl.1.1.20160514T085113Z.7ee4b2a3baf18163.933b409b8a7ee466edcb2682f2cec46eadb65f5e";

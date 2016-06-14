@@ -6,8 +6,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import main.actions.Utils;
 import main.edu.stepic.MyCourse;
-import main.projectWizard.MyFileInfoList;
+import main.edu.stepic.StepInfo;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
@@ -18,12 +19,11 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Petr on 31.05.2016.
- */
 public class UpdateCourse extends MainMenuAction {
     private static final Logger LOG = Logger.getInstance(UpdateCourse.class);
     private static String success = "Course is successfully updated.";
@@ -41,37 +41,41 @@ public class UpdateCourse extends MainMenuAction {
         String courseID = projectService.getCourseID();
         MyCourse course = StepicConnector.getCourses(courseID).get(0);
 
-        Set<String> nFiles = projectService.getMapPathInfo().keySet();
-        Set<String> nnFiles = new HashSet<>();
+        Set<String> newFiles = new HashSet<>();
 
+        Utils.refreshFiles(project);
+        Map<String, StepInfo> map = new HashMap<>(projectService.getMapPathInfo());
         course.build(root.getPath(), project);
 
-        MyFileInfoList.getInstance().getList().forEach((x) -> {
-            if (nFiles.contains(x.path)) {
+        projectService.mapPathInfo.entrySet().forEach(x -> {
+            if (map.containsKey(x.getKey())) {
 
             } else {
-                nnFiles.add(x.path);
-                File f = new File(x.path);
-                f.getParentFile().mkdirs();
+                String path = x.getKey();
+                StepInfo stepInfo = x.getValue();
+
+                newFiles.add(path);
+                File file = new File(path);
+                file.getParentFile().mkdirs();
                 try {
-                    Path path1 = Paths.get(x.path);
-                    Files.write(path1, StepicModuleBuilder.getText(x.filename, x.pack), Charset.forName("UTF-8"));
+                    Path path1 = Paths.get(path);
+                    Files.write(path1, StepicModuleBuilder.getText(stepInfo.getFilename(), stepInfo.getPackageName()), Charset.forName("UTF-8"));
                 } catch (IOException ex) {
-                LOG.error("Create file error\n" + ex.getMessage());
+                    LOG.error("Create file error\n" + ex.getMessage());
                 }
             }
         });
-        MyFileInfoList.getInstance().clear();
+
         LocalFileSystem.getInstance().refresh(true);
 
         StringBuilder sb = new StringBuilder();
         sb.append(success+"\n");
-        if (nnFiles.isEmpty()){
+        if (newFiles.isEmpty()){
             sb.append(old);
         } else {
             sb.append(nnew);
         }
-//        nnFiles.forEach((x) -> sb.append(x.toString() + "\n"));
+//        newFiles.forEach((x) -> sb.append(x.toString() + "\n"));
         Messages.showMessageDialog(project, sb.toString(), "Information", Messages.getInformationIcon());
 
     }

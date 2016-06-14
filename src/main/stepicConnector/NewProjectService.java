@@ -12,9 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Petr on 14.06.2016.
- */
 @State(name = "NewProjectService", storages = @Storage(id = "NewProjectService", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/NewProjectService.xml"))
 public class NewProjectService implements PersistentStateComponent<Element> {
 
@@ -85,6 +82,10 @@ public class NewProjectService implements PersistentStateComponent<Element> {
         return getStepInfo(path).getPackageName();
     }
 
+    public String getFilename(String path) {
+        return getStepInfo(path).getFilename();
+    }
+
     public void setStepID(String path, String stepID){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setStepID(stepID);
@@ -97,6 +98,11 @@ public class NewProjectService implements PersistentStateComponent<Element> {
     public void setPackageName(String path, String packageName){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setPackageName(packageName);
+    }
+
+    public void setFilename(String path, String filename){
+        StepInfo stepInfo = getOrCreateStepInfo(path);
+        stepInfo.setFilename(filename);
     }
 
 

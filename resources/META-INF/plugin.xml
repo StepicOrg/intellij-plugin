@@ -1,7 +1,7 @@
-<idea-plugin version="6">
+<idea-plugin version="9">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
-    <version>0.4.7</version>
+    <version>0.4.9</version>
     <vendor email="afnm47@gmail.com" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[
@@ -76,10 +76,7 @@
         <action id="WhoAmI" class="main.actions.mainMenu.WhoAmI" text="_Who am I" description="return username">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
-        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in"
-                description="Insert your client and secret id">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
-        </action>
+
         <action id="ID.Update"
                 class="main.actions.mainMenu.UpdateCourse"
                 text="Update Course"
@@ -95,11 +92,8 @@
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
-        <action id="ID.TEST.SomeAction"
-                class="main.actions.mainMenu.SomeAction"
-                text="SomeAction"
-                description="SomeAction">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        <action id="ID.Help" class="main.actions.mainMenu.Help" text="_Help" description="Help">
+            <add-to-group group-id="ID.StepicGroup" anchor="last"/>
         </action>
 
         <!--###########################################################################-->
@@ -124,8 +118,16 @@
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
 
-        <action id="ID.Help" class="main.actions.mainMenu.Help" text="_Help" description="Help">
-            <add-to-group group-id="ID.StepicGroup" anchor="last"/>
+        <action id="ID.TEST.SomeAction"
+                class="main.actions.mainMenu.SomeAction"
+                text="SomeAction"
+                description="SomeAction">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+        </action>
+
+        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in"
+                description="Insert your client and secret id">
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
     </actions>
 
