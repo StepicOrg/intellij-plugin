@@ -9,8 +9,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
 import main.projectWizard.MyFileInfoList;
 import main.projectWizard.StepicModuleBuilder;
+import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StepicProjectService;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,14 +37,15 @@ public class UpdateCourse extends MainMenuAction {
         StepicConnector.initToken();
 
         final VirtualFile root = project.getBaseDir();
-        StepicProjectService projectService = StepicProjectService.getInstance(e.getProject());
+//        StepicProjectService projectService = StepicProjectService.getInstance(e.getProject());
+        NewProjectService projectService = NewProjectService.getInstance(e.getProject());
         String courseID = projectService.getCourseID();
 
         MyCourse course = StepicConnector.getCourses(courseID).get(0);
 
 
         Set<String> nFiles = new HashSet<>();
-        nFiles.addAll(projectService.getMapPathStep().keySet());
+        nFiles.addAll(projectService.getMapPathInfo().keySet());
         Set<String> nnFiles = new HashSet<>();
 
         course.build(root.getPath(),e.getProject());

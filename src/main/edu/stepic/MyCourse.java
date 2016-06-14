@@ -3,8 +3,8 @@ package main.edu.stepic;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
 import main.projectWizard.YaTranslator;
+import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StepicProjectService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class MyCourse {
 
     public String getName(Project project) {
         if (courseName == null) {
-            StepicProjectService ws = StepicProjectService.getInstance(project);
+            NewProjectService ws = NewProjectService.getInstance(project);
             if (ws.isTranslate()) {
                 courseName =  YaTranslator.translateRuToEn(title);
             } else {

@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.SubmissionsNode;
-import main.stepicConnector.StepicProjectService;
+import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public class GetStepStatus extends PopupMenuAction {
         if (vf == null) return;
 
 //        StepicApplicationService ws = StepicApplicationService.getInstance();
-        StepicProjectService ws = StepicProjectService.getInstance(project);
+        NewProjectService ws = NewProjectService.getInstance(project);
 //        StepicProjectService ws = StepicProjectService.getInstance();
-        String stepId = ws.getStepId(vf.getPath());
+        String stepId = ws.getStepID(vf.getPath());
 
 
 //        StepicConnector.initToken();
@@ -41,7 +41,7 @@ public class GetStepStatus extends PopupMenuAction {
 //        WS2 ws2 = WS2.getInstance(project);
 //        WS2 ws2 = WS2.getInstance();
 
-        String attemptId = ws.getAttemptId(vf.getPath());
+        String attemptId = ws.getAttemptID(vf.getPath());
 //        String attemptId = "";
         if (!attemptId.equals("")) {
             List<SubmissionsNode> list = StepicConnector.getStatusTask(stepId, Pair.pair("attempt", attemptId));

@@ -5,7 +5,8 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.StepicProjectService;
+import main.edu.stepic.StepInfo;
+import main.stepicConnector.NewProjectService;
 
 import java.util.Map;
 
@@ -22,11 +23,11 @@ public class PrintMapInfo extends MainMenuAction {
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
 
 //        StepicApplicationService ws = StepicApplicationService.getInstance();
-        StepicProjectService ws = StepicProjectService.getInstance(e.getProject());
+        NewProjectService ws = NewProjectService.getInstance(e.getProject());
 //        StepicProjectService ws = StepicProjectService.getInstance();
         final String[] text = {""};
 
-        Map map = ws.getMapPathStep();
+        Map<String,StepInfo> map = ws.getMapPathInfo();
         if (map == null){
             Messages.showMessageDialog(project, "path--step is null", "Information", Messages.getInformationIcon());
         } else {
@@ -35,13 +36,5 @@ public class PrintMapInfo extends MainMenuAction {
         }
 
 
-        text[0] = "";
-        map = ws.getPathAttId();
-        if (map == null){
-            Messages.showMessageDialog(project, "Path--Id is null", "Information", Messages.getInformationIcon());
-        } else {
-            map.keySet().forEach((x) -> text[0] += x + "\n");
-            Messages.showMessageDialog(project, text[0], "Information", Messages.getInformationIcon());
-        }
     }
 }

@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.StepicProjectService;
+import main.stepicConnector.NewProjectService;
 
 /**
  * Created by Petr on 21.05.2016.
@@ -19,9 +19,9 @@ public class GetIdStep extends PopupMenuAction {
         if (vf == null) return;
 
 //        StepicApplicationService ws = StepicApplicationService.getInstance();
-        StepicProjectService ws = StepicProjectService.getInstance(project);
+        NewProjectService ws = NewProjectService.getInstance(project);
 //        StepicProjectService ws = StepicProjectService.getInstance();
-        String stepId = ws.getStepId(vf.getPath());
+        String stepId = ws.getStepID(vf.getPath());
         Messages.showMessageDialog(project, stepId, "Information", Messages.getInformationIcon());
     }
 

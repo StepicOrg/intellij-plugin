@@ -1,12 +1,12 @@
 package main.stepicConnector;
 
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.util.xmlb.XmlSerializerUtil;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Petr on 27.05.2016.
@@ -25,100 +25,111 @@ public class StepicProjectService implements PersistentStateComponent<StepicProj
 
     private String projectName;
 
-    public static StepicProjectService getInstance(Project project) {
-        return ServiceManager.getService(project, StepicProjectService.class);
-    }
-
-    public StepicProjectService() {
-        mapPathStep = new HashMap<>();
-        pathAttId = new HashMap<>();
-        pathPackage = new HashMap<>();
-    }
-
+    @Nullable
+    @Override
     public StepicProjectService getState() {
-        return this;
+        return null;
     }
 
-    public void loadState(StepicProjectService state) {
-        XmlSerializerUtil.copyBean(state, this);
+    @Override
+    public void loadState(StepicProjectService stepicProjectService) {
+
     }
 
-    public void addPathStep(String path, String stepId) {
-        mapPathStep.put(path, stepId);
-    }
-
-    public Map<String, String> getMapPathStep() {
-        return mapPathStep;
-    }
-
-    public void setMapPathStep(Map<String, String> mapPathStep) {
-        this.mapPathStep = mapPathStep;
-    }
-
-    public String getStepId(String path) {
-        return mapPathStep.getOrDefault(path, "");
-    }
-
-
-    public void removeAll(Set<String> removed) {
-        mapPathStep.keySet().removeAll(removed);
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-
-    public String getAttemptId(String path) {
-        return pathAttId.getOrDefault(path, "");
-    }
-
-    public void setAttemptId(String path, String attemptId) {
-        pathAttId.put(path, attemptId);
-    }
-
-    public Map<String, String> getPathAttId() {
-        return pathAttId;
-    }
-
-    public void setPathAttId(Map<String, String> pathAttId) {
-        this.pathAttId = pathAttId;
-    }
-
-    public void addPathPackage(String path, String pack) {
-        pathPackage.put(path, pack);
-    }
-
-    public String getPackage(String path){
-        return pathPackage.getOrDefault(path, "");
-    }
-
-    public Map<String, String> getPathPackage() {
-        return pathPackage;
-    }
-
-    public void setPathPackage(Map<String, String> pathPackage) {
-        this.pathPackage = pathPackage;
-    }
-
-    public void setTranslator(boolean translator) {
-        this.translate = translator;
-    }
-
-    public boolean isTranslate() {
-        return translate;
-    }
-
-    public String getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(String courseID) {
-        this.courseID = courseID;
-    }
+//    public static StepicProjectService getInstance(Project project) {
+//        return ServiceManager.getService(project, StepicProjectService.class);
+//    }
+//
+//    public StepicProjectService() {
+//        mapPathStep = new HashMap<>();
+//        pathAttId = new HashMap<>();
+//        pathPackage = new HashMap<>();
+//    }
+//
+//    public StepicProjectService getState() {
+//        return this;
+//    }
+//
+//    public void loadState(StepicProjectService state) {
+//        XmlSerializerUtil.copyBean(state, this);
+//    }
+//
+//    public void addPathStep(String path, String stepId) {
+//        mapPathStep.put(path, stepId);
+//    }
+//
+//    public Map<String, String> getMapPathStep() {
+//        return mapPathStep;
+//    }
+//
+//    public void setMapPathStep(Map<String, String> mapPathStep) {
+//        this.mapPathStep = mapPathStep;
+//    }
+//
+//    public String getStepId(String path) {
+//        return mapPathStep.getOrDefault(path, "");
+//    }
+//
+//
+//    public void removeAll(Set<String> removed) {
+//        mapPathStep.keySet().removeAll(removed);
+//    }
+//
+//    public String getProjectName() {
+//        return projectName;
+//    }
+//
+//    public void setProjectName(String projectName) {
+//        this.projectName = projectName;
+//    }
+//
+//
+//    public String getAttemptId(String path) {
+//        return pathAttId.getOrDefault(path, "");
+//    }
+//
+//    public void setAttemptId(String path, String attemptId) {
+//        pathAttId.put(path, attemptId);
+//    }
+//
+//    public Map<String, String> getPathAttId() {
+//        return pathAttId;
+//    }
+//
+//    public void setPathAttId(Map<String, String> pathAttId) {
+//        this.pathAttId = pathAttId;
+//    }
+//
+//    public void addPathPackage(String path, String pack) {
+//        pathPackage.put(path, pack);
+//    }
+//
+//    public String getPackage(String path){
+//        return pathPackage.getOrDefault(path, "");
+//    }
+//
+//    public Map<String, String> getPathPackage() {
+//        return pathPackage;
+//    }
+//
+//    public void setPathPackage(Map<String, String> pathPackage) {
+//        this.pathPackage = pathPackage;
+//    }
+//
+//    public void setTranslator(boolean translator) {
+//        this.translate = translator;
+//    }
+//
+//    public boolean isTranslate() {
+//        return translate;
+//    }
+//
+//    public String getCourseID() {
+//        return courseID;
+//    }
+//
+//    public void setCourseID(String courseID) {
+//        this.courseID = courseID;
+//    }
 
 }

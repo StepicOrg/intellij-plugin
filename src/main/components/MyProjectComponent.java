@@ -3,8 +3,8 @@ package main.components;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import main.actions.ActionVisibleProperties;
+import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StepicProjectService;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,7 +45,7 @@ public class MyProjectComponent implements ProjectComponent {
         //        ActionVisibleProperties prop = ActionVisibleProperties.getInstance();
         ActionVisibleProperties.Wrapper prop = ActionVisibleProperties.getInstance(project);
 
-        if (project.getName().equals(StepicProjectService.getInstance(project).getProjectName())) {
+        if (project.getName().equals(NewProjectService.getInstance(project).getProjectName())) {
 //            ActionVisibleProperties prop = ActionVisibleProperties.getInstance();
             prop.setEnabled(true);
             prop.setVisible(true);

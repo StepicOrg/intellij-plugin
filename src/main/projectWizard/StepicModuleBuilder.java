@@ -13,8 +13,8 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import main.edu.stepic.MyCourse;
+import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StepicProjectService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -35,13 +35,15 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         final VirtualFile root = project.getBaseDir();
 
         PropertiesComponent props = PropertiesComponent.getInstance();
-        StepicProjectService.getInstance(project).setTranslator(props.getBoolean("translate"));
-        StepicProjectService.getInstance(project).setCourseID(props.getValue("courseId"));
+//        StepicProjectService.getInstance(project).setTranslator(props.getBoolean("translate"));
+        NewProjectService.getInstance(project).setTranslate(props.getBoolean("translate"));
+//        StepicProjectService.getInstance(project).setCourseID(props.getValue("courseId"));
+        NewProjectService.getInstance(project).setCourseID(props.getValue("courseId"));
 
 
-        StepicProjectService.getInstance(project).setProjectName(project.getName());
+        NewProjectService.getInstance(project).setProjectName(project.getName());
         StepicConnector.initToken();
-        String courseId = StepicProjectService.getInstance(project).getCourseID();
+        String courseId = NewProjectService.getInstance(project).getCourseID();
         LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());
 

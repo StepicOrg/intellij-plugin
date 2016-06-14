@@ -30,8 +30,10 @@
         <!-- Add your extensions here -->
         <applicationService serviceInterface="main.stepicConnector.StepicApplicationService"
                             serviceImplementation="main.stepicConnector.StepicApplicationService"/>
-        <projectService serviceInterface="main.stepicConnector.StepicProjectService"
-                        serviceImplementation="main.stepicConnector.StepicProjectService"/>
+
+        <projectService serviceInterface="main.stepicConnector.NewProjectService"
+                        serviceImplementation="main.stepicConnector.NewProjectService"/>
+
         <projectService serviceInterface="main.actions.ActionVisibleProperties"
                         serviceImplementation="main.actions.ActionVisibleProperties"/>
 
@@ -104,7 +106,7 @@
         <action id="ID.PrintMapInfo"
                 class="main.actions.mainMenu.PrintMapInfo"
                 text="PrintMapInfo" description="PrintMapInfo">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
         <action id="TEST.NegTranslator" class="main.actions.mainMenu.NegTranslator" text="NegTranslator"
                 description="NegTranslator">
