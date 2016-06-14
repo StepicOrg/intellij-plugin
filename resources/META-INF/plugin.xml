@@ -87,7 +87,8 @@
         <action id="ID.DownloadLastSubmission"
                 class="main.actions.popupMenu.DownloadLastSubmission"
                 text="Download Latest Submission"
-                description="Download your latest submission from Stepic">
+                description="Download your latest submission from Stepic"
+                icon="/icons/download_blue.png">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>

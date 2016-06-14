@@ -163,54 +163,64 @@ public class StepicConnector {
         return aw.users.get(0).getName();
     }
 
-    public static List<Course> getCourses(String courseId) {
+    public static List<Course> getCourses(String courseId) throws UnirestException {
         final String url = "courses/" + courseId;
-        try {
+//        try {
             return getFromStepic(url, CoursesContainer.class).courses;
-        } catch (UnirestException e) {
-            LOG.error("getCourses error " + e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("getCourses error " + e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 
-    public static List<Section> getSections(String idsQuery) {
+    public static List<Section> getSections(String idsQuery) throws UnirestException {
         final String url = "sections" + idsQuery;
-        try {
+//        try {
             return getFromStepic(url, SectionsContainer.class).sections;
-        } catch (UnirestException e) {
-            LOG.error("getSection error " + e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("getSection error " + e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 
-    public static List<Unit> getUnits(String idsQuery) {
+    public static List<Unit> getUnits(String idsQuery) throws UnirestException {
         final String url = "units" + idsQuery;
-        try {
+//        try {
             return getFromStepic(url, UnitsContainer.class).units;
-        } catch (UnirestException e) {
-            LOG.error("getUnit error " + e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("getUnit error " + e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 
-    public static List<Lesson> getLessons(String idsQuery) {
+    public static List<Lesson> getLessons(String idsQuery) throws UnirestException {
         final String url = "lessons" + idsQuery;
-        try {
+//        try {
             return getFromStepic(url, LessonsContainer.class).lessons;
+//        } catch (UnirestException e) {
+//            LOG.error("getLesson error " + e.getMessage());
+//            return new ArrayList<>();
+//        }
+    }
+
+    public static List<Submission> getStatus(String key) {
+        final String url = "submissions/" + key;
+        try {
+            return getFromStepic(url, SubmissionsContainer.class).submissions;
         } catch (UnirestException e) {
-            LOG.error("getLesson error " + e.getMessage());
+            LOG.error("getSubmission error " + e.getMessage());
             return new ArrayList<>();
         }
     }
 
-    public static List<Step> getSteps(String stepIdQuery) {
+    public static List<Step> getSteps(String stepIdQuery) throws UnirestException {
         final String url = "steps" + stepIdQuery;
-        try {
+//        try {
             return getFromStepic(url, StepsContainer.class).steps;
-        } catch (UnirestException e) {
-            LOG.error("getStep error " + e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("getStep error " + e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 
     public static String getAttemptId(String stepId) throws UnirestException {

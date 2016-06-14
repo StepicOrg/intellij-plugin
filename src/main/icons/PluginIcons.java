@@ -9,6 +9,8 @@ import javax.swing.*;
 public interface PluginIcons {
 //    public static final Icon STEPIC_LOGO = IconLoader.getIcon("/icons/stepic_logo_green.png");
     public static Icon STEPIC_LOGO = IconLoader.getIcon("/icons/stepic_logo_green.png");
+    public static Icon DOWNLOAD = IconLoader.getIcon("/icons/download_blue.png");
 //    public static final Icon Question = AllIcons.General.TodoQuestion;
     Icon Question = AllIcons.General.TodoQuestion;
+
 }

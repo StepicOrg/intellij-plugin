@@ -3,6 +3,7 @@ package main.edu.stepic;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 
@@ -23,7 +24,7 @@ public class Lesson {
     public transient Map<Integer, Step> steps = new HashMap<>();
     private int lessonNo;
 
-    public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
+    public void build(int lessonNo, String courseDir, String sectionDir, Project project) throws UnirestException {
         this.lessonNo = lessonNo;
         NewProjectService projectService = NewProjectService.getInstance(project);
 

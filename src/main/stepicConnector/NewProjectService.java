@@ -83,6 +83,10 @@ public class NewProjectService implements PersistentStateComponent<Element> {
         return getStepInfo(path).getFilename();
     }
 
+    public String getSubmissionID(String path) {
+        return getStepInfo(path).getSubmissionID();
+    }
+
     public void setStepID(String path, String stepID){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setStepID(stepID);
@@ -101,6 +105,11 @@ public class NewProjectService implements PersistentStateComponent<Element> {
     public void setFilename(String path, String filename){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setFilename(filename);
+    }
+
+    public void setSubmissionID(String path, String submissionID){
+        StepInfo stepInfo = getOrCreateStepInfo(path);
+        stepInfo.setSubmissionID(submissionID);
     }
 
     public void addStepInfo(String path, StepInfo stepInfo) {

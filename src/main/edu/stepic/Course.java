@@ -2,6 +2,7 @@ package main.edu.stepic;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.Utils;
 import main.projectWizard.YaTranslator;
 import main.stepicConnector.NewProjectService;
@@ -47,7 +48,7 @@ public class Course {
         return false;
     }
 
-    public void build(String root, Project project) {
+    public void build(String root, Project project) throws UnirestException {
         int sectionNo = 0;
         List<Section> sectionList = getSections(StepicConnector.getIdQuery(sectionsId));
         List<String> sectionNames = new ArrayList<>();

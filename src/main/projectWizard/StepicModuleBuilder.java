@@ -10,8 +10,10 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.edu.stepic.Course;
 import main.edu.stepic.StepInfo;
 import main.stepicConnector.NewProjectService;
@@ -50,8 +52,15 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
         LOG.warn("root = " + root.getPath());
 
-        Course course = StepicConnector.getCourses(courseId).get(0);
-        course.build(root.getPath(), rootModel.getProject());
+        Course course = null;
+        try {
+            course = StepicConnector.getCourses(courseId).get(0);
+            course.build(root.getPath(), rootModel.getProject());
+        } catch (UnirestException e) {
+//            e.printStackTrace();
+            Messages.showMessageDialog(project, "Build Course error", "Error", Messages.getErrorIcon());
+        }
+
 
         projectService.mapPathInfo.entrySet().forEach(x -> {
             String path = x.getKey();

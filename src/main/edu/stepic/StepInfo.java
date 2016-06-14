@@ -7,6 +7,7 @@ public class StepInfo implements Serializable {
     private String attemptID;
     private String packageName;
     private String filename;
+    private String submissionID;
 
 //    public static final StepInfo EMPTY = new StepInfo("");
 
@@ -15,19 +16,24 @@ public class StepInfo implements Serializable {
         stepID = "";
         attemptID = "";
         packageName = "";
+        filename = "";
+        submissionID = "";
     }
 
     public StepInfo(String stepID) {
         this.stepID = stepID;
         attemptID = "";
         packageName = "";
+        filename = "";
+        submissionID = "";
     }
 
     public StepInfo(String stepID, String packageName, String filename) {
         this.stepID = stepID;
         this.packageName = packageName;
-        this.attemptID = "";
         this.filename = filename;
+        this.attemptID = "";
+        submissionID = "";
     }
 
     public String getStepID() {
@@ -52,6 +58,14 @@ public class StepInfo implements Serializable {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getSubmissionID() {
+        return submissionID;
+    }
+
+    public void setSubmissionID(String submissionID) {
+        this.submissionID = submissionID;
     }
 
     @Override

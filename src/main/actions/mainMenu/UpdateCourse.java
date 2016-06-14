@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.Utils;
 import main.edu.stepic.Course;
 import main.edu.stepic.StepInfo;
@@ -34,18 +35,27 @@ public class UpdateCourse extends MainMenuAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
-        StepicConnector.initToken();
+//        StepicConnector.initToken();
 
         final VirtualFile root = project.getBaseDir();
         NewProjectService projectService = NewProjectService.getInstance(project);
         String courseID = projectService.getCourseID();
-        Course course = StepicConnector.getCourses(courseID).get(0);
+        Course course = null;
+        Map<String, StepInfo> map;
+        Set<String> newFiles;
+        try {
+            course = StepicConnector.getCourses(courseID).get(0);
+            newFiles = new HashSet<>();
 
-        Set<String> newFiles = new HashSet<>();
+            Utils.refreshFiles(project);
+            map = new HashMap<>(projectService.getMapPathInfo());
+            course.build(root.getPath(), project);
+        } catch (UnirestException e1) {
+            Messages.showMessageDialog(project, "Update Course error", "Error", Messages.getErrorIcon());
+            return;
+        }
 
-        Utils.refreshFiles(project);
-        Map<String, StepInfo> map = new HashMap<>(projectService.getMapPathInfo());
-        course.build(root.getPath(), project);
+
 
         projectService.mapPathInfo.entrySet().forEach(x -> {
             if (map.containsKey(x.getKey())) {
