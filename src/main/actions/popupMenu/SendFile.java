@@ -66,30 +66,37 @@ public class SendFile extends PopupMenuAction {
                 new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            Thread.sleep(15 * 1000);                 //1000 milliseconds is one second.
-                        } catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
 
-                        String ans = "";
-                        List<Submission> list = StepicConnector.getStatus(finalSubmissionId);
-                        if (!list.isEmpty()) {
-                            ans = list.get(0).getStatus();
-                        }
-
+                        String ans = "evaluation";
+                        final int TIMER = 2;
+                        int count = 0;
                         Notification notification = null;
+                        List<Submission> list = null;
+                        while (ans.equals("evaluation") && count < 100) {
+                            try {
+                                Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
+                                list = StepicConnector.getStatus(finalSubmissionId);
+                            } catch (InterruptedException | UnirestException e1) {
+                                notification =
+                                        new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
+
+                                notification.notify(project);
+                                return;
+                            }
+                            if (!list.isEmpty()) {
+                                ans = list.get(0).getStatus();
+                            }
+                            count += TIMER;
+                        }
+
                         if (ans.equals("correct")) {
                             notification =
                                     new Notification("Step.sending", "Step status", filename + " is " + ans, NotificationType.INFORMATION);
-                        } else if (ans.equals("wrong")) {
+                        } else {
                             notification =
                                     new Notification("Step.sending", "Step status", filename + " is " + ans, NotificationType.WARNING);
                         }
-
-                        if (notification != null) {
-                            notification.notify(project);
-                        }
+                        notification.notify(project);
                     }
                 }
 

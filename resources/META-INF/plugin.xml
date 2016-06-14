@@ -1,7 +1,7 @@
-<idea-plugin version="9">
+<idea-plugin version="12">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
-    <version>0.4.9</version>
+    <version>0.4.12</version>
     <vendor email="afnm47@gmail.com" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[

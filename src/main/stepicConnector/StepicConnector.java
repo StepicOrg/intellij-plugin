@@ -203,14 +203,14 @@ public class StepicConnector {
 //        }
     }
 
-    public static List<Submission> getStatus(String key) {
+    public static List<Submission> getStatus(String key) throws UnirestException {
         final String url = "submissions/" + key;
-        try {
+//        try {
             return getFromStepic(url, SubmissionsContainer.class).submissions;
-        } catch (UnirestException e) {
-            LOG.error("getSubmission error " + e.getMessage());
-            return new ArrayList<>();
-        }
+//        } catch (UnirestException e) {
+//            LOG.error("getSubmission error " + e.getMessage());
+//            return new ArrayList<>();
+//        }
     }
 
     public static List<Step> getSteps(String stepIdQuery) throws UnirestException {
