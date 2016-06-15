@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import main.stepicConnector.NewProjectService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Utils {
@@ -31,6 +32,15 @@ public class Utils {
         }
         if (words.length > 0)
             sb.append(words[words.length - 1]);
+        return sb.toString();
+    }
+
+    public static String getIdQuery(List<Integer> list) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("?");
+        for (Integer id : list) {
+            sb.append("ids[]=" + id + "&");
+        }
         return sb.toString();
     }
 }

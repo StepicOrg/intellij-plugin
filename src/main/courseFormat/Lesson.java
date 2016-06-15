@@ -1,9 +1,10 @@
-package main.edu.stepic;
+package main.courseFormat;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import main.Utils;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 
@@ -28,7 +29,7 @@ public class Lesson {
         this.lessonNo = lessonNo;
         NewProjectService projectService = NewProjectService.getInstance(project);
 
-        List<Step> stepsList = StepicConnector.getSteps(StepicConnector.getIdQuery(stepsId));
+        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId));
 
         for (Step step : stepsList) {
             if (step.isTask()) {

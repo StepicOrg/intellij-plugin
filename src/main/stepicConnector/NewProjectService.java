@@ -3,7 +3,7 @@ package main.stepicConnector;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializer;
-import main.edu.stepic.StepInfo;
+import main.courseFormat.StepInfo;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

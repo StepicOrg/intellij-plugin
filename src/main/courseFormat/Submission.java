@@ -1,8 +1,9 @@
-package main.edu.stepic;
+package main.courseFormat;
 
 import java.util.Map;
 
 public class Submission {
+    public int id;
     private String status;
     private String time;
     private Map<String,String> reply;

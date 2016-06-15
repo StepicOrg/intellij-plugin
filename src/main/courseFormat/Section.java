@@ -1,8 +1,9 @@
-package main.edu.stepic;
+package main.courseFormat;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import main.Utils;
 import main.projectWizard.YaTranslator;
 import main.stepicConnector.StepicConnector;
 
@@ -10,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static main.stepicConnector.StepicConnector.getIdQuery;
 
 public class Section {
     int id;
@@ -31,12 +30,12 @@ public class Section {
         this.sectionNo = sectionNo;
         int lessonNo = 0;
 
-        List<Unit> units = StepicConnector.getUnits(getIdQuery(unitsId));
+        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId));
         if (units == null) return;
         List<Integer> lessonsId = new ArrayList<>();
         List<String> lessonNames = new ArrayList<>();
         units.forEach(x -> lessonsId.add(x.getLessonId()));
-        List<Lesson> lessons = StepicConnector.getLessons(getIdQuery(lessonsId));
+        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId));
         lessons.forEach(x -> lessonNames.add(x.title));
 
         List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson", project);

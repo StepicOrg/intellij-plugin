@@ -4,8 +4,15 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.StepicApplicationService;
 import main.stepicConnector.StepicConnector;
+
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 /**
  * Created by Petr on 01.04.2016.
@@ -21,7 +28,13 @@ public class SingIn extends MainMenuAction {
         StepicApplicationService.getInstance().setPassword(
                 Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon()));
 
-        StepicConnector.initToken();
+        try {
+            StepicConnector.initToken();
+        } catch (UnirestException ex) {
+            ex.printStackTrace();
+        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {
+            ex.printStackTrace();
+        }
         String name = StepicConnector.getUserName();
 
         Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());

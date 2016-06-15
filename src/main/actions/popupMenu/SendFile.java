@@ -12,7 +12,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import main.edu.stepic.Submission;
+import main.courseFormat.Submission;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 
@@ -29,7 +29,6 @@ public class SendFile extends PopupMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        // TODO: insert action logic here
         Project project = e.getProject();
         VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
@@ -41,17 +40,12 @@ public class SendFile extends PopupMenuAction {
         String path = vf.getPath();
 
         String attemptId;
+        String submissionId;
         try {
             attemptId = StepicConnector.getAttemptId(stepId);
-        } catch (UnirestException e1) {
-            Messages.showMessageDialog(project, error, "Error", Messages.getErrorIcon());
-            return;
-        }
-        projectService.setAttemptID(path, attemptId);
-
-        String submissionId = "";
-        try {
             submissionId = StepicConnector.sendFile(text, attemptId);
+
+            projectService.setAttemptID(path, attemptId);
             projectService.setSubmissionID(path, submissionId);
             Messages.showMessageDialog(project, success, "Information", Messages.getInformationIcon());
         } catch (UnirestException e1) {
@@ -76,26 +70,23 @@ public class SendFile extends PopupMenuAction {
                             try {
                                 Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
                                 list = StepicConnector.getStatus(finalSubmissionId);
-                            } catch (InterruptedException | UnirestException e1) {
-                                notification =
-                                        new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
-
+                                if (list != null)
+                                    ans = list.get(0).getStatus();
+                                count += TIMER;
+                            } catch (InterruptedException | UnirestException | NullPointerException e1) {
+                                notification = new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
                                 notification.notify(project);
                                 return;
                             }
-                            if (!list.isEmpty()) {
-                                ans = list.get(0).getStatus();
-                            }
-                            count += TIMER;
                         }
 
+                        NotificationType notificationType;
                         if (ans.equals("correct")) {
-                            notification =
-                                    new Notification("Step.sending", "Step status", filename + " is " + ans, NotificationType.INFORMATION);
+                            notificationType = NotificationType.INFORMATION;
                         } else {
-                            notification =
-                                    new Notification("Step.sending", "Step status", filename + " is " + ans, NotificationType.WARNING);
+                            notificationType = NotificationType.WARNING;
                         }
+                        notification = new Notification("Step.sending", "Step status", filename + " is " + ans, notificationType);
                         notification.notify(project);
                     }
                 }

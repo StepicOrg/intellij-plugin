@@ -1,11 +1,6 @@
 package main.actions.mainMenu;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 
 /**
@@ -29,24 +24,25 @@ public class SomeAction extends MainMenuAction {
 
 //        JBPopupFactory.getInstance().createMessage("test");
 
-        final Application application = ApplicationManager.getApplication();
-//        application.executeOnPooledThread(new Runnable() {
-//            @Override
-//            public void run() {
-        final Notification notification =
-                new Notification("Update.course", "Course update", "Current course is synchronized", NotificationType.INFORMATION);
-        notification.notify(project);
+//        final Application application = ApplicationManager.getApplication();
+//        final Notification notification =
+//                new Notification("Update.course", "Course update", "Current course is synchronized", NotificationType.INFORMATION);
+//        notification.notify(project);
 
-//            }
-//        }
+//        JComponent jComponent = new JBPopupMenu("Test");
+//        BalloonBuilder balloonBuilder = JBPopupFactory.getInstance()..createBalloonBuilder(jComponent);
+//        Balloon balloon = balloonBuilder.createBalloon();
+//        balloon.show();
+
+
     }
 
 
     public void update(AnActionEvent anActionEvent) {
-        final Project project = anActionEvent.getData(CommonDataKeys.PROJECT);
-        if (project == null)
-            return;
-        Object navigatable = anActionEvent.getData(CommonDataKeys.NAVIGATABLE);
-        anActionEvent.getPresentation().setEnabled(navigatable != null);
+//        final Project project = anActionEvent.getData(CommonDataKeys.PROJECT);
+//        if (project == null)
+//            return;
+//        Object navigatable = anActionEvent.getData(CommonDataKeys.NAVIGATABLE);
+//        anActionEvent.getPresentation().setEnabled(navigatable != null);
     }
 }

@@ -14,8 +14,8 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import main.edu.stepic.Course;
-import main.edu.stepic.StepInfo;
+import main.courseFormat.Course;
+import main.courseFormat.StepInfo;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +26,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +49,13 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         projectService.setProjectName(project.getName());
 
 
-        StepicConnector.initToken();
+        try {
+            StepicConnector.initToken();
+        } catch (UnirestException ex) {
+            ex.printStackTrace();
+        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {
+            ex.printStackTrace();
+        }
         String courseId = projectService.getCourseID();
         LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());

@@ -3,7 +3,7 @@ package main.actions.mainMenu;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import main.edu.stepic.StepInfo;
+import main.courseFormat.StepInfo;
 import main.stepicConnector.NewProjectService;
 
 import java.util.Map;

@@ -8,7 +8,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.edu.stepic.Submission;
+import main.courseFormat.Submission;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 

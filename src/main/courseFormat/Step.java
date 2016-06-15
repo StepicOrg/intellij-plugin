@@ -1,4 +1,4 @@
-package main.edu.stepic;
+package main.courseFormat;
 
 import java.util.Map;
 
