@@ -63,8 +63,8 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 //        StepicProjectService projectService = StepicProjectService.getInstance(myProjectOrNull);
 //        projectService.setTranslator(CheckBox.isSelected());
         PropertiesComponent props = PropertiesComponent.getInstance();
-        props.setValue("translate", CheckBox.isSelected());
-        props.setValue("courseId",parseUrl(courseLinkFiled.getText()));
+        props.setValue("translate", Boolean.toString(CheckBox.isSelected()));
+        props.setValue("courseId", parseUrl(courseLinkFiled.getText()));
     }
 
     private static void saveValue(String key, String value) {
@@ -79,9 +79,9 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
         passwordField1 = new JPasswordField(ws.getPassword());
     }
 
-    private static String parseUrl(String url){
+    private static String parseUrl(String url) {
         if (url.isEmpty()) return "";
-        if (Character.isDigit(url.charAt(0))){
+        if (Character.isDigit(url.charAt(0))) {
             return url;
         } else {
             String[] path = url.split("/");

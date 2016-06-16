@@ -44,7 +44,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         NewProjectService projectService = NewProjectService.getInstance(project);
 
         PropertiesComponent props = PropertiesComponent.getInstance();
-        projectService.setTranslate(props.getBoolean("translate"));
+        projectService.setTranslate(props.getValue("translate").equals("true") ? true : false );
         projectService.setCourseID(props.getValue("courseId"));
         projectService.setProjectName(project.getName());
 

@@ -1,7 +1,7 @@
-<idea-plugin version="14">
+<idea-plugin version="15">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
-    <version>0.4.14</version>
+    <version>0.4.15</version>
     <vendor email="afnm47@gmail.com" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[
@@ -18,7 +18,8 @@
     <!--</change-notes>-->
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="141.3058.30"/>
+    <idea-version since-build="139.1803"/>
+
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
