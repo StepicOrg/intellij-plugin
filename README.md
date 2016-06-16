@@ -10,7 +10,7 @@ In the same way you can to download last submissions and get the status of step.
 
 
 ## Features
-* **Sing in** — you can input login and password, and then you get OAuth2 token.
+* **Sign in** — you can input login and password, and then you get OAuth2 token.
 * **Who am i** — return `user_name`.
 * **Download Latest Submission** — download your latest submission this step from site.
 * **Check Step Status** — return a step status and status of last submission posted from IDE.
