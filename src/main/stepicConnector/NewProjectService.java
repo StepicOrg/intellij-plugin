@@ -87,6 +87,10 @@ public class NewProjectService implements PersistentStateComponent<Element> {
         return getStepInfo(path).getSubmissionID();
     }
 
+    public String getText(String path) {
+        return getStepInfo(path).getText();
+    }
+
     public void setStepID(String path, String stepID){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setStepID(stepID);
@@ -110,6 +114,11 @@ public class NewProjectService implements PersistentStateComponent<Element> {
     public void setSubmissionID(String path, String submissionID){
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setSubmissionID(submissionID);
+    }
+
+    public void setText(String path, String text){
+        StepInfo stepInfo = getOrCreateStepInfo(path);
+        stepInfo.setText(text);
     }
 
     public void addStepInfo(String path, StepInfo stepInfo) {

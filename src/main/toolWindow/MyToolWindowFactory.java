@@ -9,6 +9,7 @@ import com.intellij.ui.content.ContentFactory;
 import javax.swing.*;
 
 public class MyToolWindowFactory implements ToolWindowFactory {
+    public static final String STUDY_TOOL_WINDOW = "Task Description";
 
     private ToolWindow myToolWindow;
     private JPanel myToolWindowContent;
