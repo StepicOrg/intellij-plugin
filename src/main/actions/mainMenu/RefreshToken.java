@@ -1,6 +1,5 @@
 package main.actions.mainMenu;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.StepicConnector;
@@ -11,7 +10,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-public class RefreshToken extends AnAction {
+public class RefreshToken extends MainMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
