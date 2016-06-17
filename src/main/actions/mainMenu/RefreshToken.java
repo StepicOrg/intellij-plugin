@@ -11,9 +11,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-/**
- * Created by Petr on 15.06.2016.
- */
 public class RefreshToken extends AnAction {
 
     @Override

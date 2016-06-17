@@ -33,9 +33,13 @@ public class Help extends MainMenuAction {
             "\n" +
             "\"Who am I\" -- возвращает user_name.\n" +
             "\"Update course\" -- загружает новые уроки.\n";
+
     @Override
     public void actionPerformed(AnActionEvent e) {
-
         Messages.showMessageDialog(e.getProject(), text, "Information", Messages.getInformationIcon());
+    }
+
+    @Override
+    public void update(AnActionEvent e) {
     }
 }

@@ -14,9 +14,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-/**
- * Created by Petr on 01.04.2016.
- */
 public class SingIn extends MainMenuAction {
 
     @Override

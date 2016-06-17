@@ -4,9 +4,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import main.Utils;
 
-/**
- * Created by Petr on 03.06.2016.
- */
 public class RefreshMap extends MainMenuAction {
 
     @Override

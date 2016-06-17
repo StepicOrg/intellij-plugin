@@ -1,7 +1,7 @@
-<idea-plugin version="15">
+<idea-plugin version="16">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
-    <version>0.4.15</version>
+    <version>0.4.16</version>
     <vendor email="afnm47@gmail.com" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[
@@ -133,7 +133,7 @@
         </action>
         <action id="ID.RefreshToken" class="main.actions.mainMenu.RefreshToken" text="RefreshToken"
                 description="get new token">
-            <add-to-group group-id="ID.StepicGroup" anchor="last"/>
+            <add-to-group group-id="ID.StepicGroup" anchor="before" relative-to-action="ID.Help"/>
         </action>
     </actions>
 
