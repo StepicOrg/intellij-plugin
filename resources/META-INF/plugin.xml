@@ -48,8 +48,25 @@
         <projectStructureDetector implementation="main.projectWizard.StepicProjectStructureDetector" order="first"/>
 
         <toolWindow id="Task Description" secondary="true" anchor="right"
-                    factoryClass="main.toolWindow.MyToolWindowFactory"/>
+                    factoryClass="main.toolWindow.StudyToolWindowFactory"/>
+                    <!--factoryClass="main.toolWindow.MyToolWindowFactory"/>-->
+                    <!--conditionClass="main.toolWindow.StudyCondition"/>-->
+    </extensions>
 
+    <extensionPoints>
+        <!--<extensionPoint qualifiedName="Edu.StudyExecutor" beanClass="com.intellij.lang.LanguageExtensionPoint">-->
+            <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.checker.StudyExecutor"/>-->
+        <!--</extensionPoint>-->
+        <!--<extensionPoint qualifiedName="Edu.StudyLanguageManager" beanClass="com.intellij.lang.LanguageExtensionPoint">-->
+            <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.StudyLanguageManager"/>-->
+        <!--</extensionPoint>-->
+        <extensionPoint qualifiedName="Edu.studyToolWindowConfigurator" interface="main.toolWindow.StudyToolWindowConfigurator"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="Edu">
+        <!--<StudyExecutor implementationClass="com.jetbrains.edu.learning.PyStudyExecutor" language="Python"/>-->
+        <!--<StudyLanguageManager implementationClass="com.jetbrains.edu.learning.PyStudyLanguageManager" language="Python"/>-->
+        <studyToolWindowConfigurator implementation="main.toolWindow.JavaStudyToolWindowConfigurator" />
     </extensions>
 
     <actions>

@@ -18,6 +18,7 @@ package main.toolWindow;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.JBCardLayout;
@@ -55,10 +56,10 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
 
     setContent(mySplitPane);
 
-//    StudyToolWindowConfigurator configurator = StudyUtils.getConfigurator(project);
-//    assert configurator != null;
-//    final FileEditorManagerListener listener = configurator.getFileEditorManagerListener(project, this);
-//    project.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, listener);
+    StudyToolWindowConfigurator configurator = StudyUtils.getConfigurator(project);
+    assert configurator != null;
+    final FileEditorManagerListener listener = configurator.getFileEditorManagerListener(project, this);
+    project.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, listener);
   }
 
   private void addAdditionalPanels(Project project) {

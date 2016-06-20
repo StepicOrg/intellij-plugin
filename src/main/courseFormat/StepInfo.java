@@ -13,7 +13,7 @@ public class StepInfo implements Serializable {
 //    public static final StepInfo EMPTY = new StepInfo("");
 
 
-    private void setAllEmpy(){
+    private void setAllEmpy() {
         stepID = "";
         attemptID = "";
         packageName = "";
@@ -38,7 +38,7 @@ public class StepInfo implements Serializable {
         this.filename = filename;
     }
 
-    public StepInfo(String stepID, String packageName, String filename,String text) {
+    public StepInfo(String stepID, String packageName, String filename, String text) {
         setAllEmpy();
         this.stepID = stepID;
         this.packageName = packageName;
