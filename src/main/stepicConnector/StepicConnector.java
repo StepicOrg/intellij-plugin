@@ -80,7 +80,7 @@ public class StepicConnector {
                         try {
                             setTokenGRP();
                         } catch (UnirestException e) {
-                            Notification notification = new Notification("Get.Token", "Get access_token error", "Please check internet configuration", NotificationType.WARNING);
+                            Notification notification = new Notification("Authorisation error", "Get access_token error", "Please check internet configuration", NotificationType.WARNING);
                             notification.notify(project);
                             boolean flag = false;
                             while (!flag) {

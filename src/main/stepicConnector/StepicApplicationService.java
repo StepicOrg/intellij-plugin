@@ -87,7 +87,6 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
         if (timePassedLessThen(tokenTimeCreate, new Date().getTime(), 9*60*60)) {
             return token;
         } else {
-//            StepicConnector.initToken();
             try {
                 StepicConnector.setTokenGRP();
             } catch (UnirestException e) {
@@ -132,16 +131,4 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
     public long getTokenTimeCreate() {
         return tokenTimeCreate;
     }
-
-    //    public String getPassword() {
-//        return password;
-//    }
-
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-
-
-
-
 }
