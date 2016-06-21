@@ -7,6 +7,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import main.Utils;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.StudentService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +28,10 @@ public class Lesson {
 
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) throws UnirestException {
         this.lessonNo = lessonNo;
+        StudentService studentService = StudentService.getInstance(project);
         NewProjectService projectService = NewProjectService.getInstance(project);
 
-        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId));
+        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), studentService.getToken());
 
         for (Step step : stepsList) {
             if (step.isTask()) {

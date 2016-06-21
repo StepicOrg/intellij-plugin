@@ -11,6 +11,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.StudentService;
 
 /**
  * Created by Petr on 21.05.2016.
@@ -25,6 +26,7 @@ public class GetStepStatus extends PopupMenuAction {
 
         String path = vf.getPath();
         NewProjectService projectService = NewProjectService.getInstance(project);
+        StudentService studentService = StudentService.getInstance(project);
         String stepId = projectService.getStepID(path);
 
         String ans = "";
@@ -32,7 +34,7 @@ public class GetStepStatus extends PopupMenuAction {
 
         Notification notification = null;
         try {
-            if (wasItSolved(stepId)) {
+            if (wasItSolved(stepId, studentService.getToken())) {
                 ans = "Step was solved\n";
             } else {
                 ans = "Step wasn't solved\n";
@@ -42,7 +44,7 @@ public class GetStepStatus extends PopupMenuAction {
             if (subID.isEmpty()) {
                 ans += "last submission from IDEA is unknown";
             } else {
-                ans += StepicConnector.getStatus(subID).get(0).getStatus();
+                ans += StepicConnector.getStatus(subID, studentService.getToken()).get(0).getStatus();
             }
 
         } catch (UnirestException e1) {
@@ -55,8 +57,8 @@ public class GetStepStatus extends PopupMenuAction {
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());
     }
 
-    private boolean wasItSolved(String stepID) throws UnirestException {
-        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct")).size();
+    private boolean wasItSolved(String stepID, String token) throws UnirestException {
+        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct"), token).size();
         if (size > 0) {
             return true;
         } else {

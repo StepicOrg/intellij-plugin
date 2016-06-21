@@ -11,6 +11,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import main.courseFormat.Submission;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.StudentService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,10 +29,11 @@ public class DownloadLastSubmission extends PopupMenuAction {
         if (vf == null) return;
 
         NewProjectService projectService = NewProjectService.getInstance(project);
+        StudentService studentService = StudentService.getInstance(project);
         String stepName = vf.getName().split("\\.")[0];
 
         List<Submission> submissions =
-                StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()));
+                StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()),studentService.getToken());
 
         String code = submissions.get(submissions.size() - 1).getCode();
         String pack = NewProjectService.getInstance(project).getPackageName(vf.getPath());

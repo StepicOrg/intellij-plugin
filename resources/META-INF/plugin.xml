@@ -29,8 +29,11 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+
         <applicationService serviceInterface="main.stepicConnector.StepicApplicationService"
-                            serviceImplementation="main.stepicConnector.StepicApplicationService"/>
+                        serviceImplementation="main.stepicConnector.StepicApplicationService"/>
+        <projectService serviceInterface="main.stepicConnector.StudentService"
+                            serviceImplementation="main.stepicConnector.StudentService"/>
 
         <projectService serviceInterface="main.stepicConnector.NewProjectService"
                         serviceImplementation="main.stepicConnector.NewProjectService"/>

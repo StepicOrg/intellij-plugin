@@ -18,6 +18,7 @@ import main.courseFormat.Course;
 import main.courseFormat.StepInfo;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.StudentService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -42,15 +43,20 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         final VirtualFile root = project.getBaseDir();
 
         NewProjectService projectService = NewProjectService.getInstance(project);
+        StudentService studentService = StudentService.getInstance(project);
 
         PropertiesComponent props = PropertiesComponent.getInstance();
         projectService.setTranslate(props.getValue("translate").equals("true") ? true : false );
         projectService.setCourseID(props.getValue("courseId"));
         projectService.setProjectName(project.getName());
 
+        studentService.setPassword(props.getValue("password"));
+//        LOG.warn("password = " + props.getValue("password"));
+        studentService.setLogin(props.getValue("login"));
+
 
         try {
-            StepicConnector.initToken();
+            StepicConnector.initToken(project);
         } catch (UnirestException ex) {
             ex.printStackTrace();
         } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {
@@ -64,7 +70,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
         Course course = null;
         try {
-            course = StepicConnector.getCourses(courseId).get(0);
+            course = StepicConnector.getCourses(courseId, StudentService.getInstance(project).getToken()).get(0);
             course.build(root.getPath(), rootModel.getProject());
         } catch (UnirestException e) {
 //            e.printStackTrace();

@@ -13,6 +13,7 @@ import main.courseFormat.StepInfo;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
+import main.stepicConnector.StudentService;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,12 +40,13 @@ public class UpdateCourse extends MainMenuAction {
 
         final VirtualFile root = project.getBaseDir();
         NewProjectService projectService = NewProjectService.getInstance(project);
+        String token = StudentService.getInstance(project).getToken();
         String courseID = projectService.getCourseID();
         Course course = null;
         Map<String, StepInfo> map;
         Set<String> newFiles;
         try {
-            course = StepicConnector.getCourses(courseID).get(0);
+            course = StepicConnector.getCourses(courseID, token).get(0);
             newFiles = new HashSet<>();
 
             Utils.refreshFiles(project);

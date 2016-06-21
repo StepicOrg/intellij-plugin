@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -37,7 +38,6 @@ public class StepicConnector {
 
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean isInstanceProperty = false;
-    private static StepicApplicationService ws = StepicApplicationService.getInstance();
 
     private static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 // Create a trust manager that does not validate certificate for this connection
@@ -62,15 +62,16 @@ public class StepicConnector {
         Unirest.setHttpClient(httpclient);
     }
 
-    public static void initToken() throws UnirestException, CertificateException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+    public static void initToken(Project project) throws UnirestException, CertificateException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         if (!isInstanceProperty) {
             setSSLProperty();
             isInstanceProperty = true;
         }
-        setTokenGRP();
+        setTokenGRP(project);
     }
 
-    private static void setTokenGRP() throws UnirestException {
+    private static void setTokenGRP(Project project) throws UnirestException {
+        StudentService ws = StudentService.getInstance(project);
         String user = ws.getLogin();
         String pass = ws.getPassword();
 
@@ -78,7 +79,7 @@ public class StepicConnector {
         parameters.put("grant_type", "password");
         parameters.put("username", user);
         parameters.put("password", pass);
-        parameters.put("client_id", StepicApplicationService.getInstance().getClientId());
+        parameters.put("client_id", ws.getClientId());
 
         TokenInfo tokenInfo = postToStepicMapLinkReset(token_url, parameters, TokenInfo.class);
 
@@ -86,12 +87,12 @@ public class StepicConnector {
         ws.setRefresh_token(tokenInfo.refresh_token);
     }
 
-    private static <T> T getFromStepic(String link, final Class<T> container) throws UnirestException {
+    private static <T> T getFromStepic(String link, final Class<T> container, String token) throws UnirestException {
 
         HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
-                .header("Authorization", "Bearer " + StepicApplicationService.getInstance().getToken())
+                .header("Authorization", "Bearer " + token)
                 .asString();
         final String responseString = response.getBody();
 
@@ -101,13 +102,13 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    private static <T> T getFromStepic(String link, Map<String, Object> queryMap, final Class<T> container)
+    private static <T> T getFromStepic(String link, Map<String, Object> queryMap, final Class<T> container, String token)
             throws UnirestException {
 
         HttpResponse<String> response;
         response = Unirest
                 .get(api_url + link)
-                .header("Authorization", "Bearer " + StepicApplicationService.getInstance().getToken())
+                .header("Authorization", "Bearer " + token)
                 .queryString(queryMap)
                 .asString();
         final String responseString = response.getBody();
@@ -118,11 +119,11 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    private static <T> T postToStepic(String link, JSONObject jsonObject, final Class<T> container) throws UnirestException {
+    private static <T> T postToStepic(String link, JSONObject jsonObject, final Class<T> container, String token) throws UnirestException {
         HttpResponse<JsonNode> response;
         response = Unirest
                 .post(api_url + link)
-                .header("Authorization", "Bearer " + ws.getToken())
+                .header("Authorization", "Bearer " + token)
                 .header("Content-Type", "application/json")
                 .body(jsonObject)
                 .asJson();
@@ -150,51 +151,51 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    public static AuthorWrapper getCurrentUser() {
+    public static AuthorWrapper getCurrentUser( String token) {
         try {
-            return getFromStepic("stepics/1", AuthorWrapper.class);
+            return getFromStepic("stepics/1", AuthorWrapper.class, token);
         } catch (UnirestException e) {
             LOG.error("Couldn't get author info");
         }
         return null;
     }
 
-    public static String getUserName() {
-        AuthorWrapper aw = getCurrentUser();
+    public static String getUserName(String token) {
+        AuthorWrapper aw = getCurrentUser(token);
         return aw.users.get(0).getName();
     }
 
-    public static List<Course> getCourses(String courseId) throws UnirestException {
+    public static List<Course> getCourses(String courseId, String token) throws UnirestException {
         final String url = "courses/" + courseId;
-        return getFromStepic(url, CoursesContainer.class).courses;
+        return getFromStepic(url, CoursesContainer.class,  token).courses;
     }
 
-    public static List<Section> getSections(String idsQuery) throws UnirestException {
+    public static List<Section> getSections(String idsQuery, String token) throws UnirestException {
         final String url = "sections" + idsQuery;
-        return getFromStepic(url, SectionsContainer.class).sections;
+        return getFromStepic(url, SectionsContainer.class,  token).sections;
     }
 
-    public static List<Unit> getUnits(String idsQuery) throws UnirestException {
+    public static List<Unit> getUnits(String idsQuery, String token) throws UnirestException {
         final String url = "units" + idsQuery;
-        return getFromStepic(url, UnitsContainer.class).units;
+        return getFromStepic(url, UnitsContainer.class, token).units;
     }
 
-    public static List<Lesson> getLessons(String idsQuery) throws UnirestException {
+    public static List<Lesson> getLessons(String idsQuery, String token) throws UnirestException {
         final String url = "lessons" + idsQuery;
-        return getFromStepic(url, LessonsContainer.class).lessons;
+        return getFromStepic(url, LessonsContainer.class,  token).lessons;
     }
 
-    public static List<Submission> getStatus(String submissionID) throws UnirestException {
+    public static List<Submission> getStatus(String submissionID, String token) throws UnirestException {
         final String url = "submissions/" + submissionID;
-        return getFromStepic(url, SubmissionsContainer.class).submissions;
+        return getFromStepic(url, SubmissionsContainer.class, token).submissions;
     }
 
-    public static List<Step> getSteps(String stepIdQuery) throws UnirestException {
+    public static List<Step> getSteps(String stepIdQuery, String token) throws UnirestException {
         final String url = "steps" + stepIdQuery;
-        return getFromStepic(url, StepsContainer.class).steps;
+        return getFromStepic(url, StepsContainer.class, token).steps;
     }
 
-    public static String getAttemptId(String stepId) throws UnirestException {
+    public static String getAttemptId(String stepId, String token) throws UnirestException {
         String attempts = "attempts";
         JSONObject first = new JSONObject();
         JSONObject second = new JSONObject();
@@ -202,11 +203,11 @@ public class StepicConnector {
         first.put("step", stepId);
         second.put("attempt", first);
 
-        int id = postToStepic(attempts, second, AttemptsContainer.class).attempts.get(0).id;
+        int id = postToStepic(attempts, second, AttemptsContainer.class, token).attempts.get(0).id;
         return Integer.toString(id);
     }
 
-    public static String sendFile(String file, String att_id) throws UnirestException {
+    public static String sendFile(String file, String att_id, String token) throws UnirestException {
 
         JSONObject wrapper = new JSONObject();
         JSONObject submission = new JSONObject();
@@ -220,17 +221,17 @@ public class StepicConnector {
 
         wrapper.put("submission", submission);
 
-        int id = postToStepic("submissions", wrapper, SubmissionsContainer.class).submissions.get(0).id;
+        int id = postToStepic("submissions", wrapper, SubmissionsContainer.class, token).submissions.get(0).id;
         return Integer.toString(id);
     }
 
-    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair) throws UnirestException {
+    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair, String token) throws UnirestException {
 
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("step", stepId);
         queryMap.put(pair.first, pair.second);
 
-        return getFromStepic("submissions", queryMap, SubmissionsContainer.class).submissions;
+        return getFromStepic("submissions", queryMap, SubmissionsContainer.class, token).submissions;
     }
 
     public static class AuthorWrapper {
@@ -272,11 +273,11 @@ public class StepicConnector {
         public Map meta;
     }
 
-    public static List<Submission> getSubmissions(String stepId) {
+    public static List<Submission> getSubmissions(String stepId, String token) {
         Map<String, Object> map = new HashMap<>();
         map.put("step", stepId);
         try {
-            return getFromStepic("submissions", map, SubmissionsContainer.class).submissions;
+            return getFromStepic("submissions", map, SubmissionsContainer.class, token).submissions;
         } catch (UnirestException e) {
             LOG.error("getSubmissions error " + e.getMessage());
             return new ArrayList<>();
