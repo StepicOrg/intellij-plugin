@@ -26,7 +26,7 @@ public class SingIn extends MainMenuAction {
                 Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon()));
 
         try {
-            StepicConnector.initToken();
+            StepicConnector.initToken(e.getProject());
         } catch (UnirestException ex) {
             ex.printStackTrace();
         } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {

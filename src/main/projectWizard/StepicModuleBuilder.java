@@ -50,7 +50,7 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
 
         try {
-            StepicConnector.initToken();
+            StepicConnector.initToken(project);
         } catch (UnirestException ex) {
             ex.printStackTrace();
         } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {

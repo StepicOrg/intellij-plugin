@@ -3,7 +3,12 @@ package main.stepicConnector;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -25,10 +30,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class StepicConnector {
 
@@ -62,15 +66,81 @@ public class StepicConnector {
         Unirest.setHttpClient(httpclient);
     }
 
-    public static void initToken() throws UnirestException, CertificateException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+    public static void initToken(Project project) throws UnirestException, CertificateException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
         if (!isInstanceProperty) {
             setSSLProperty();
             isInstanceProperty = true;
         }
-        setTokenGRP();
+
+        final Application application = ApplicationManager.getApplication();
+        application.executeOnPooledThread(
+                new Runnable() {
+                    final long TIMER_IN_MILLI_SEC = 15L * 1000L;
+
+                    @Override
+                    public void run() {
+                        try {
+                            setTokenGRP();
+                        } catch (UnirestException e) {
+                            Notification notification = new Notification("Get.Token", "Get access_token error", "Please check internet configuration", NotificationType.WARNING);
+                            notification.notify(project);
+                            boolean flag = false;
+                            while (!flag) {
+                                try {
+                                    Thread.sleep(TIMER_IN_MILLI_SEC);
+                                } catch (InterruptedException e1) {
+                                    e1.printStackTrace();
+                                }
+                                try {
+                                    flag = setTokenGRP();
+                                } catch (UnirestException e1) {
+                                    LOG.warn("cycle");
+                                }
+                            }
+                        }
+                    }
+
+                    private void tokenUpdater(Date date) {
+                        final long TIME_TO_LIVE = 32_400_000L; //9 hours
+                        Date base = date;
+                        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+                        while (true) {
+                            Date current = new Date();
+                            boolean success = false;
+                            if (timePassedLessThen(base, current, 30)) {
+                                try {
+                                    Thread.sleep(TIMER_IN_MILLI_SEC);
+                                } catch (InterruptedException e) {
+                                    LOG.error("Sleep error in timer\n" + e);
+                                }
+                                LOG.warn("cycle " + (current.getTime() - base.getTime()));
+                            } else {
+                                try {
+                                    success = setTokenGRP();
+                                } catch (UnirestException e) {
+                                    LOG.warn("Auth error in timer\n" + e);
+                                }
+                                if (success) {
+                                    base = new Date();
+                                    LOG.warn("token update " + df.format(current));
+                                } else {
+                                    LOG.warn("Get token error");
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    private boolean timePassedLessThen(Date d0, Date d1, long sec) {
+                        long delta = d1.getTime() - d0.getTime();
+                        return delta - sec * 1000l < 0l;
+                    }
+
+                });
     }
 
-    private static void setTokenGRP() throws UnirestException {
+    private static boolean setTokenGRP() throws UnirestException {
         String user = ws.getLogin();
         String pass = ws.getPassword();
 
@@ -82,8 +152,13 @@ public class StepicConnector {
 
         TokenInfo tokenInfo = postToStepicMapLinkReset(token_url, parameters, TokenInfo.class);
 
-        ws.setToken(tokenInfo.access_token);
-        ws.setRefresh_token(tokenInfo.refresh_token);
+        if (tokenInfo.access_token != null) {
+            ws.setToken(tokenInfo.access_token);
+            ws.setRefresh_token(tokenInfo.refresh_token);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static <T> T getFromStepic(String link, final Class<T> container) throws UnirestException {

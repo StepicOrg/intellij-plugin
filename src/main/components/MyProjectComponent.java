@@ -50,7 +50,7 @@ public class MyProjectComponent implements ProjectComponent {
             prop.setEnabled(true);
             prop.setVisible(true);
             try {
-                StepicConnector.initToken();
+                StepicConnector.initToken(project);
             } catch (UnirestException e) {
                 e.printStackTrace();
             } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {

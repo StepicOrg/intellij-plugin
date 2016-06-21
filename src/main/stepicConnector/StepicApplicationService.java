@@ -9,6 +9,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
+
 
 @State(name = "StepicApplicationService", storages = @Storage(id = "StepicApplicationService", file = StoragePathMacros.APP_CONFIG + "/StepicApplicationService.xml"))
 public class StepicApplicationService implements PersistentStateComponent<StepicApplicationService> {
@@ -17,6 +19,7 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
     private String token;
     private String refresh_token;
     private String login;
+    private long tokenTimeCreate;
 
     @Transient
     private static final Logger LOG = Logger.getInstance(StepicApplicationService.class);
@@ -80,11 +83,23 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
     }
 
     public String getToken() {
-        return token;
+        if (timePassedLessThen(tokenTimeCreate, new Date().getTime(), 9*60*60)) {
+            return token;
+        } else {
+            StepicConnector.initToken();
+        }
+    }
+
+    private boolean timePassedLessThen(long base, long current, long sec) {
+//        long delta = d1.getTime() - d0.getTime();
+        long delta = current - base;
+        return delta - sec * 1000L < 0L;
     }
 
     public void setToken(String token) {
         this.token = token;
+        Date date = new Date();
+        tokenTimeCreate = date.getTime();
     }
 
     public String getRefresh_token() {
@@ -103,7 +118,15 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
         this.login = login;
     }
 
-//    public String getPassword() {
+    public void setTokenTimeCreate(long tokenTimeCreate) {
+        this.tokenTimeCreate = tokenTimeCreate;
+    }
+
+    public long getTokenTimeCreate() {
+        return tokenTimeCreate;
+    }
+
+    //    public String getPassword() {
 //        return password;
 //    }
 
