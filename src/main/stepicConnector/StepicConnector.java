@@ -84,6 +84,7 @@ public class StepicConnector {
         TokenInfo tokenInfo = postToStepicMapLinkReset(token_url, parameters, TokenInfo.class);
 
         ws.setToken(tokenInfo.access_token);
+        LOG.warn("token = " + tokenInfo.access_token);
         ws.setRefresh_token(tokenInfo.refresh_token);
     }
 

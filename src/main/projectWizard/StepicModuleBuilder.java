@@ -50,9 +50,10 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         projectService.setCourseID(props.getValue("courseId"));
         projectService.setProjectName(project.getName());
 
-        studentService.setPassword(props.getValue("password"));
-//        LOG.warn("password = " + props.getValue("password"));
-        studentService.setLogin(props.getValue("login"));
+        studentService.setLoginAndPassword(props.getValue("login"), props.getValue("password") );
+//        studentService.setPassword();
+        LOG.warn("password = " + props.getValue("password"));
+        LOG.warn("login = " + props.getValue("login"));
 
 
         try {

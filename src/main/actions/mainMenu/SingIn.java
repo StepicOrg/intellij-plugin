@@ -20,11 +20,12 @@ public class SingIn extends MainMenuAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
-        StudentService.getInstance(e.getProject()).setLogin(
-                Messages.showInputDialog(project, "Please, input your E-mail", "Sing in", Messages.getQuestionIcon()));
-        StudentService.getInstance(e.getProject()).setPassword(
-                Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon()));
+        String login =
+                Messages.showInputDialog(project, "Please, input your E-mail", "Sing in", Messages.getQuestionIcon());
+        String password =
+                Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon());
 
+        StudentService.getInstance(e.getProject()).setLoginAndPassword(login, password);
         try {
             StepicConnector.initToken(e.getProject());
         } catch (UnirestException ex) {
