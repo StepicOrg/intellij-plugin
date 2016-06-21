@@ -14,7 +14,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-public class SingIn extends MainMenuAction {
+public class SignIn extends MainMenuAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {

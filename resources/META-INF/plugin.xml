@@ -127,8 +127,8 @@
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
 
-        <action id="Sing in" class="main.actions.mainMenu.SingIn" text="Sing _in"
-                description="Insert your client and secret id">
+        <action id="Sign in" class="main.actions.mainMenu.SignIn" text="(tmp) Sign _in"
+                description="Insert your e-mail and password">
             <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
         </action>
         <action id="ID.RefreshToken" class="main.actions.mainMenu.RefreshToken" text="RefreshToken"
