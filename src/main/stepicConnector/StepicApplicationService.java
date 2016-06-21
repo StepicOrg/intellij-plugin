@@ -7,6 +7,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Transient;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -86,8 +87,14 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
         if (timePassedLessThen(tokenTimeCreate, new Date().getTime(), 9*60*60)) {
             return token;
         } else {
-            StepicConnector.initToken();
+//            StepicConnector.initToken();
+            try {
+                StepicConnector.setTokenGRP();
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
         }
+        return token;
     }
 
     private boolean timePassedLessThen(long base, long current, long sec) {

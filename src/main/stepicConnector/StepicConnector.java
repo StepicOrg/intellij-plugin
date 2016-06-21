@@ -30,8 +30,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class StepicConnector {
@@ -99,48 +97,10 @@ public class StepicConnector {
                             }
                         }
                     }
-
-                    private void tokenUpdater(Date date) {
-                        final long TIME_TO_LIVE = 32_400_000L; //9 hours
-                        Date base = date;
-                        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-                        while (true) {
-                            Date current = new Date();
-                            boolean success = false;
-                            if (timePassedLessThen(base, current, 30)) {
-                                try {
-                                    Thread.sleep(TIMER_IN_MILLI_SEC);
-                                } catch (InterruptedException e) {
-                                    LOG.error("Sleep error in timer\n" + e);
-                                }
-                                LOG.warn("cycle " + (current.getTime() - base.getTime()));
-                            } else {
-                                try {
-                                    success = setTokenGRP();
-                                } catch (UnirestException e) {
-                                    LOG.warn("Auth error in timer\n" + e);
-                                }
-                                if (success) {
-                                    base = new Date();
-                                    LOG.warn("token update " + df.format(current));
-                                } else {
-                                    LOG.warn("Get token error");
-                                }
-                            }
-
-                        }
-
-                    }
-
-                    private boolean timePassedLessThen(Date d0, Date d1, long sec) {
-                        long delta = d1.getTime() - d0.getTime();
-                        return delta - sec * 1000l < 0l;
-                    }
-
                 });
     }
 
-    private static boolean setTokenGRP() throws UnirestException {
+    public static boolean setTokenGRP() throws UnirestException {
         String user = ws.getLogin();
         String pass = ws.getPassword();
 
