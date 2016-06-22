@@ -11,7 +11,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StudentService;
 
 /**
  * Created by Petr on 21.05.2016.
@@ -26,29 +25,29 @@ public class GetStepStatus extends PopupMenuAction {
 
         String path = vf.getPath();
         NewProjectService projectService = NewProjectService.getInstance(project);
-        StudentService studentService = StudentService.getInstance(project);
+        String token = StepicConnector.getToken(project);
         String stepId = projectService.getStepID(path);
 
-        String ans = "";
+        String ans;
 
 
-        Notification notification = null;
         try {
-            if (wasItSolved(stepId, studentService.getToken())) {
+            if (wasItSolved(stepId, token)) {
                 ans = "Step was solved\n";
             } else {
                 ans = "Step wasn't solved\n";
             }
 
+            ans += "last submission from IDEA is ";
             String subID = projectService.getSubmissionID(path);
             if (subID.isEmpty()) {
-                ans += "last submission from IDEA is unknown";
+                ans += "unknown";
             } else {
-                ans += StepicConnector.getStatus(subID, studentService.getToken()).get(0).getStatus();
+                ans += StepicConnector.getStatus(subID, token).get(0).getStatus();
             }
 
         } catch (UnirestException e1) {
-            notification =
+            Notification notification =
                     new Notification("Step.status", "Error", "Get Status error", NotificationType.ERROR);
             notification.notify(project);
             return;

@@ -6,7 +6,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import main.Utils;
 import main.projectWizard.YaTranslator;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StudentService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,16 +27,16 @@ public class Section {
 
 
     public void build(int sectionNo, String courseDir, Project project) throws UnirestException {
-        StudentService studentService = StudentService.getInstance(project);
+        String token = StepicConnector.getToken(project);
         this.sectionNo = sectionNo;
         int lessonNo = 0;
 
-        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId),studentService.getToken());
+        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId), token);
         if (units == null) return;
         List<Integer> lessonsId = new ArrayList<>();
         List<String> lessonNames = new ArrayList<>();
         units.forEach(x -> lessonsId.add(x.getLessonId()));
-        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId),studentService.getToken());
+        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId), token);
         lessons.forEach(x -> lessonNames.add(x.title));
 
         List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson", project);

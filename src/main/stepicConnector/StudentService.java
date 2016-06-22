@@ -15,13 +15,10 @@ import java.util.Date;
 
 @State(name = "StudentService", storages = @Storage(id = "StudentService", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/StudentService.xml"))
 public class StudentService implements PersistentStateComponent<StudentService> {
-    private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
-    private String clientSecret;
     private String token;
     private String refresh_token;
     private String login;
-
-    transient long tokenTimeCreate;
+    private long tokenTimeCreate;
 
     @Transient
     private static final Logger LOG = Logger.getInstance(StudentService.class);
@@ -72,28 +69,7 @@ public class StudentService implements PersistentStateComponent<StudentService> 
         }
     }
 
-    public String getClientId() {
-        return clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
-
     public String getToken() {
-        if (timePassedLessThen(tokenTimeCreate, new Date().getTime(), 9*60*60)) {
-            return token;
-        } else {
-            try {
-                StepicConnector.setTokenGRP();
-            } catch (UnirestException e) {
-                e.printStackTrace();
-            }
-        }
         return token;
     }
 
@@ -129,15 +105,11 @@ public class StudentService implements PersistentStateComponent<StudentService> 
         setPassword(password);
     }
 
-//    public String getPassword() {
-//        return password;
-//    }
+    public void setTokenTimeCreate(long tokenTimeCreate) {
+        this.tokenTimeCreate = tokenTimeCreate;
+    }
 
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-
-
-
-
+    public long getTokenTimeCreate() {
+        return tokenTimeCreate;
+    }
 }

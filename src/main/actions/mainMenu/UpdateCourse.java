@@ -13,7 +13,6 @@ import main.courseFormat.StepInfo;
 import main.projectWizard.StepicModuleBuilder;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StudentService;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class UpdateCourse extends MainMenuAction {
 
         final VirtualFile root = project.getBaseDir();
         NewProjectService projectService = NewProjectService.getInstance(project);
-        String token = StudentService.getInstance(project).getToken();
+        String token = StepicConnector.getToken(project);
         String courseID = projectService.getCourseID();
         Course course = null;
         Map<String, StepInfo> map;
@@ -56,7 +55,6 @@ public class UpdateCourse extends MainMenuAction {
             Messages.showMessageDialog(project, "Update Course error", "Error", Messages.getErrorIcon());
             return;
         }
-
 
 
         projectService.mapPathInfo.entrySet().forEach(x -> {
@@ -81,8 +79,8 @@ public class UpdateCourse extends MainMenuAction {
         LocalFileSystem.getInstance().refresh(true);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(success+"\n");
-        if (newFiles.isEmpty()){
+        sb.append(success + "\n");
+        if (newFiles.isEmpty()) {
             sb.append(old);
         } else {
             sb.append(nnew);

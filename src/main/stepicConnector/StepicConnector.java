@@ -3,6 +3,8 @@ package main.stepicConnector;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -19,27 +21,22 @@ import org.json.JSONObject;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StepicConnector {
 
     private static final String token_url = "https://stepic.org/oauth2/token/";
     private static final String api_url = "https://stepic.org/api/";
+    private static final String clientID = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
 
     private static final Logger LOG = Logger.getInstance(StepicConnector.class);
     private static boolean isInstanceProperty = false;
 
-    private static void setSSLProperty() throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    private static void setSSLProperty() {
 // Create a trust manager that does not validate certificate for this connection
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
@@ -52,22 +49,35 @@ public class StepicConnector {
             public void checkServerTrusted(X509Certificate[] certs, String authType) {
             }
         }};
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, trustAllCerts, new SecureRandom());
+        SSLContext sslContext = null;
+        try {
+            sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new SecureRandom());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
 
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+        SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
         CloseableHttpClient httpclient = HttpClients.custom()
-                .setSSLSocketFactory(sslsf)
+                .setSSLSocketFactory(sslcsf)
                 .build();
         Unirest.setHttpClient(httpclient);
     }
 
-    public static void initToken(Project project) throws UnirestException, CertificateException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+    public static void initToken(Project project) {
         if (!isInstanceProperty) {
             setSSLProperty();
             isInstanceProperty = true;
         }
-        setTokenGRP(project);
+
+        try {
+            setTokenGRP(project);
+        } catch (UnirestException e) {
+            Notification notification = new Notification("Init.token", "Authorization error","Please check your internet configuration." , NotificationType.WARNING);
+            notification.notify(project);
+        }
     }
 
     private static void setTokenGRP(Project project) throws UnirestException {
@@ -79,13 +89,15 @@ public class StepicConnector {
         parameters.put("grant_type", "password");
         parameters.put("username", user);
         parameters.put("password", pass);
-        parameters.put("client_id", ws.getClientId());
+        parameters.put("client_id", clientID);
 
         TokenInfo tokenInfo = postToStepicMapLinkReset(token_url, parameters, TokenInfo.class);
 
-        ws.setToken(tokenInfo.access_token);
-        LOG.warn("token = " + tokenInfo.access_token);
-        ws.setRefresh_token(tokenInfo.refresh_token);
+        String token = tokenInfo.access_token;
+        if (token != null && !token.isEmpty()) {
+            ws.setToken(tokenInfo.access_token);
+            ws.setRefresh_token(tokenInfo.refresh_token);
+        }
     }
 
     private static <T> T getFromStepic(String link, final Class<T> container, String token) throws UnirestException {
@@ -152,7 +164,7 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    public static AuthorWrapper getCurrentUser( String token) {
+    public static AuthorWrapper getCurrentUser(String token) {
         try {
             return getFromStepic("stepics/1", AuthorWrapper.class, token);
         } catch (UnirestException e) {
@@ -161,19 +173,19 @@ public class StepicConnector {
         return null;
     }
 
-    public static String getUserName(String token) {
-        AuthorWrapper aw = getCurrentUser(token);
+    public static String getUserName(Project project) {
+        AuthorWrapper aw = getCurrentUser(getToken(project));
         return aw.users.get(0).getName();
     }
 
     public static List<Course> getCourses(String courseId, String token) throws UnirestException {
         final String url = "courses/" + courseId;
-        return getFromStepic(url, CoursesContainer.class,  token).courses;
+        return getFromStepic(url, CoursesContainer.class, token).courses;
     }
 
     public static List<Section> getSections(String idsQuery, String token) throws UnirestException {
         final String url = "sections" + idsQuery;
-        return getFromStepic(url, SectionsContainer.class,  token).sections;
+        return getFromStepic(url, SectionsContainer.class, token).sections;
     }
 
     public static List<Unit> getUnits(String idsQuery, String token) throws UnirestException {
@@ -183,7 +195,7 @@ public class StepicConnector {
 
     public static List<Lesson> getLessons(String idsQuery, String token) throws UnirestException {
         final String url = "lessons" + idsQuery;
-        return getFromStepic(url, LessonsContainer.class,  token).lessons;
+        return getFromStepic(url, LessonsContainer.class, token).lessons;
     }
 
     public static List<Submission> getStatus(String submissionID, String token) throws UnirestException {
@@ -235,6 +247,11 @@ public class StepicConnector {
         return getFromStepic("submissions", queryMap, SubmissionsContainer.class, token).submissions;
     }
 
+    public static void setLoginAndPassword(String login, String password, Project project) {
+        StudentService storage = StudentService.getInstance(project);
+        storage.setLoginAndPassword(login, password);
+    }
+
     public static class AuthorWrapper {
         public List<CourseInfo.Author> users;
     }
@@ -284,6 +301,29 @@ public class StepicConnector {
             return new ArrayList<>();
         }
     }
+
+    public static String getToken(Project project) {
+        StudentService storage = StudentService.getInstance(project);
+        long baseTime = storage.getTokenTimeCreate();
+
+        if (!timePassedLessThen(baseTime, new Date().getTime(), 32400L)) { // 9 hours in sec
+            StepicConnector.initToken(project);
+        }
+        return storage.getToken();
+    }
+
+    private static boolean timePassedLessThen(long base, long current, long sec) {
+//        long delta = d1.getTime() - d0.getTime();
+        long delta = current - base;
+        return delta - sec * 1000L < 0L;
+    }
+
+//    public static void setupToken(Project project) {
+//        StudentService storage = StudentService.getInstance(project);
+//        StepicConnector.initToken(project);
+//        storage.setTokenTimeCreate(new Date().getTime());
+//
+//    }
 
 }
 

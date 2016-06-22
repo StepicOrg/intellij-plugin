@@ -15,7 +15,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import main.courseFormat.Submission;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
-import main.stepicConnector.StudentService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +34,7 @@ public class SendFile extends PopupMenuAction {
         if (vf == null) return;
 
         NewProjectService projectService = NewProjectService.getInstance(project);
-        String token = StudentService.getInstance(project).getToken();
+        String token = StepicConnector.getToken(project);
         String stepId = projectService.getStepID(vf.getPath());
 
         String text = renameMainClass(vf);
