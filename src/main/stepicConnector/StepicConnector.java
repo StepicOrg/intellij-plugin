@@ -66,18 +66,18 @@ public class StepicConnector {
         Unirest.setHttpClient(httpclient);
     }
 
-    public static void initToken(Project project) {
+    public static void initToken(Project project) throws UnirestException {
         if (!isInstanceProperty) {
             setSSLProperty();
             isInstanceProperty = true;
         }
 
-        try {
+//        try {
             setTokenGRP(project);
-        } catch (UnirestException e) {
-            Notification notification = new Notification("Init.token", "Stepic authorization error", "Please check your internet configuration.", NotificationType.WARNING);
-            notification.notify(project);
-        }
+//        } catch (UnirestException e) {
+//            Notification notification = new Notification("Init.token", "Stepic authorization error", "Please check your internet configuration.", NotificationType.WARNING);
+//            notification.notify(project);
+//        }
     }
 
     private static void setTokenGRP(Project project) throws UnirestException {
@@ -299,13 +299,15 @@ public class StepicConnector {
         public Map meta;
     }
 
-    public static List<Submission> getSubmissions(String stepId, String token) {
+    public static List<Submission> getSubmissions(String stepId, Project project) {
+        StudentService storage = StudentService.getInstance(project);
         Map<String, Object> map = new HashMap<>();
         map.put("step", stepId);
         try {
-            return getFromStepic("submissions", map, SubmissionsContainer.class, token).submissions;
+            return getFromStepic("submissions", map, SubmissionsContainer.class, storage.getToken()).submissions;
         } catch (UnirestException e) {
-            LOG.error("getSubmissions error " + e.getMessage());
+//            LOG.error("getSubmissions error " + e.getMessage());
+            initConnectionError(project);
             return new ArrayList<>();
         }
     }
@@ -315,7 +317,11 @@ public class StepicConnector {
         long baseTime = storage.getTokenTimeCreate();
 
         if (!timePassedLessThen(baseTime, new Date().getTime(), 32400L)) { // 9 hours in sec
-            StepicConnector.initToken(project);
+            try {
+                StepicConnector.initToken(project);
+            } catch (UnirestException e) {
+                StepicConnector.initConnectionError(project);
+            }
         }
         return storage.getToken();
     }
@@ -323,6 +329,11 @@ public class StepicConnector {
     private static boolean timePassedLessThen(long base, long current, long sec) {
         long delta = current - base;
         return delta - sec * 1000L < 0L;
+    }
+
+    public static void initConnectionError(Project project){
+        Notification notification = new Notification("Unirest.exception", "Stepic authorization error", "Please check your internet configuration.", NotificationType.WARNING);
+        notification.notify(project);
     }
 }
 

@@ -1,7 +1,5 @@
 package main.actions.popupMenu;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
@@ -47,9 +45,10 @@ public class GetStepStatus extends PopupMenuAction {
             }
 
         } catch (UnirestException e1) {
-            Notification notification =
-                    new Notification("Step.status", "Error", "Get Status error", NotificationType.ERROR);
-            notification.notify(project);
+//            Notification notification =
+//                    new Notification("Step.status", "Error", "Get Status error", NotificationType.ERROR);
+//            notification.notify(project);
+            StepicConnector.initConnectionError(project);
             return;
         }
 

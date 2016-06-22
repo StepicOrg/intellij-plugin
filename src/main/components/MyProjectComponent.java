@@ -2,6 +2,7 @@ package main.components;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.actions.ActionVisibleProperties;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
@@ -42,7 +43,11 @@ public class MyProjectComponent implements ProjectComponent {
         if (project.getName().equals(NewProjectService.getInstance(project).getProjectName())) {
             prop.setEnabled(true);
             prop.setVisible(true);
-            StepicConnector.initToken(project);
+            try {
+                StepicConnector.initToken(project);
+            } catch (UnirestException e) {
+                StepicConnector.initConnectionError(project);
+            }
         }
     }
 

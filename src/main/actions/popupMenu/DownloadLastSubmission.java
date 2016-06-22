@@ -29,11 +29,11 @@ public class DownloadLastSubmission extends PopupMenuAction {
         if (vf == null) return;
 
         NewProjectService projectService = NewProjectService.getInstance(project);
-        String token = StepicConnector.getToken(project);
+//        String token = StepicConnector.getToken(project);
         String stepName = vf.getName().split("\\.")[0];
 
         List<Submission> submissions =
-                StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()), token);
+                StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()), project);
 
         if (submissions.isEmpty()) {
             Notification notification = new Notification("Step.download", warningTitle, warning, NotificationType.WARNING);

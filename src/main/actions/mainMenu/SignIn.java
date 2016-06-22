@@ -7,12 +7,6 @@ import com.intellij.openapi.ui.Messages;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.StepicConnector;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-
 public class SignIn extends MainMenuAction {
 
     @Override
@@ -25,7 +19,12 @@ public class SignIn extends MainMenuAction {
                 Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon());
 
         StepicConnector.setLoginAndPassword(login, password, project);
-        StepicConnector.initToken(e.getProject());
+        try {
+            StepicConnector.initToken(e.getProject());
+        } catch (UnirestException e1) {
+            StepicConnector.initConnectionError(e.getProject());
+            return;
+        }
         String name = null;
         try {
             name = StepicConnector.getUserName(project);

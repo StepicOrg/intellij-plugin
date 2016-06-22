@@ -49,7 +49,12 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 //        studentService.setPassword();
         LOG.warn("login = " + props.getValue("login"));
 
-        StepicConnector.initToken(project);
+        try {
+            StepicConnector.initToken(project);
+        } catch (UnirestException e) {
+            StepicConnector.initConnectionError(project);
+            return;
+        }
         String courseId = projectService.getCourseID();
         LOG.warn("build course structure " + root.getPath());
 
