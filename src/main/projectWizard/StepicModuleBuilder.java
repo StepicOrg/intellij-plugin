@@ -47,16 +47,12 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 
         StepicConnector.setLoginAndPassword(props.getValue("login"), props.getValue("password"), project);
 //        studentService.setPassword();
-        LOG.warn("password = " + props.getValue("password"));
         LOG.warn("login = " + props.getValue("login"));
 
 
         StepicConnector.initToken(project);
         String courseId = projectService.getCourseID();
-        LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());
-
-        LOG.warn("root = " + root.getPath());
 
         String token = StepicConnector.getToken(project);
         Course course = null;
@@ -105,7 +101,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
     @Override
     public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
                                                 @NotNull ModulesProvider modulesProvider) {
-        LOG.warn("Create Wizard Steps");
         return new StepicModuleWizardStep[]{new StepicModuleWizardStep(this, wizardContext)};
     }
 

@@ -1,5 +1,7 @@
 package main.actions.popupMenu;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -16,10 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Petr on 03.06.2016.
- */
 public class DownloadLastSubmission extends PopupMenuAction {
+    private final String warning = "You didn't send a Step";
+    private final String warningTitle = "Download error";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -34,22 +35,26 @@ public class DownloadLastSubmission extends PopupMenuAction {
         List<Submission> submissions =
                 StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()), token);
 
-        String code = submissions.get(submissions.size() - 1).getCode();
-        String pack = NewProjectService.getInstance(project).getPackageName(vf.getPath());
-        Document doc = FileDocumentManager.getInstance().getDocument(vf);
-        String code2 = renameFromMainToStep(code, stepName, pack);
-
-        CommandProcessor.getInstance().executeCommand(project, new Runnable() {
-            @Override
-            public void run() {
-                ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        doc.setText(code2);
-                    }
-                });
-            }
-        }, "Download last submission", "Download last submission");
+        if (submissions.isEmpty()) {
+            Notification notification = new Notification("Step.download", warningTitle, warning, NotificationType.WARNING);
+            notification.notify(project);
+        } else {
+            String code = submissions.get(submissions.size() - 1).getCode();
+            String pack = NewProjectService.getInstance(project).getPackageName(vf.getPath());
+            Document doc = FileDocumentManager.getInstance().getDocument(vf);
+            String code2 = renameFromMainToStep(code, stepName, pack);
+            CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                @Override
+                public void run() {
+                    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            doc.setText(code2);
+                        }
+                    });
+                }
+            }, "Download last submission", "Download last submission");
+        }
 
     }
 

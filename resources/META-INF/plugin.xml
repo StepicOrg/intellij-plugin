@@ -136,7 +136,7 @@
         </action>
         <action id="ID.RefreshToken" class="main.actions.mainMenu.RefreshToken" text="RefreshToken"
                 description="get new token">
-            <add-to-group group-id="ID.StepicGroup" anchor="before" relative-to-action="ID.Help"/>
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="before" relative-to-action="ID.Help"/>-->
         </action>
     </actions>
 

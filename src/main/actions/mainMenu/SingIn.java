@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import main.stepicConnector.StepicConnector;
 
 public class SingIn extends MainMenuAction {
@@ -19,7 +20,12 @@ public class SingIn extends MainMenuAction {
 
         StepicConnector.setLoginAndPassword(login, password, project);
         StepicConnector.initToken(e.getProject());
-        String name = StepicConnector.getUserName(project);
+        String name = null;
+        try {
+            name = StepicConnector.getUserName(project);
+        } catch (UnirestException e1) {
+            e1.printStackTrace();
+        }
 
         Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
     }

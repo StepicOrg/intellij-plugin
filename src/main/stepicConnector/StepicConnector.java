@@ -75,7 +75,7 @@ public class StepicConnector {
         try {
             setTokenGRP(project);
         } catch (UnirestException e) {
-            Notification notification = new Notification("Init.token", "Authorization error","Please check your internet configuration." , NotificationType.WARNING);
+            Notification notification = new Notification("Init.token", "Stepic authorization error", "Please check your internet configuration.", NotificationType.WARNING);
             notification.notify(project);
         }
     }
@@ -142,8 +142,6 @@ public class StepicConnector {
                 .asJson();
         final JSONObject responseJson = response.getBody().getObject();
 
-        LOG.warn(responseJson.toString());
-
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
@@ -164,16 +162,11 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    public static AuthorWrapper getCurrentUser(String token) {
-        try {
-            return getFromStepic("stepics/1", AuthorWrapper.class, token);
-        } catch (UnirestException e) {
-            LOG.error("Couldn't get author info");
-        }
-        return null;
+    public static AuthorWrapper getCurrentUser(String token) throws UnirestException {
+        return getFromStepic("stepics/1", AuthorWrapper.class, token);
     }
 
-    public static String getUserName(Project project) {
+    public static String getUserName(Project project) throws UnirestException {
         AuthorWrapper aw = getCurrentUser(getToken(project));
         return aw.users.get(0).getName();
     }
@@ -216,7 +209,10 @@ public class StepicConnector {
         first.put("step", stepId);
         second.put("attempt", first);
 
-        int id = postToStepic(attempts, second, AttemptsContainer.class, token).attempts.get(0).id;
+        List<Attempt> attemptsL = postToStepic(attempts, second, AttemptsContainer.class, token).attempts;
+        if (attemptsL == null)
+            throw new UnirestException("");
+        int id = attemptsL.get(0).id;
         return Integer.toString(id);
     }
 
@@ -250,6 +246,10 @@ public class StepicConnector {
     public static void setLoginAndPassword(String login, String password, Project project) {
         StudentService storage = StudentService.getInstance(project);
         storage.setLoginAndPassword(login, password);
+    }
+
+    public static String getLogin(Project project) {
+        return StudentService.getInstance(project).getLogin();
     }
 
     public static class AuthorWrapper {
