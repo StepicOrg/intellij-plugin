@@ -25,28 +25,29 @@ public class GetStepStatus extends PopupMenuAction {
 
         String path = vf.getPath();
         NewProjectService projectService = NewProjectService.getInstance(project);
+        String token = StepicConnector.getToken(project);
         String stepId = projectService.getStepID(path);
 
-        String ans = "";
+        String ans;
 
 
-        Notification notification = null;
         try {
-            if (wasItSolved(stepId)) {
+            if (wasItSolved(stepId, token)) {
                 ans = "Step was solved\n";
             } else {
                 ans = "Step wasn't solved\n";
             }
 
+            ans += "last submission from IDEA is ";
             String subID = projectService.getSubmissionID(path);
             if (subID.isEmpty()) {
-                ans += "last submission from IDEA is unknown";
+                ans += "unknown";
             } else {
-                ans += StepicConnector.getStatus(subID).get(0).getStatus();
+                ans += StepicConnector.getStatus(subID, token).get(0).getStatus();
             }
 
         } catch (UnirestException e1) {
-            notification =
+            Notification notification =
                     new Notification("Step.status", "Error", "Get Status error", NotificationType.ERROR);
             notification.notify(project);
             return;
@@ -55,8 +56,8 @@ public class GetStepStatus extends PopupMenuAction {
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());
     }
 
-    private boolean wasItSolved(String stepID) throws UnirestException {
-        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct")).size();
+    private boolean wasItSolved(String stepID, String token) throws UnirestException {
+        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct"), token).size();
         if (size > 0) {
             return true;
         } else {

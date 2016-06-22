@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import main.stepicConnector.StepicApplicationService;
 import main.stepicConnector.StepicConnector;
 
 import java.io.IOException;
@@ -20,19 +19,19 @@ public class SignIn extends MainMenuAction {
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
-        StepicApplicationService.getInstance().setLogin(
-                Messages.showInputDialog(project, "Please, input your E-mail", "Sing in", Messages.getQuestionIcon()));
-        StepicApplicationService.getInstance().setPassword(
-                Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon()));
+        String login =
+                Messages.showInputDialog(project, "Please, input your E-mail", "Sing in", Messages.getQuestionIcon());
+        String password =
+                Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon());
 
+        StepicConnector.setLoginAndPassword(login, password, project);
+        StepicConnector.initToken(e.getProject());
+        String name = null;
         try {
-            StepicConnector.initToken(e.getProject());
-        } catch (UnirestException ex) {
-            ex.printStackTrace();
-        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {
-            ex.printStackTrace();
+            name = StepicConnector.getUserName(project);
+        } catch (UnirestException e1) {
+            e1.printStackTrace();
         }
-        String name = StepicConnector.getUserName();
 
         Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
     }

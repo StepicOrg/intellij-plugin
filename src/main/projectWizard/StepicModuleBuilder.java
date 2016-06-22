@@ -26,10 +26,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,29 +38,25 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         final VirtualFile root = project.getBaseDir();
 
         NewProjectService projectService = NewProjectService.getInstance(project);
+//        StudentService studentService = StudentService.getInstance(project);
 
         PropertiesComponent props = PropertiesComponent.getInstance();
-        projectService.setTranslate(props.getValue("translate").equals("true") ? true : false );
+        projectService.setTranslate(props.getValue("translate").equals("true") ? true : false);
         projectService.setCourseID(props.getValue("courseId"));
         projectService.setProjectName(project.getName());
 
+        StepicConnector.setLoginAndPassword(props.getValue("login"), props.getValue("password"), project);
+//        studentService.setPassword();
+        LOG.warn("login = " + props.getValue("login"));
 
-        try {
-            StepicConnector.initToken(project);
-        } catch (UnirestException ex) {
-            ex.printStackTrace();
-        } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException ex) {
-            ex.printStackTrace();
-        }
+        StepicConnector.initToken(project);
         String courseId = projectService.getCourseID();
-        LOG.warn("build course structure " + courseId);
         LOG.warn("build course structure " + root.getPath());
 
-        LOG.warn("root = " + root.getPath());
-
+        String token = StepicConnector.getToken(project);
         Course course = null;
         try {
-            course = StepicConnector.getCourses(courseId).get(0);
+            course = StepicConnector.getCourses(courseId, token).get(0);
             course.build(root.getPath(), rootModel.getProject());
         } catch (UnirestException e) {
 //            e.printStackTrace();
@@ -108,7 +100,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
     @Override
     public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
                                                 @NotNull ModulesProvider modulesProvider) {
-        LOG.warn("Create Wizard Steps");
         return new StepicModuleWizardStep[]{new StepicModuleWizardStep(this, wizardContext)};
     }
 

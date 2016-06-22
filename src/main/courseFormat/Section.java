@@ -27,15 +27,16 @@ public class Section {
 
 
     public void build(int sectionNo, String courseDir, Project project) throws UnirestException {
+        String token = StepicConnector.getToken(project);
         this.sectionNo = sectionNo;
         int lessonNo = 0;
 
-        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId));
+        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId), token);
         if (units == null) return;
         List<Integer> lessonsId = new ArrayList<>();
         List<String> lessonNames = new ArrayList<>();
         units.forEach(x -> lessonsId.add(x.getLessonId()));
-        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId));
+        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId), token);
         lessons.forEach(x -> lessonNames.add(x.title));
 
         List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson", project);

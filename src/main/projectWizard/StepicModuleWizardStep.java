@@ -65,6 +65,8 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
         PropertiesComponent props = PropertiesComponent.getInstance();
         props.setValue("translate", Boolean.toString(CheckBox.isSelected()));
         props.setValue("courseId", parseUrl(courseLinkFiled.getText()));
+        saveValue("login", textField1.getText());
+        saveValue("password", new String(passwordField1.getPassword()));
     }
 
     private static void saveValue(String key, String value) {

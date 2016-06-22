@@ -27,9 +27,10 @@ public class Lesson {
 
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) throws UnirestException {
         this.lessonNo = lessonNo;
+        String token = StepicConnector.getToken(project);
         NewProjectService projectService = NewProjectService.getInstance(project);
 
-        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId));
+        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), token);
 
         for (Step step : stepsList) {
             if (step.isTask()) {

@@ -29,8 +29,11 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+
         <applicationService serviceInterface="main.stepicConnector.StepicApplicationService"
-                            serviceImplementation="main.stepicConnector.StepicApplicationService"/>
+                        serviceImplementation="main.stepicConnector.StepicApplicationService"/>
+        <projectService serviceInterface="main.stepicConnector.StudentService"
+                            serviceImplementation="main.stepicConnector.StudentService"/>
 
         <projectService serviceInterface="main.stepicConnector.NewProjectService"
                         serviceImplementation="main.stepicConnector.NewProjectService"/>
@@ -133,7 +136,7 @@
         </action>
         <action id="ID.RefreshToken" class="main.actions.mainMenu.RefreshToken" text="RefreshToken"
                 description="get new token">
-            <add-to-group group-id="ID.StepicGroup" anchor="before" relative-to-action="ID.Help"/>
+            <!--<add-to-group group-id="ID.StepicGroup" anchor="before" relative-to-action="ID.Help"/>-->
         </action>
     </actions>
 

@@ -34,6 +34,7 @@ public class SendFile extends PopupMenuAction {
         if (vf == null) return;
 
         NewProjectService projectService = NewProjectService.getInstance(project);
+        String token = StepicConnector.getToken(project);
         String stepId = projectService.getStepID(vf.getPath());
 
         String text = renameMainClass(vf);
@@ -42,8 +43,8 @@ public class SendFile extends PopupMenuAction {
         String attemptId;
         String submissionId;
         try {
-            attemptId = StepicConnector.getAttemptId(stepId);
-            submissionId = StepicConnector.sendFile(text, attemptId);
+            attemptId = StepicConnector.getAttemptId(stepId, token);
+            submissionId = StepicConnector.sendFile(text, attemptId, token);
 
             projectService.setAttemptID(path, attemptId);
             projectService.setSubmissionID(path, submissionId);
@@ -69,7 +70,7 @@ public class SendFile extends PopupMenuAction {
                         while (ans.equals("evaluation") && count < 100) {
                             try {
                                 Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
-                                list = StepicConnector.getStatus(finalSubmissionId);
+                                list = StepicConnector.getStatus(finalSubmissionId, token);
                                 if (list != null)
                                     ans = list.get(0).getStatus();
                                 count += TIMER;

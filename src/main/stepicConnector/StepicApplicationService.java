@@ -16,9 +16,6 @@ import java.util.Date;
 @State(name = "StepicApplicationService", storages = @Storage(id = "StepicApplicationService", file = StoragePathMacros.APP_CONFIG + "/StepicApplicationService.xml"))
 public class StepicApplicationService implements PersistentStateComponent<StepicApplicationService> {
     private final String clientId = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
-    private String clientSecret;
-    private String token;
-    private String refresh_token;
     private String login;
     private long tokenTimeCreate;
 
@@ -75,47 +72,6 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
         return clientId;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
-
-    public String getToken() {
-        if (timePassedLessThen(tokenTimeCreate, new Date().getTime(), 9*60*60)) {
-            return token;
-        } else {
-            try {
-                StepicConnector.setTokenGRP();
-            } catch (UnirestException e) {
-                e.printStackTrace();
-            }
-        }
-        return token;
-    }
-
-    private boolean timePassedLessThen(long base, long current, long sec) {
-//        long delta = d1.getTime() - d0.getTime();
-        long delta = current - base;
-        return delta - sec * 1000L < 0L;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-        Date date = new Date();
-        tokenTimeCreate = date.getTime();
-    }
-
-    public String getRefresh_token() {
-        return refresh_token;
-    }
-
-    public void setRefresh_token(String refresh_token) {
-        this.refresh_token = refresh_token;
-    }
-
     public String getLogin() {
         return login;
     }
@@ -126,9 +82,5 @@ public class StepicApplicationService implements PersistentStateComponent<Stepic
 
     public void setTokenTimeCreate(long tokenTimeCreate) {
         this.tokenTimeCreate = tokenTimeCreate;
-    }
-
-    public long getTokenTimeCreate() {
-        return tokenTimeCreate;
     }
 }
