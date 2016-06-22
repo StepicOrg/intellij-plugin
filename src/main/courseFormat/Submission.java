@@ -6,6 +6,7 @@ public class Submission {
     public int id;
     private String status;
     private String time;
+    private String hint;
     private Map<String,String> reply;
 
     public String getStatus() {
@@ -22,5 +23,9 @@ public class Submission {
 
     public String getCode() {
         return reply.get("code");
+    }
+
+    public String getHint() {
+        return hint;
     }
 }

@@ -57,11 +57,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
         StepicApplicationService ws = StepicApplicationService.getInstance();
         ws.setLogin(textField1.getText());
         ws.setPassword(new String(passwordField1.getPassword()));
-//        ws.setCourseID(parseUrl(courseLinkFiled.getText()));
 
-//        ws.setTranslator(CheckBox.isSelected());
-//        StepicProjectService projectService = StepicProjectService.getInstance(myProjectOrNull);
-//        projectService.setTranslator(CheckBox.isSelected());
         PropertiesComponent props = PropertiesComponent.getInstance();
         props.setValue("translate", Boolean.toString(CheckBox.isSelected()));
         props.setValue("courseId", parseUrl(courseLinkFiled.getText()));

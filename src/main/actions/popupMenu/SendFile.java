@@ -13,6 +13,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import main.courseFormat.Submission;
+import main.projectWizard.MyLogger;
 import main.stepicConnector.NewProjectService;
 import main.stepicConnector.StepicConnector;
 
@@ -46,6 +47,9 @@ public class SendFile extends PopupMenuAction {
             attemptId = StepicConnector.getAttemptId(stepId, token);
             submissionId = StepicConnector.sendFile(text, attemptId, token);
 
+            MyLogger.getInstance().getLOG().warn("attId = " + attemptId);
+            MyLogger.getInstance().getLOG().warn("subId = " + submissionId);
+
             projectService.setAttemptID(path, attemptId);
             projectService.setSubmissionID(path, submissionId);
             Messages.showMessageDialog(project, success, "Information", Messages.getInformationIcon());
@@ -67,12 +71,15 @@ public class SendFile extends PopupMenuAction {
                         int count = 0;
                         Notification notification = null;
                         List<Submission> list = null;
+                        String b = "";
                         while (ans.equals("evaluation") && count < 100) {
                             try {
                                 Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
                                 list = StepicConnector.getStatus(finalSubmissionId, token);
-                                if (list != null)
+                                if (list != null) {
                                     ans = list.get(0).getStatus();
+                                    b = list.get(0).getHint();
+                                }
                                 count += TIMER;
                             } catch (InterruptedException | UnirestException | NullPointerException e1) {
                                 notification = new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
@@ -82,12 +89,15 @@ public class SendFile extends PopupMenuAction {
                         }
 
                         NotificationType notificationType;
+
                         if (ans.equals("correct")) {
                             notificationType = NotificationType.INFORMATION;
+                            b = "Success!";
                         } else {
                             notificationType = NotificationType.WARNING;
+                            b = b.split("\\.")[0];
                         }
-                        notification = new Notification("Step.sending", "Step status", filename + " is " + ans, notificationType);
+                        notification = new Notification("Step.sending", filename + " is " + ans, b, notificationType);
                         notification.notify(project);
                     }
                 }
