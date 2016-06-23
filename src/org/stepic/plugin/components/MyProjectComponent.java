@@ -2,11 +2,10 @@ package org.stepic.plugin.components;
 
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import org.jetbrains.annotations.NotNull;
+import org.stepic.plugin.stepicConnector.StepicConnector;
 import org.stepic.plugin.storages.ActionVisibleProperties;
 import org.stepic.plugin.storages.CourseDefinitionStorage;
-import org.stepic.plugin.stepicConnector.StepicConnector;
-import org.jetbrains.annotations.NotNull;
 
 public class MyProjectComponent implements ProjectComponent {
     Project project;
@@ -43,11 +42,7 @@ public class MyProjectComponent implements ProjectComponent {
         if (project.getName().equals(CourseDefinitionStorage.getInstance(project).getProjectName())) {
             prop.setEnabled(true);
             prop.setVisible(true);
-            try {
                 StepicConnector.initToken(project);
-            } catch (UnirestException e) {
-                StepicConnector.initConnectionError(project);
-            }
         }
     }
 

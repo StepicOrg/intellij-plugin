@@ -1,7 +1,7 @@
-<idea-plugin version="20">
+<idea-plugin version="22">
     <id>stepic.submmit.plugin.id</id>
     <name>Stepic Java submitter -beta-</name>
-    <version>0.5.1</version>
+    <version>0.6.0</version>
     <vendor email="petr.bogdanov@stepic.org" url="https://stepic.org">Stepic</vendor>
 
     <description><![CDATA[
@@ -32,6 +32,7 @@
 
         <applicationService serviceInterface="org.stepic.plugin.storages.StepicApplicationStorage"
                         serviceImplementation="org.stepic.plugin.storages.StepicApplicationStorage"/>
+
         <projectService serviceInterface="org.stepic.plugin.storages.StudentStorage"
                             serviceImplementation="org.stepic.plugin.storages.StudentStorage"/>
 

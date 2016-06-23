@@ -4,8 +4,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.stepic.plugin.stepicConnector.StepicConnector;
 import org.stepic.plugin.stepicConnector.StepicConnector;
 
 public class SignIn extends MainMenuAction {
@@ -20,18 +18,9 @@ public class SignIn extends MainMenuAction {
                 Messages.showPasswordDialog(project, "Please, input your Password", "Sing in", Messages.getQuestionIcon());
 
         StepicConnector.setLoginAndPassword(login, password, project);
-        try {
-            StepicConnector.initToken(e.getProject());
-        } catch (UnirestException e1) {
-            StepicConnector.initConnectionError(e.getProject());
-            return;
-        }
+        StepicConnector.initToken(e.getProject());
         String name = null;
-        try {
-            name = StepicConnector.getUserName(project);
-        } catch (UnirestException e1) {
-            e1.printStackTrace();
-        }
+        name = StepicConnector.getUserName(project);
 
         Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
     }

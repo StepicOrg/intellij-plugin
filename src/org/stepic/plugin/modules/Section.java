@@ -31,12 +31,12 @@ public class Section {
         this.sectionNo = sectionNo;
         int lessonNo = 0;
 
-        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId), token);
+        List<Unit> units = StepicConnector.getUnits(Utils.getIdQuery(unitsId), project);
         if (units == null) return;
         List<Integer> lessonsId = new ArrayList<>();
         List<String> lessonNames = new ArrayList<>();
         units.forEach(x -> lessonsId.add(x.getLessonId()));
-        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId), token);
+        List<Lesson> lessons = StepicConnector.getLessons(Utils.getIdQuery(lessonsId), project);
         lessons.forEach(x -> lessonNames.add(x.title));
 
         List<String> newLessonNames = YaTranslator.translateNames(lessonNames, "lesson", project);

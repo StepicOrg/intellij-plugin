@@ -11,11 +11,10 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import org.stepic.plugin.modules.Submission;
-import org.stepic.plugin.utils.MyLogger;
-import org.stepic.plugin.storages.CourseDefinitionStorage;
 import org.stepic.plugin.stepicConnector.StepicConnector;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
+import org.stepic.plugin.utils.MyLogger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -43,20 +42,20 @@ public class SendFile extends PopupMenuAction {
 
         String attemptId;
         String submissionId;
-        try {
-            attemptId = StepicConnector.getAttemptId(stepId, token);
-            submissionId = StepicConnector.sendFile(text, attemptId, token);
+//        try {
+        attemptId = StepicConnector.getAttemptId(stepId, project);
+        submissionId = StepicConnector.sendFile(text, attemptId, project);
 
-            MyLogger.getInstance().getLOG().warn("attId = " + attemptId);
-            MyLogger.getInstance().getLOG().warn("subId = " + submissionId);
+        MyLogger.getInstance().getLOG().warn("attId = " + attemptId);
+        MyLogger.getInstance().getLOG().warn("subId = " + submissionId);
 
-            projectService.setAttemptID(path, attemptId);
-            projectService.setSubmissionID(path, submissionId);
-            Messages.showMessageDialog(project, success, "Information", Messages.getInformationIcon());
-        } catch (UnirestException e1) {
-            Messages.showMessageDialog(project, error, "Error", Messages.getErrorIcon());
-            return;
-        }
+        projectService.setAttemptID(path, attemptId);
+        projectService.setSubmissionID(path, submissionId);
+        Messages.showMessageDialog(project, success, "Information", Messages.getInformationIcon());
+//        } catch (UnirestException e1) {
+//            Messages.showMessageDialog(project, error, "Error", Messages.getErrorIcon());
+//            return;
+//        }
 
         String filename = projectService.getFilename(path);
         final Application application = ApplicationManager.getApplication();
@@ -75,13 +74,13 @@ public class SendFile extends PopupMenuAction {
                         while (ans.equals("evaluation") && count < 100) {
                             try {
                                 Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
-                                list = StepicConnector.getStatus(finalSubmissionId, token);
+                                list = StepicConnector.getStatus(finalSubmissionId, project);
                                 if (list != null) {
                                     ans = list.get(0).getStatus();
                                     b = list.get(0).getHint();
                                 }
                                 count += TIMER;
-                            } catch (InterruptedException | UnirestException | NullPointerException e1) {
+                            } catch (InterruptedException | NullPointerException e1) {
                                 notification = new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
                                 notification.notify(project);
                                 return;

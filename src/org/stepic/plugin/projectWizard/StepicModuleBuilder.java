@@ -49,19 +49,14 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
 //        studentService.setPassword();
         LOG.warn("login = " + props.getValue("login"));
 
-        try {
-            StepicConnector.initToken(project);
-        } catch (UnirestException e) {
-            StepicConnector.initConnectionError(project);
-            return;
-        }
+        StepicConnector.initToken(project);
         String courseId = projectService.getCourseID();
         LOG.warn("build course structure " + root.getPath());
 
         String token = StepicConnector.getToken(project);
         Course course = null;
         try {
-            course = StepicConnector.getCourses(courseId, token).get(0);
+            course = StepicConnector.getCourses(courseId, project).get(0);
             course.build(root.getPath(), rootModel.getProject());
         } catch (UnirestException e) {
 //            e.printStackTrace();

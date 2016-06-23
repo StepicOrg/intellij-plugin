@@ -4,7 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -26,7 +25,10 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class StepicConnector {
 
@@ -34,10 +36,10 @@ public class StepicConnector {
     private static final String API_URL = "https://stepic.org/api/";
     private static final String CLIENT_ID = "hUCWcq3hZHCmz0DKrDtwOWITLcYutzot7p4n59vU";
 
-    private static final Logger LOG = Logger.getInstance(StepicConnector.class);
+    private static final Logger logger = Logger.getInstance(StepicConnector.class);
     private static boolean isInstanceProperty = false;
 
-    private static void setSSLProperty() {
+    private static void setSSLProperty(Project project) {
 // Create a trust manager that does not validate certificate for this connection
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
@@ -54,10 +56,8 @@ public class StepicConnector {
         try {
             sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustAllCerts, new SecureRandom());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            initRuntimeException(NotificationTemplates.CERTIFICATE_ERROR, project);
         }
 
         SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
@@ -67,21 +67,16 @@ public class StepicConnector {
         Unirest.setHttpClient(httpclient);
     }
 
-    public static void initToken(Project project) throws UnirestException {
+    public static void initToken(Project project) {
         if (!isInstanceProperty) {
-            setSSLProperty();
+            setSSLProperty(project);
             isInstanceProperty = true;
         }
 
-//        try {
-            setTokenGRP(project);
-//        } catch (UnirestException e) {
-//            Notification notification = new Notification("Init.token", "Stepic authorization error", "Please check your internet configuration.", NotificationType.WARNING);
-//            notification.notify(project);
-//        }
+        setTokenGRP(project);
     }
 
-    private static void setTokenGRP(Project project) throws UnirestException {
+    private static void setTokenGRP(Project project) {
         StudentStorage ws = StudentStorage.getInstance(project);
         String user = ws.getLogin();
         String pass = ws.getPassword();
@@ -92,16 +87,9 @@ public class StepicConnector {
         parameters.put("password", pass);
         parameters.put("client_id", CLIENT_ID);
 
-        TokenInfo tokenInfo = postToStepicMapLinkReset(TOKEN_URL, parameters, TokenInfo.class);
+        TokenInfo tokenInfo = null;
+        tokenInfo = postToStepicMapLinkReset(TOKEN_URL, parameters, TokenInfo.class, project);
 
-//<<<<<<< HEAD
-//        if (tokenInfo.access_token != null) {
-//            ws.setToken(tokenInfo.access_token);
-//            ws.setRefresh_token(tokenInfo.refresh_token);
-//            return true;
-//        } else {
-//            return false;
-//=======
         String token = tokenInfo.access_token;
         if (token != null && !token.isEmpty()) {
             ws.setToken(tokenInfo.access_token);
@@ -109,13 +97,18 @@ public class StepicConnector {
         }
     }
 
-    private static <T> T getFromStepic(String link, final Class<T> container, String token) throws UnirestException {
+    private static <T> T getFromStepic(String link, final Class<T> container, Project project) {
 
-        HttpResponse<String> response;
-        response = Unirest
-                .get(API_URL + link)
-                .header("Authorization", "Bearer " + token)
-                .asString();
+        String token = getToken(project);
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest
+                    .get(API_URL + link)
+                    .header("Authorization", "Bearer " + token)
+                    .asString();
+        } catch (UnirestException e) {
+            initRuntimeException(project);
+        }
         final String responseString = response.getBody();
 
         Gson gson = new GsonBuilder()
@@ -124,15 +117,19 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    private static <T> T getFromStepic(String link, Map<String, Object> queryMap, final Class<T> container, String token)
-            throws UnirestException {
+    private static <T> T getFromStepic(String link, Map<String, Object> queryMap, final Class<T> container, Project project) {
 
-        HttpResponse<String> response;
-        response = Unirest
-                .get(API_URL + link)
-                .header("Authorization", "Bearer " + token)
-                .queryString(queryMap)
-                .asString();
+        String token = getToken(project);
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest
+                    .get(API_URL + link)
+                    .header("Authorization", "Bearer " + token)
+                    .queryString(queryMap)
+                    .asString();
+        } catch (UnirestException e) {
+            initRuntimeException(project);
+        }
         final String responseString = response.getBody();
 
         Gson gson = new GsonBuilder()
@@ -141,14 +138,19 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    private static <T> T postToStepic(String link, JSONObject jsonObject, final Class<T> container, String token) throws UnirestException {
-        HttpResponse<JsonNode> response;
-        response = Unirest
-                .post(API_URL + link)
-                .header("Authorization", "Bearer " + token)
-                .header("Content-Type", "application/json")
-                .body(jsonObject)
-                .asJson();
+    private static <T> T postToStepic(String link, JSONObject jsonObject, final Class<T> container, Project project) {
+        HttpResponse<JsonNode> response = null;
+        String token = getToken(project);
+        try {
+            response = Unirest
+                    .post(API_URL + link)
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .body(jsonObject)
+                    .asJson();
+        } catch (UnirestException e) {
+            initRuntimeException(project);
+        }
         final JSONObject responseJson = response.getBody().getObject();
 
         Gson gson = new GsonBuilder()
@@ -157,12 +159,16 @@ public class StepicConnector {
         return gson.fromJson(responseJson.toString(), container);
     }
 
-    private static <T> T postToStepicMapLinkReset(String link, Map<String, Object> parameters, final Class<T> container) throws UnirestException {
-        HttpResponse<String> response;
-        response = Unirest
-                .post(link)
-                .fields(parameters)
-                .asString();
+    private static <T> T postToStepicMapLinkReset(String link, Map<String, Object> parameters, final Class<T> container, Project project) {
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest
+                    .post(link)
+                    .fields(parameters)
+                    .asString();
+        } catch (UnirestException e) {
+            initRuntimeException(project);
+        }
         final String responseString = response.getBody();
 
         Gson gson = new GsonBuilder()
@@ -171,46 +177,46 @@ public class StepicConnector {
         return gson.fromJson(responseString, container);
     }
 
-    public static AuthorWrapper getCurrentUser(String token) throws UnirestException {
-        return getFromStepic("stepics/1", AuthorWrapper.class, token);
+    public static AuthorWrapper getCurrentUser(Project project) {
+        return getFromStepic("stepics/1", AuthorWrapper.class, project);
     }
 
-    public static String getUserName(Project project) throws UnirestException {
-        AuthorWrapper aw = getCurrentUser(getToken(project));
+    public static String getUserName(Project project) {
+        AuthorWrapper aw = getCurrentUser(project);
         return aw.users.get(0).getName();
     }
 
-    public static List<Course> getCourses(String courseId, String token) throws UnirestException {
+    public static List<Course> getCourses(String courseId, Project project) {
         final String url = "courses/" + courseId;
-        return getFromStepic(url, CoursesContainer.class, token).courses;
+        return getFromStepic(url, CoursesContainer.class, project).courses;
     }
 
-    public static List<Section> getSections(String idsQuery, String token) throws UnirestException {
+    public static List<Section> getSections(String idsQuery, Project project) {
         final String url = "sections" + idsQuery;
-        return getFromStepic(url, SectionsContainer.class, token).sections;
+        return getFromStepic(url, SectionsContainer.class, project).sections;
     }
 
-    public static List<Unit> getUnits(String idsQuery, String token) throws UnirestException {
+    public static List<Unit> getUnits(String idsQuery, Project project) {
         final String url = "units" + idsQuery;
-        return getFromStepic(url, UnitsContainer.class, token).units;
+        return getFromStepic(url, UnitsContainer.class, project).units;
     }
 
-    public static List<Lesson> getLessons(String idsQuery, String token) throws UnirestException {
+    public static List<Lesson> getLessons(String idsQuery, Project project) {
         final String url = "lessons" + idsQuery;
-        return getFromStepic(url, LessonsContainer.class, token).lessons;
+        return getFromStepic(url, LessonsContainer.class, project).lessons;
     }
 
-    public static List<Submission> getStatus(String submissionID, String token) throws UnirestException {
+    public static List<Submission> getStatus(String submissionID, Project project) {
         final String url = "submissions/" + submissionID;
-        return getFromStepic(url, SubmissionsContainer.class, token).submissions;
+        return getFromStepic(url, SubmissionsContainer.class, project).submissions;
     }
 
-    public static List<Step> getSteps(String stepIdQuery, String token) throws UnirestException {
+    public static List<Step> getSteps(String stepIdQuery, Project project) {
         final String url = "steps" + stepIdQuery;
-        return getFromStepic(url, StepsContainer.class, token).steps;
+        return getFromStepic(url, StepsContainer.class, project).steps;
     }
 
-    public static String getAttemptId(String stepId, String token) throws UnirestException {
+    public static String getAttemptId(String stepId, Project project) {
         String attempts = "attempts";
         JSONObject first = new JSONObject();
         JSONObject second = new JSONObject();
@@ -218,14 +224,15 @@ public class StepicConnector {
         first.put("step", stepId);
         second.put("attempt", first);
 
-        List<Attempt> attemptsL = postToStepic(attempts, second, AttemptsContainer.class, token).attempts;
-        if (attemptsL == null)
-            throw new UnirestException("");
+        List<Attempt> attemptsL = postToStepic(attempts, second, AttemptsContainer.class, project).attempts;
+        if (attemptsL == null) {
+            initRuntimeException(project);
+        }
         int id = attemptsL.get(0).id;
         return Integer.toString(id);
     }
 
-    public static String sendFile(String file, String att_id, String token) throws UnirestException {
+    public static String sendFile(String file, String att_id, Project project) {
 
         JSONObject wrapper = new JSONObject();
         JSONObject submission = new JSONObject();
@@ -239,17 +246,17 @@ public class StepicConnector {
 
         wrapper.put("submission", submission);
 
-        int id = postToStepic("submissions", wrapper, SubmissionsContainer.class, token).submissions.get(0).id;
+        int id = postToStepic("submissions", wrapper, SubmissionsContainer.class, project).submissions.get(0).id;
         return Integer.toString(id);
     }
 
-    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair, String token) throws UnirestException {
+    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair, Project project) {
 
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("step", stepId);
         queryMap.put(pair.first, pair.second);
 
-        return getFromStepic("submissions", queryMap, SubmissionsContainer.class, token).submissions;
+        return getFromStepic("submissions", queryMap, SubmissionsContainer.class, project).submissions;
     }
 
     public static void setLoginAndPassword(String login, String password, Project project) {
@@ -304,13 +311,7 @@ public class StepicConnector {
         StudentStorage storage = StudentStorage.getInstance(project);
         Map<String, Object> map = new HashMap<>();
         map.put("step", stepId);
-        try {
-            return getFromStepic("submissions", map, SubmissionsContainer.class, storage.getToken()).submissions;
-        } catch (UnirestException e) {
-//            LOG.error("getSubmissions error " + e.getMessage());
-            initConnectionError(project);
-            return new ArrayList<>();
-        }
+        return getFromStepic("submissions", map, SubmissionsContainer.class, project).submissions;
     }
 
     public static String getToken(Project project) {
@@ -318,11 +319,7 @@ public class StepicConnector {
         long baseTime = storage.getTokenTimeCreate();
 
         if (!timePassedLessThen(baseTime, new Date().getTime(), 32400L)) { // 9 hours in sec
-            try {
-                StepicConnector.initToken(project);
-            } catch (UnirestException e) {
-                StepicConnector.initConnectionError(project);
-            }
+            StepicConnector.initToken(project);
         }
         return storage.getToken();
     }
@@ -332,9 +329,13 @@ public class StepicConnector {
         return delta - sec * 1000L < 0L;
     }
 
-    public static void initConnectionError(Project project){
-        Notification notification = new Notification("Unirest.exception", "Stepic authorization error", "Please check your internet configuration.", NotificationType.WARNING);
+    private static void initRuntimeException(Notification notification, Project project) {
         notification.notify(project);
+        throw new RuntimeException();
+    }
+
+    private static void initRuntimeException(Project project) {
+        initRuntimeException(NotificationTemplates.CONNECTION_ERROR, project);
     }
 }
 

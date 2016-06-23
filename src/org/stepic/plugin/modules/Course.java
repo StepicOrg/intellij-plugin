@@ -49,7 +49,7 @@ public class Course {
     public void build(String root, Project project) throws UnirestException {
         int sectionNo = 0;
         String token = StepicConnector.getToken(project);
-        List<Section> sectionList = StepicConnector.getSections(Utils.getIdQuery(sectionsId), token);
+        List<Section> sectionList = StepicConnector.getSections(Utils.getIdQuery(sectionsId), project);
         List<String> sectionNames = new ArrayList<>();
         sectionList.forEach(x -> sectionNames.add(x.title));
 

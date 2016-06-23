@@ -30,7 +30,7 @@ public class Lesson {
         String token = StepicConnector.getToken(project);
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
 
-        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), token);
+        List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), project);
 
         for (Step step : stepsList) {
             if (step.isTask()) {

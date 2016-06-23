@@ -6,9 +6,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.stepic.plugin.storages.CourseDefinitionStorage;
 import org.stepic.plugin.stepicConnector.StepicConnector;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 /**
  * Created by Petr on 21.05.2016.
@@ -23,14 +22,12 @@ public class GetStepStatus extends PopupMenuAction {
 
         String path = vf.getPath();
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
-        String token = StepicConnector.getToken(project);
         String stepId = projectService.getStepID(path);
 
         String ans;
 
 
-        try {
-            if (wasItSolved(stepId, token)) {
+            if (wasItSolved(stepId, project)) {
                 ans = "Step was solved\n";
             } else {
                 ans = "Step wasn't solved\n";
@@ -41,22 +38,15 @@ public class GetStepStatus extends PopupMenuAction {
             if (subID.isEmpty()) {
                 ans += "unknown";
             } else {
-                ans += StepicConnector.getStatus(subID, token).get(0).getStatus();
+                ans += StepicConnector.getStatus(subID, project).get(0).getStatus();
             }
 
-        } catch (UnirestException e1) {
-//            Notification notification =
-//                    new Notification("Step.status", "Error", "Get Status error", NotificationType.ERROR);
-//            notification.notify(project);
-            StepicConnector.initConnectionError(project);
-            return;
-        }
 
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());
     }
 
-    private boolean wasItSolved(String stepID, String token) throws UnirestException {
-        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct"), token).size();
+    private boolean wasItSolved(String stepID, Project project)  {
+        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct"), project).size();
         if (size > 0) {
             return true;
         } else {

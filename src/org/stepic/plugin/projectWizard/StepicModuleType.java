@@ -11,7 +11,6 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.Condition;
 import com.intellij.psi.CommonClassNames;
 import com.intellij.psi.JavaPsiFacade;
-import org.stepic.plugin.icons.PluginIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jps.model.java.JavaModuleSourceRootTypes;
@@ -23,7 +22,7 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
     public static final String MODULE_NAME = "Stepic";
     public static final StepicModuleType STEPIC_MODULE_TYPE;
     static {
-        STEPIC_MODULE_TYPE = (StepicModuleType) instantiate("StepicModuleType");
+        STEPIC_MODULE_TYPE = (StepicModuleType) instantiate("org.stepic.plugin.projectWizard.StepicModuleType");
     }
     private static final String ID = "STEPIC_MODULE_TYPE";
 

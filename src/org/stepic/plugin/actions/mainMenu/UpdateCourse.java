@@ -35,17 +35,15 @@ public class UpdateCourse extends MainMenuAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = e.getProject();
-//        StepicConnector.initToken();
 
         final VirtualFile root = project.getBaseDir();
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
-        String token = StepicConnector.getToken(project);
         String courseID = projectService.getCourseID();
         Course course = null;
         Map<String, StepInfo> map;
         Set<String> newFiles;
         try {
-            course = StepicConnector.getCourses(courseID, token).get(0);
+            course = StepicConnector.getCourses(courseID, project).get(0);
             newFiles = new HashSet<>();
 
             Utils.refreshFiles(project);
@@ -85,7 +83,6 @@ public class UpdateCourse extends MainMenuAction {
         } else {
             sb.append(nnew);
         }
-//        newFiles.forEach((x) -> sb.append(x.toString() + "\n"));
         Messages.showMessageDialog(project, sb.toString(), "Information", Messages.getInformationIcon());
 
     }
