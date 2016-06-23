@@ -3,10 +3,9 @@ package org.stepic.plugin.modules;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.stepic.plugin.utils.Utils;
-import org.stepic.plugin.storages.CourseDefinitionStorage;
 import org.stepic.plugin.stepicConnector.StepicConnector;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
+import org.stepic.plugin.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Lesson {
     public transient Map<Integer, Step> steps = new HashMap<>();
     private int lessonNo;
 
-    public void build(int lessonNo, String courseDir, String sectionDir, Project project) throws UnirestException {
+    public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
         this.lessonNo = lessonNo;
         String token = StepicConnector.getToken(project);
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);

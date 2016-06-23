@@ -26,7 +26,7 @@ public class Section {
     private int sectionNo;
 
 
-    public void build(int sectionNo, String courseDir, Project project) throws UnirestException {
+    public void build(int sectionNo, String courseDir, Project project) {
         String token = StepicConnector.getToken(project);
         this.sectionNo = sectionNo;
         int lessonNo = 0;

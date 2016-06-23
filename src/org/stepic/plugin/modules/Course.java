@@ -46,7 +46,7 @@ public class Course {
         return false;
     }
 
-    public void build(String root, Project project) throws UnirestException {
+    public void build(String root, Project project) {
         int sectionNo = 0;
         String token = StepicConnector.getToken(project);
         List<Section> sectionList = StepicConnector.getSections(Utils.getIdQuery(sectionsId), project);

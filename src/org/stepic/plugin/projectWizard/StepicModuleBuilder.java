@@ -10,15 +10,13 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import org.jetbrains.annotations.NotNull;
 import org.stepic.plugin.modules.Course;
 import org.stepic.plugin.modules.StepInfo;
-import org.stepic.plugin.storages.CourseDefinitionStorage;
 import org.stepic.plugin.stepicConnector.StepicConnector;
-import org.jetbrains.annotations.NotNull;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,16 +51,9 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         String courseId = projectService.getCourseID();
         LOG.warn("build course structure " + root.getPath());
 
-        String token = StepicConnector.getToken(project);
         Course course = null;
-        try {
             course = StepicConnector.getCourses(courseId, project).get(0);
             course.build(root.getPath(), rootModel.getProject());
-        } catch (UnirestException e) {
-//            e.printStackTrace();
-            Messages.showMessageDialog(project, "Build Course error", "Error", Messages.getErrorIcon());
-        }
-
 
         projectService.mapPathInfo.entrySet().forEach(x -> {
             String path = x.getKey();
