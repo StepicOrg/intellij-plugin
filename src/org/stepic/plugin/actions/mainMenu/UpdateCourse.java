@@ -39,24 +39,23 @@ public class UpdateCourse extends MainMenuAction {
         final VirtualFile root = project.getBaseDir();
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
         String courseID = projectService.getCourseID();
+
         if (courseID == null || courseID.isEmpty()) {
             courseID = Messages.showInputDialog(project, course_is_broken, "Repair", Messages.getQuestionIcon());
+            boolean translate = Messages.showYesNoDialog(project, "Do you want to translate package names?", "Translator", Messages.getQuestionIcon()) == 0;
+            projectService.setCourseID(courseID);
+            projectService.setTranslate(translate);
         }
+
         Course course = null;
         Map<String, StepInfo> map;
         Set<String> newFiles;
-//        try {
         course = StepicConnector.getCourses(courseID, project).get(0);
         newFiles = new HashSet<>();
 
         Utils.refreshFiles(project);
         map = new HashMap<>(projectService.getMapPathInfo());
         course.build(root.getPath(), project);
-//        } catch (UnirestException e1) {
-//            Messages.showMessageDialog(project, "Update Course error", "Error", Messages.getErrorIcon());
-//            return;
-//        }
-
 
         projectService.mapPathInfo.entrySet().forEach(x -> {
             if (map.containsKey(x.getKey())) {
