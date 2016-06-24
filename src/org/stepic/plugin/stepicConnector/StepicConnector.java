@@ -3,7 +3,6 @@ package org.stepic.plugin.stepicConnector;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.intellij.notification.Notification;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -17,6 +16,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 import org.stepic.plugin.modules.*;
 import org.stepic.plugin.storages.StudentStorage;
+import org.stepic.plugin.utils.NotificationTemplates;
+import org.stepic.plugin.utils.NotificationUtils;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -38,6 +39,9 @@ public class StepicConnector {
 
     private static final Logger logger = Logger.getInstance(StepicConnector.class);
     private static boolean isInstanceProperty = false;
+    private static final Gson GSON = new GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create();
 
     private static void setSSLProperty(Project project) {
 // Create a trust manager that does not validate certificate for this connection
@@ -57,7 +61,7 @@ public class StepicConnector {
             sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustAllCerts, new SecureRandom());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            initRuntimeException(NotificationTemplates.CERTIFICATE_ERROR, project);
+            NotificationUtils.initRuntimeException(NotificationTemplates.CERTIFICATE_ERROR, project);
         }
 
         SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
@@ -107,14 +111,11 @@ public class StepicConnector {
                     .header("Authorization", "Bearer " + token)
                     .asString();
         } catch (UnirestException e) {
-            initRuntimeException(project);
+            NotificationUtils.initRuntimeException(project);
         }
         final String responseString = response.getBody();
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        return gson.fromJson(responseString, container);
+        return GSON.fromJson(responseString, container);
     }
 
     private static <T> T getFromStepic(String link, Map<String, Object> queryMap, final Class<T> container, Project project) {
@@ -128,14 +129,11 @@ public class StepicConnector {
                     .queryString(queryMap)
                     .asString();
         } catch (UnirestException e) {
-            initRuntimeException(project);
+            NotificationUtils.initRuntimeException(project);
         }
         final String responseString = response.getBody();
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        return gson.fromJson(responseString, container);
+        return GSON.fromJson(responseString, container);
     }
 
     private static <T> T postToStepic(String link, JSONObject jsonObject, final Class<T> container, Project project) {
@@ -149,14 +147,11 @@ public class StepicConnector {
                     .body(jsonObject)
                     .asJson();
         } catch (UnirestException e) {
-            initRuntimeException(project);
+            NotificationUtils.initRuntimeException(project);
         }
         final JSONObject responseJson = response.getBody().getObject();
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        return gson.fromJson(responseJson.toString(), container);
+        return GSON.fromJson(responseJson.toString(), container);
     }
 
     private static <T> T postToStepicMapLinkReset(String link, Map<String, Object> parameters, final Class<T> container, Project project) {
@@ -167,14 +162,11 @@ public class StepicConnector {
                     .fields(parameters)
                     .asString();
         } catch (UnirestException e) {
-            initRuntimeException(project);
+            NotificationUtils.initRuntimeException(project);
         }
         final String responseString = response.getBody();
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        return gson.fromJson(responseString, container);
+        return GSON.fromJson(responseString, container);
     }
 
     public static AuthorWrapper getCurrentUser(Project project) {
@@ -226,7 +218,7 @@ public class StepicConnector {
 
         List<Attempt> attemptsL = postToStepic(attempts, second, AttemptsContainer.class, project).attempts;
         if (attemptsL == null) {
-            initRuntimeException(project);
+            NotificationUtils.initRuntimeException(project);
         }
         int id = attemptsL.get(0).id;
         return Integer.toString(id);
@@ -308,7 +300,6 @@ public class StepicConnector {
     }
 
     public static List<Submission> getSubmissions(String stepId, Project project) {
-        StudentStorage storage = StudentStorage.getInstance(project);
         Map<String, Object> map = new HashMap<>();
         map.put("step", stepId);
         return getFromStepic("submissions", map, SubmissionsContainer.class, project).submissions;
@@ -327,15 +318,6 @@ public class StepicConnector {
     private static boolean timePassedLessThen(long base, long current, long sec) {
         long delta = current - base;
         return delta - sec * 1000L < 0L;
-    }
-
-    private static void initRuntimeException(Notification notification, Project project) {
-        notification.notify(project);
-        throw new RuntimeException();
-    }
-
-    private static void initRuntimeException(Project project) {
-        initRuntimeException(NotificationTemplates.CONNECTION_ERROR, project);
     }
 }
 

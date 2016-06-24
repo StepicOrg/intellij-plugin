@@ -9,9 +9,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.stepic.plugin.stepicConnector.StepicConnector;
 import org.stepic.plugin.storages.CourseDefinitionStorage;
 
-/**
- * Created by Petr on 21.05.2016.
- */
 public class GetStepStatus extends PopupMenuAction {
 
     @Override

@@ -2,9 +2,6 @@ package org.stepic.plugin.actions.mainMenu;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-/**
- * Created by Petr on 09.06.2016.
- */
 public class SomeAction extends MainMenuAction {
 
     @Override

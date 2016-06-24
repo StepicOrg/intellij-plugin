@@ -1,7 +1,5 @@
 package org.stepic.plugin.actions.popupMenu;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -11,16 +9,16 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.stepic.plugin.modules.Submission;
-import org.stepic.plugin.storages.CourseDefinitionStorage;
+import org.stepic.plugin.utils.NotificationTemplates;
+import org.stepic.plugin.utils.NotificationUtils;
 import org.stepic.plugin.stepicConnector.StepicConnector;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DownloadLastSubmission extends PopupMenuAction {
-    private final String warning = "You didn't send a Step";
-    private final String warningTitle = "Download error";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -29,15 +27,13 @@ public class DownloadLastSubmission extends PopupMenuAction {
         if (vf == null) return;
 
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
-//        String token = StepicConnector.getToken(project);
         String stepName = vf.getName().split("\\.")[0];
 
         List<Submission> submissions =
                 StepicConnector.getSubmissions(projectService.getStepID(vf.getPath()), project);
 
         if (submissions.isEmpty()) {
-            Notification notification = new Notification("Step.download", warningTitle, warning, NotificationType.WARNING);
-            notification.notify(project);
+            NotificationUtils.showNotification(NotificationTemplates.DOWNLOAD_WARNING, project);
         } else {
             String code = submissions.get(submissions.size() - 1).getCode();
             String pack = CourseDefinitionStorage.getInstance(project).getPackageName(vf.getPath());
@@ -55,7 +51,6 @@ public class DownloadLastSubmission extends PopupMenuAction {
                 }
             }, "Download last submission", "Download last submission");
         }
-
     }
 
     private String renameFromMainToStep(String code, String stepName, String ppackage) {

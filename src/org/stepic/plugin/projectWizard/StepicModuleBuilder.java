@@ -36,7 +36,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         final VirtualFile root = project.getBaseDir();
 
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
-//        StudentStorage studentService = StudentStorage.getInstance(project);
 
         PropertiesComponent props = PropertiesComponent.getInstance();
         projectService.setTranslate(props.getValue("translate").equals("true") ? true : false);
@@ -44,7 +43,6 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         projectService.setProjectName(project.getName());
 
         StepicConnector.setLoginAndPassword(props.getValue("login"), props.getValue("password"), project);
-//        studentService.setPassword();
         LOG.warn("login = " + props.getValue("login"));
 
         StepicConnector.initToken(project);

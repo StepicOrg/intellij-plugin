@@ -6,9 +6,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.stepic.plugin.storages.ActionVisibleProperties;
 
-/**
- * Created by Petr on 09.06.2016.
- */
 public abstract class PopupMenuAction extends AnAction{
 
     @Override
