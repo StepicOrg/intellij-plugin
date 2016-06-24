@@ -43,4 +43,19 @@ public class Utils {
         }
         return sb.toString();
     }
+
+    public static String parseUrl(String url) {
+        if (url == null || url.isEmpty()) return "";
+        url = url.trim();
+        if (Character.isDigit(url.charAt(0))) {
+            return url;
+        } else {
+            String[] path = url.split("/");
+            if (path[3].equals("course")) {
+                String tmp[] = path[4].split("-");
+                return tmp[tmp.length - 1];
+            }
+        }
+        return "";
+    }
 }

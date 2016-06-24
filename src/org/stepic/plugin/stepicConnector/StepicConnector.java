@@ -113,6 +113,10 @@ public class StepicConnector {
         } catch (UnirestException e) {
             NotificationUtils.initRuntimeException(project);
         }
+
+        if (response.getStatus() != 200){
+            NotificationUtils.initRuntimeException(project, "Status" + Integer.toString(response.getStatus()));
+        }
         final String responseString = response.getBody();
 
         return GSON.fromJson(responseString, container);
@@ -260,6 +264,10 @@ public class StepicConnector {
         return StudentStorage.getInstance(project).getLogin();
     }
 
+    public static void setLogin(String login, Project project) {
+        StudentStorage.getInstance(project).setLogin(login);
+    }
+
     public static class AuthorWrapper {
         public List<CourseInfo.Author> users;
     }
@@ -318,6 +326,12 @@ public class StepicConnector {
     private static boolean timePassedLessThen(long base, long current, long sec) {
         long delta = current - base;
         return delta - sec * 1000L < 0L;
+    }
+
+    public static boolean isPasswordSet(Project project){
+        StudentStorage storage = StudentStorage.getInstance(project);
+        String password = storage.getPassword();
+        return !(password == null || password.isEmpty());
     }
 }
 

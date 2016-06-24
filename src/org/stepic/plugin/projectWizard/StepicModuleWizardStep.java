@@ -6,6 +6,7 @@ import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.externalSystem.model.project.ProjectData;
 import com.intellij.openapi.project.Project;
 import org.stepic.plugin.storages.StepicApplicationStorage;
+import org.stepic.plugin.utils.Utils;
 
 import javax.swing.*;
 
@@ -60,7 +61,7 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
 
         PropertiesComponent props = PropertiesComponent.getInstance();
         props.setValue("translate", Boolean.toString(CheckBox.isSelected()));
-        props.setValue("courseId", parseUrl(courseLinkFiled.getText()));
+        props.setValue("courseId", Utils.parseUrl(courseLinkFiled.getText()));
         saveValue("login", textField1.getText());
         saveValue("password", new String(passwordField1.getPassword()));
     }
@@ -77,17 +78,5 @@ public class StepicModuleWizardStep extends ModuleWizardStep {
         passwordField1 = new JPasswordField(ws.getPassword());
     }
 
-    private static String parseUrl(String url) {
-        if (url.isEmpty()) return "";
-        if (Character.isDigit(url.charAt(0))) {
-            return url;
-        } else {
-            String[] path = url.split("/");
-            if (path[3].equals("course")) {
-                String tmp[] = path[4].split("-");
-                return tmp[tmp.length - 1];
-            }
-        }
-        return "";
-    }
+
 }

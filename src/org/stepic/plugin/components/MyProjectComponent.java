@@ -42,7 +42,7 @@ public class MyProjectComponent implements ProjectComponent {
         if (project.getName().equals(CourseDefinitionStorage.getInstance(project).getProjectName())) {
             prop.setEnabled(true);
             prop.setVisible(true);
-                StepicConnector.initToken(project);
+            StepicConnector.initToken(project);
         }
     }
 
