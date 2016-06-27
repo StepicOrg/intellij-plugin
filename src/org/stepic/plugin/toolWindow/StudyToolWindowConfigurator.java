@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.extensions.ExtensionPointName;

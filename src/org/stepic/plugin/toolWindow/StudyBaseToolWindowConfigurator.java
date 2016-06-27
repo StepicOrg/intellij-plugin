@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -6,8 +6,8 @@ import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.NewProjectService;
 import org.jetbrains.annotations.NotNull;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -61,7 +61,7 @@ public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindow
             }
 
             private void setTaskText(final VirtualFile virtualFile) {
-                String text = NewProjectService.getInstance(project).getText(virtualFile.getPath());
+                String text = CourseDefinitionStorage.getInstance(project).getText(virtualFile.getPath());
                 toolWindow.setTaskText(text);
             }
         };

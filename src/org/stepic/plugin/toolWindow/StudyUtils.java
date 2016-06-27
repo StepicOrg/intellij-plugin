@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
@@ -16,9 +16,9 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.content.Content;
 import com.intellij.util.ui.UIUtil;
-import main.stepicConnector.NewProjectService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,121 +26,117 @@ import java.io.*;
 import java.util.Collection;
 
 public class StudyUtils {
-  private StudyUtils() {
-  }
-
-  private static final Logger LOG = Logger.getInstance(StudyUtils.class.getName());
-  private static final String EMPTY_TASK_TEXT = "Please, open any task to see task description";
-
-  public static void closeSilently(@Nullable final Closeable stream) {
-    if (stream != null) {
-      try {
-        stream.close();
-      }
-      catch (IOException e) {
-        // close silently
-      }
+    private StudyUtils() {
     }
-  }
 
-  public static boolean isZip(String fileName) {
-    return fileName.contains(".zip");
-  }
+    private static final Logger LOG = Logger.getInstance(StudyUtils.class.getName());
+    private static final String EMPTY_TASK_TEXT = "Please, open any task to see task description";
 
-  public static <T> T getFirst(@NotNull final Iterable<T> container) {
-    return container.iterator().next();
-  }
-
-  public static boolean indexIsValid(int index, @NotNull final Collection collection) {
-    int size = collection.size();
-    return index >= 0 && index < size;
-  }
-
-  @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
-  @Nullable
-  public static String getFileText(@Nullable final String parentDir, @NotNull final String fileName, boolean wrapHTML,
-                                   @NotNull final String encoding) {
-    final File inputFile = parentDir != null ? new File(parentDir, fileName) : new File(fileName);
-    if (!inputFile.exists()) return null;
-    final StringBuilder taskText = new StringBuilder();
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), encoding));
-      String line;
-      while ((line = reader.readLine()) != null) {
-        taskText.append(line).append("\n");
-        if (wrapHTML) {
-          taskText.append("<br>");
+    public static void closeSilently(@Nullable final Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                // close silently
+            }
         }
-      }
-      return wrapHTML ? UIUtil.toHtml(taskText.toString()) : taskText.toString();
     }
-    catch (IOException e) {
-      LOG.info("Failed to get file text from file " + fileName, e);
-    }
-    finally {
-      closeSilently(reader);
-    }
-    return null;
-  }
 
-  public static void updateAction(@NotNull final AnActionEvent e) {
-    final Presentation presentation = e.getPresentation();
-    presentation.setEnabled(false);
-    final Project project = e.getProject();
-    if (project != null) {
-      final StudyEditor studyEditor = getSelectedStudyEditor(project);
-      if (studyEditor != null) {
-        presentation.setEnabledAndVisible(true);
-      }
+    public static boolean isZip(String fileName) {
+        return fileName.contains(".zip");
     }
-  }
 
-  public static void updateToolWindows(@NotNull final Project project) {
-    update(project);
+    public static <T> T getFirst(@NotNull final Iterable<T> container) {
+        return container.iterator().next();
+    }
+
+    public static boolean indexIsValid(int index, @NotNull final Collection collection) {
+        int size = collection.size();
+        return index >= 0 && index < size;
+    }
+
+    @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
+    @Nullable
+    public static String getFileText(@Nullable final String parentDir, @NotNull final String fileName, boolean wrapHTML,
+                                     @NotNull final String encoding) {
+        final File inputFile = parentDir != null ? new File(parentDir, fileName) : new File(fileName);
+        if (!inputFile.exists()) return null;
+        final StringBuilder taskText = new StringBuilder();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), encoding));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                taskText.append(line).append("\n");
+                if (wrapHTML) {
+                    taskText.append("<br>");
+                }
+            }
+            return wrapHTML ? UIUtil.toHtml(taskText.toString()) : taskText.toString();
+        } catch (IOException e) {
+            LOG.info("Failed to get file text from file " + fileName, e);
+        } finally {
+            closeSilently(reader);
+        }
+        return null;
+    }
+
+    public static void updateAction(@NotNull final AnActionEvent e) {
+        final Presentation presentation = e.getPresentation();
+        presentation.setEnabled(false);
+        final Project project = e.getProject();
+        if (project != null) {
+            final StudyEditor studyEditor = getSelectedStudyEditor(project);
+            if (studyEditor != null) {
+                presentation.setEnabledAndVisible(true);
+            }
+        }
+    }
+
+    public static void updateToolWindows(@NotNull final Project project) {
+        update(project);
 
 //    final ToolWindowManager windowManager = ToolWindowManager.getInstance(project);
 //    createProgressToolWindowContent(project, windowManager);
-  }
+    }
 
-  public static void initToolWindows(@NotNull final Project project) {
-    final ToolWindowManager windowManager = ToolWindowManager.getInstance(project);
-    windowManager.getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW).getContentManager().removeAllContents(false);
-    MyToolWindowFactory factory = new MyToolWindowFactory();
-    factory.createToolWindowContent(project, windowManager.getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW));
+    public static void initToolWindows(@NotNull final Project project) {
+        final ToolWindowManager windowManager = ToolWindowManager.getInstance(project);
+        windowManager.getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW).getContentManager().removeAllContents(false);
+        MyToolWindowFactory factory = new MyToolWindowFactory();
+        factory.createToolWindowContent(project, windowManager.getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW));
 
-    createProgressToolWindowContent(project, windowManager);
-  }
+        createProgressToolWindowContent(project, windowManager);
+    }
 
-  private static void createProgressToolWindowContent(@NotNull Project project, ToolWindowManager windowManager) {
+    private static void createProgressToolWindowContent(@NotNull Project project, ToolWindowManager windowManager) {
 //    windowManager.getToolWindow(StudyProgressToolWindowFactory.ID).getContentManager().removeAllContents(false);
 //    StudyProgressToolWindowFactory windowFactory = new StudyProgressToolWindowFactory();
 //    windowFactory.createToolWindowContent(project, windowManager.getToolWindow(StudyProgressToolWindowFactory.ID));
-  }
-  
-  @Nullable
-  public static StudyToolWindow getStudyToolWindow(@NotNull final Project project) {
-    ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW);
-    if (toolWindow != null) {
-      Content[] contents = toolWindow.getContentManager().getContents();
-      for (Content content: contents) {
-        JComponent component = content.getComponent();
-        if (component != null && component instanceof StudyToolWindow) {
-          return (StudyToolWindow)component;
-        }
-      }
     }
-    return null;
-  }
 
-  public static void deleteFile(@NotNull final VirtualFile file) {
-    try {
-      file.delete(StudyUtils.class);
+    @Nullable
+    public static StudyToolWindow getStudyToolWindow(@NotNull final Project project) {
+        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW);
+        if (toolWindow != null) {
+            Content[] contents = toolWindow.getContentManager().getContents();
+            for (Content content : contents) {
+                JComponent component = content.getComponent();
+                if (component != null && component instanceof StudyToolWindow) {
+                    return (StudyToolWindow) component;
+                }
+            }
+        }
+        return null;
     }
-    catch (IOException e) {
-      LOG.error(e);
+
+    public static void deleteFile(@NotNull final VirtualFile file) {
+        try {
+            file.delete(StudyUtils.class);
+        } catch (IOException e) {
+            LOG.error(e);
+        }
     }
-  }
 
 //  public static File copyResourceFile(@NotNull final String sourceName, @NotNull final String copyName, @NotNull final Project project,
 //                                      @NotNull final Task task)
@@ -189,29 +185,29 @@ public class StudyUtils {
 //  }
 
 
-  /**
-   * shows pop up in the center of "check task" button in study editor
-   */
-  public static void showCheckPopUp(@NotNull final Project project, @NotNull final Balloon balloon) {
-    final StudyEditor studyEditor = getSelectedStudyEditor(project);
-    assert studyEditor != null;
+    /**
+     * shows pop up in the center of "check task" button in study editor
+     */
+    public static void showCheckPopUp(@NotNull final Project project, @NotNull final Balloon balloon) {
+        final StudyEditor studyEditor = getSelectedStudyEditor(project);
+        assert studyEditor != null;
 
-    balloon.show(computeLocation(studyEditor.getEditor()), Balloon.Position.above);
-    Disposer.register(project, balloon);
-  }
+        balloon.show(computeLocation(studyEditor.getEditor()), Balloon.Position.above);
+        Disposer.register(project, balloon);
+    }
 
-  public static RelativePoint computeLocation(Editor editor){
+    public static RelativePoint computeLocation(Editor editor) {
 
-    final Rectangle visibleRect = editor.getComponent().getVisibleRect();
-    Point point = new Point(visibleRect.x + visibleRect.width + 10,
-                            visibleRect.y + 10);
-    return new RelativePoint(editor.getComponent(), point);
-  }
+        final Rectangle visibleRect = editor.getComponent().getVisibleRect();
+        Point point = new Point(visibleRect.x + visibleRect.width + 10,
+                visibleRect.y + 10);
+        return new RelativePoint(editor.getComponent(), point);
+    }
 
 
-  /**
-   * returns language manager which contains all the information about language specific file names
-   */
+    /**
+     * returns language manager which contains all the information about language specific file names
+     */
 //  @Nullable
 //  public static StudyLanguageManager getLanguageManager(@NotNull final Course course) {
 //    Language language = course.getLanguageById();
@@ -285,30 +281,28 @@ public class StudyUtils {
 //    EduAnswerPlaceholderPainter.createGuardedBlocks(editor, taskFile, true);
 //    editor.getColorsScheme().setColor(EditorColors.READONLY_FRAGMENT_BACKGROUND_COLOR, null);
 //  }
+    @Nullable
+    public static StudyEditor getSelectedStudyEditor(@NotNull final Project project) {
+        try {
+            final FileEditor fileEditor = FileEditorManagerEx.getInstanceEx(project).getSplitters().getCurrentWindow().
+                    getSelectedEditor().getSelectedEditorWithProvider().getFirst();
+            if (fileEditor instanceof StudyEditor) {
+                return (StudyEditor) fileEditor;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
 
-  @Nullable
-  public static StudyEditor getSelectedStudyEditor(@NotNull final Project project) {
-    try {
-      final FileEditor fileEditor = FileEditorManagerEx.getInstanceEx(project).getSplitters().getCurrentWindow().
-        getSelectedEditor().getSelectedEditorWithProvider().getFirst();
-      if (fileEditor instanceof StudyEditor) {
-        return (StudyEditor)fileEditor;
-      }
+    @Nullable
+    public static Editor getSelectedEditor(@NotNull final Project project) {
+        final StudyEditor studyEditor = getSelectedStudyEditor(project);
+        if (studyEditor != null) {
+            return studyEditor.getEditor();
+        }
+        return null;
     }
-    catch (Exception e) {
-      return null;
-    }
-    return null;
-  }
-
-  @Nullable
-  public static Editor getSelectedEditor(@NotNull final Project project) {
-    final StudyEditor studyEditor = getSelectedStudyEditor(project);
-    if (studyEditor != null) {
-      return studyEditor.getEditor();
-    }
-    return null;
-  }
 
 //  public static void deleteGuardedBlocks(@NotNull final Document document) {
 //    if (document instanceof DocumentImpl) {
@@ -389,44 +383,44 @@ public class StudyUtils {
 //    return false;
 //  }
 
-  @Nullable
-  public static String getTaskTextFromTask(VirtualFile file, Project project) {
-    return NewProjectService.getInstance(project).getText(file.getPath());
-  }
-  
-  @Nullable
-  public static StudyToolWindowConfigurator getConfigurator(@NotNull final Project project) {
-    StudyToolWindowConfigurator[] extensions = StudyToolWindowConfigurator.EP_NAME.getExtensions();
-    for (StudyToolWindowConfigurator extension: extensions) {
-      if (extension.accept(project)) {
-        return extension;
-      }
+    @Nullable
+    public static String getTaskTextFromTask(VirtualFile file, Project project) {
+        return CourseDefinitionStorage.getInstance(project).getText(file.getPath());
     }
-    return null;
-  }
 
-  public static String getTaskText(@NotNull final Project project) {
-    VirtualFile[] files = FileEditorManager.getInstance(project).getSelectedFiles();
+    @Nullable
+    public static StudyToolWindowConfigurator getConfigurator(@NotNull final Project project) {
+        StudyToolWindowConfigurator[] extensions = StudyToolWindowConfigurator.EP_NAME.getExtensions();
+        for (StudyToolWindowConfigurator extension : extensions) {
+            if (extension.accept(project)) {
+                return extension;
+            }
+        }
+        return null;
+    }
+
+    public static String getTaskText(@NotNull final Project project) {
+        VirtualFile[] files = FileEditorManager.getInstance(project).getSelectedFiles();
 //    TaskFile taskFile = null;
-    NewProjectService ps =NewProjectService.getInstance(project);
-    String text = null;
-    for (VirtualFile file : files) {
-      text = ps.getText(file.getPath());
-      if (text != null) {
-        break;
-      }
+        CourseDefinitionStorage ps = CourseDefinitionStorage.getInstance(project);
+        String text = null;
+        for (VirtualFile file : files) {
+            text = ps.getText(file.getPath());
+            if (text != null) {
+                break;
+            }
+        }
+        if (text == null) {
+            return EMPTY_TASK_TEXT;
+        }
+        return text;
     }
-    if (text == null) {
-      return EMPTY_TASK_TEXT;
-    }
-    return text;
-  }
 
-  public static void update(Project project) {
-    final StudyToolWindow studyToolWindow = getStudyToolWindow(project);
-    if (studyToolWindow != null) {
-      String taskText = getTaskText(project);
-      studyToolWindow.setTaskText(taskText);
+    public static void update(Project project) {
+        final StudyToolWindow studyToolWindow = getStudyToolWindow(project);
+        if (studyToolWindow != null) {
+            String taskText = getTaskText(project);
+            studyToolWindow.setTaskText(taskText);
+        }
     }
-  }
 }

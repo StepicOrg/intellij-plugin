@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.BrowserUtil;
