@@ -10,7 +10,7 @@ import com.intellij.ui.content.ContentManager;
 import org.jetbrains.annotations.NotNull;
 
 public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
-    public static final String STUDY_TOOL_WINDOW = "Task Description";
+    public static final String STUDY_TOOL_WINDOW = "Step Description";
 
 
     @Override

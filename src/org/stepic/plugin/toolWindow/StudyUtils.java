@@ -30,7 +30,7 @@ public class StudyUtils {
     }
 
     private static final Logger LOG = Logger.getInstance(StudyUtils.class.getName());
-    private static final String EMPTY_TASK_TEXT = "Please, open any task to see task description";
+    private static final String EMPTY_STEP_TEXT = "Please, open any Step to see Step description";
 
     public static void closeSilently(@Nullable final Closeable stream) {
         if (stream != null) {
@@ -61,18 +61,18 @@ public class StudyUtils {
                                      @NotNull final String encoding) {
         final File inputFile = parentDir != null ? new File(parentDir, fileName) : new File(fileName);
         if (!inputFile.exists()) return null;
-        final StringBuilder taskText = new StringBuilder();
+        final StringBuilder stepText = new StringBuilder();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), encoding));
             String line;
             while ((line = reader.readLine()) != null) {
-                taskText.append(line).append("\n");
+                stepText.append(line).append("\n");
                 if (wrapHTML) {
-                    taskText.append("<br>");
+                    stepText.append("<br>");
                 }
             }
-            return wrapHTML ? UIUtil.toHtml(taskText.toString()) : taskText.toString();
+            return wrapHTML ? UIUtil.toHtml(stepText.toString()) : stepText.toString();
         } catch (IOException e) {
             LOG.info("Failed to get file text from file " + fileName, e);
         } finally {
@@ -384,7 +384,7 @@ public class StudyUtils {
 //  }
 
     @Nullable
-    public static String getTaskTextFromTask(VirtualFile file, Project project) {
+    public static String getStepTextFromStep(VirtualFile file, Project project) {
         return CourseDefinitionStorage.getInstance(project).getText(file.getPath());
     }
 
@@ -399,7 +399,7 @@ public class StudyUtils {
         return null;
     }
 
-    public static String getTaskText(@NotNull final Project project) {
+    public static String getStepText(@NotNull final Project project) {
         VirtualFile[] files = FileEditorManager.getInstance(project).getSelectedFiles();
 //    TaskFile taskFile = null;
         CourseDefinitionStorage ps = CourseDefinitionStorage.getInstance(project);
@@ -411,7 +411,7 @@ public class StudyUtils {
             }
         }
         if (text == null) {
-            return EMPTY_TASK_TEXT;
+            return EMPTY_STEP_TEXT;
         }
         return text;
     }
@@ -419,8 +419,8 @@ public class StudyUtils {
     public static void update(Project project) {
         final StudyToolWindow studyToolWindow = getStudyToolWindow(project);
         if (studyToolWindow != null) {
-            String taskText = getTaskText(project);
-            studyToolWindow.setTaskText(taskText);
+            String stepText = getStepText(project);
+            studyToolWindow.setStepText(stepText);
         }
     }
 }

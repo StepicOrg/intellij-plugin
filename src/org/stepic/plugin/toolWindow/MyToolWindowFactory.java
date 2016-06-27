@@ -9,13 +9,13 @@ import com.intellij.ui.content.ContentFactory;
 import javax.swing.*;
 
 public class MyToolWindowFactory implements ToolWindowFactory {
-    public static final String STUDY_TOOL_WINDOW = "Task Description";
+    public static final String STUDY_TOOL_WINDOW = "Step Description";
 
     private ToolWindow myToolWindow;
     private JPanel myToolWindowContent;
-    private JButton send;
-    private JLabel taskName;
-    private JLabel taskDescription;
+    private JButton sendStepButton;
+    private JLabel stepName;
+    private JLabel stepDescription;
 
 
     public MyToolWindowFactory() {
@@ -26,8 +26,8 @@ public class MyToolWindowFactory implements ToolWindowFactory {
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
 
         myToolWindow = toolWindow;
-        taskName.setText("Task Name");
-        taskDescription.setText("Description");
+        stepName.setText("Step Name");
+        stepDescription.setText("Description");
 //    set context
 //    VirtualFile vf = e.getData(CommonDataKeys.VIRTUAL_FILE);
 

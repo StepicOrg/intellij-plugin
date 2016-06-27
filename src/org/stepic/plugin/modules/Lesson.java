@@ -32,7 +32,7 @@ public class Lesson {
         List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), project);
 
         for (Step step : stepsList) {
-            if (step.isTask()) {
+            if (step.isCode()) {
                 steps.put(step.position, step);
                 String filename = "Step" + step.position;
                 String path = getPath(courseDir, sectionDir, lessonName) + filename + ".java";

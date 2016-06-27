@@ -43,7 +43,7 @@ public class GetStepStatus extends PopupMenuAction {
     }
 
     private boolean wasItSolved(String stepID, Project project)  {
-        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct"), project).size();
+        int size = StepicConnector.getStepStatus(stepID, Pair.pair("status", "correct"), project).size();
         if (size > 0) {
             return true;
         } else {

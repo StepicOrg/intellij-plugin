@@ -40,29 +40,29 @@ public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindow
 
         return new FileEditorManagerListener() {
 
-            private static final String EMPTY_TASK_TEXT = "Please, open any task to see task description";
+            private static final String EMPTY_STEP_TEXT = "Please, open any Step to see Step description";
 
             @Override
             public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
-                setTaskText(file);
+                setStepText(file);
             }
 
             @Override
             public void fileClosed(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
-                toolWindow.setTaskText(EMPTY_TASK_TEXT);
+                toolWindow.setStepText(EMPTY_STEP_TEXT);
             }
 
             @Override
             public void selectionChanged(@NotNull FileEditorManagerEvent event) {
                 VirtualFile file = event.getNewFile();
                 if (file != null) {
-                    setTaskText(file);
+                    setStepText(file);
                 }
             }
 
-            private void setTaskText(final VirtualFile virtualFile) {
+            private void setStepText(final VirtualFile virtualFile) {
                 String text = CourseDefinitionStorage.getInstance(project).getText(virtualFile.getPath());
-                toolWindow.setTaskText(text);
+                toolWindow.setStepText(text);
             }
         };
     }

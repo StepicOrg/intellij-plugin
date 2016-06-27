@@ -30,7 +30,7 @@ import java.awt.*;
 
 public abstract class StudyToolWindow extends SimpleToolWindowPanel implements DataProvider, Disposable {
   private static final Logger LOG = Logger.getInstance(StudyToolWindow.class);
-  private static final String TASK_INFO_ID = "taskInfo";
+  private static final String STEP_INFO_ID = "stepInfo";
   private final JBCardLayout myCardLayout;
   private final JPanel myContentPanel;
   private final OnePixelSplitter mySplitPane;
@@ -43,16 +43,16 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
   }
 
   public void init(Project project) {
-    String taskText = StudyUtils.getTaskText(project);
-    if (taskText == null) return;
+    String stepText = StudyUtils.getStepText(project);
+    if (stepText == null) return;
 
 //    JPanel toolbarPanel = createToolbarPanel(project);
 //    setToolbar(toolbarPanel);
 
-    myContentPanel.add(TASK_INFO_ID, createTaskInfoPanel(taskText, project));
+    myContentPanel.add(STEP_INFO_ID, createStepInfoPanel(stepText, project));
     mySplitPane.setFirstComponent(myContentPanel);
     addAdditionalPanels(project);
-    myCardLayout.show(myContentPanel, TASK_INFO_ID);
+    myCardLayout.show(myContentPanel, STEP_INFO_ID);
 
     setContent(mySplitPane);
 
@@ -105,7 +105,7 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
   }
 
 
-  public abstract JComponent createTaskInfoPanel(String taskText, Project project);
+  public abstract JComponent createStepInfoPanel(String stepText, Project project);
 
 //  private static JPanel createToolbarPanel(@NotNull final Project project) {
 //    final DefaultActionGroup group = getActionGroup(project);
@@ -126,5 +126,5 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
 //    return configurator.getActionGroup(project);
 //  }
 
-  public abstract void setTaskText(String text) ;
+  public abstract void setStepText(String text) ;
 }

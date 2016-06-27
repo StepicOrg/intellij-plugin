@@ -246,7 +246,7 @@ public class StepicConnector {
         return Integer.toString(id);
     }
 
-    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair, Project project) {
+    public static List<Submission> getStepStatus(String stepId, Pair<String, String> pair, Project project) {
 
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("step", stepId);
