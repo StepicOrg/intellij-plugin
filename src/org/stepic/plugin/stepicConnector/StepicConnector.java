@@ -111,11 +111,11 @@ public class StepicConnector {
                     .header("Authorization", "Bearer " + token)
                     .asString();
         } catch (UnirestException e) {
-            NotificationUtils.initRuntimeException(project);
+            NotificationUtils.initRuntimeException(project, e.getMessage());
         }
 
         if (response.getStatus() != 200){
-            NotificationUtils.initRuntimeException(project, "Status" + Integer.toString(response.getStatus()));
+            NotificationUtils.initRuntimeException(project, "Status " + Integer.toString(response.getStatus()));
         }
         final String responseString = response.getBody();
 

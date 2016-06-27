@@ -44,10 +44,11 @@ public class UpdateCourse extends MainMenuAction {
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
         String courseID = projectService.getCourseID();
         String login = StepicConnector.getLogin(project);
+        projectService.setProjectName(project.getName());
 
 
-        ActionVisibleProperties.Wrapper prop = ActionVisibleProperties.getInstance(project);
-        if (isCourseBroke(courseID, login) || !prop.getVisible()) {
+        ActionVisibleProperties prop = ActionVisibleProperties.getInstance(project);
+        if (isCourseBroke(courseID, login) || !prop.isVisible()) {
             if (Messages.showYesNoDialog(project, "Your project of course is broke.\nDo you want to repair it?", "Repair", Messages.getQuestionIcon()) == 0) {
                 if (courseID == null || courseID.isEmpty()) {
                     repairCourseID(project);
@@ -57,13 +58,13 @@ public class UpdateCourse extends MainMenuAction {
                     repairLoginAndPassword(project);
                 }
 
-                StepicConnector.initToken(project);
                 prop.setEnabled(true);
                 prop.setVisible(true);
             } else {
                 return;
             }
         }
+        StepicConnector.initToken(project);
 
 
         Map<String, StepInfo> map;
@@ -117,7 +118,7 @@ public class UpdateCourse extends MainMenuAction {
         boolean translate = Messages.showYesNoDialog(project, "Do you want to translate package names?", "Translator", Messages.getQuestionIcon()) == 0;
         projectService.setCourseID(courseID);
         projectService.setTranslate(translate);
-        ActionVisibleProperties.Wrapper prop = ActionVisibleProperties.getInstance(project);
+        ActionVisibleProperties prop = ActionVisibleProperties.getInstance(project);
         prop.setEnabled(true);
         prop.setVisible(true);
     }

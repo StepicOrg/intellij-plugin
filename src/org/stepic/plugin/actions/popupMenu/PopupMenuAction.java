@@ -13,7 +13,7 @@ public abstract class PopupMenuAction extends AnAction{
         VirtualFile vf = anActionEvent.getData(CommonDataKeys.VIRTUAL_FILE);
         if (vf == null) return;
 
-        ActionVisibleProperties.Wrapper properties = ActionVisibleProperties.getInstance(anActionEvent.getProject());
-        anActionEvent.getPresentation().setVisible(properties.getVisible() && !vf.isDirectory() );
+        ActionVisibleProperties properties = ActionVisibleProperties.getInstance(anActionEvent.getProject());
+        anActionEvent.getPresentation().setVisible(properties.isVisible() && !vf.isDirectory() );
     }
 }
