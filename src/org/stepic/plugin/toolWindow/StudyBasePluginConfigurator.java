@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.Map;
 
-public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindowConfigurator {
+public abstract class StudyBasePluginConfigurator implements StudyPluginConfigurator {
     @NotNull
     @Override
     public DefaultActionGroup getActionGroup(Project project) {
@@ -40,11 +40,14 @@ public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindow
 
         return new FileEditorManagerListener() {
 
+            private final CourseDefinitionStorage cs = CourseDefinitionStorage.getInstance(project);
             private static final String EMPTY_STEP_TEXT = "Please, open any Step to see Step description";
 
             @Override
             public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
-                setStepText(file);
+                if (cs.contains(file.getPath())) {
+                    setStepText(file);
+                }
             }
 
             @Override
@@ -55,7 +58,7 @@ public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindow
             @Override
             public void selectionChanged(@NotNull FileEditorManagerEvent event) {
                 VirtualFile file = event.getNewFile();
-                if (file != null) {
+                if (file != null && cs.contains(file.getPath())) {
                     setStepText(file);
                 }
             }

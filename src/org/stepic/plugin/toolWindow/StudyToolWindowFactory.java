@@ -8,6 +8,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentManager;
 import org.jetbrains.annotations.NotNull;
+import org.stepic.plugin.icons.PluginIcons;
 
 public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
     public static final String STUDY_TOOL_WINDOW = "Step Description";
@@ -15,7 +16,7 @@ public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
 
     @Override
     public void createToolWindowContent(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
-//    toolWindow.setIcon(InteractiveLearningIcons.TaskDescription);
+    toolWindow.setIcon(PluginIcons.STEPIC_LOGO_MINI);
 //    StudyTaskManager taskManager = StudyTaskManager.getInstance(project);
 //    final Course course = taskManager.getCourse();
 //    if (course != null) {

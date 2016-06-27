@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-public class JavaStudyToolWindowConfigurator extends StudyBaseToolWindowConfigurator {
+public class JavaStudyPluginConfigurator extends StudyBasePluginConfigurator {
 
     @NotNull
     @Override

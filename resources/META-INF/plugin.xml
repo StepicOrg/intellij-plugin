@@ -51,7 +51,7 @@
 
         <projectStructureDetector implementation="org.stepic.plugin.projectWizard.StepicProjectStructureDetector" order="first"/>
 
-        <toolWindow id="Step Description" secondary="true" anchor="right"
+        <toolWindow id="Step Description" secondary="false" anchor="right"
                     factoryClass="org.stepic.plugin.toolWindow.StudyToolWindowFactory"/>
                     <!--factoryClass="org.stepic.plugin.toolWindow.MyToolWindowFactory"/>-->
                     <!--conditionClass="org.stepic.plugin.toolWindow.StudyCondition"/>-->
@@ -64,13 +64,13 @@
         <!--<extensionPoint qualifiedName="Edu.StudyLanguageManager" beanClass="com.intellij.lang.LanguageExtensionPoint">-->
             <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.StudyLanguageManager"/>-->
         <!--</extensionPoint>-->
-        <extensionPoint qualifiedName="Edu.studyToolWindowConfigurator" interface="org.stepic.plugin.toolWindow.StudyToolWindowConfigurator"/>
+        <extensionPoint qualifiedName="Edu.studyToolWindowConfigurator" interface="org.stepic.plugin.toolWindow.StudyPluginConfigurator"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="Edu">
         <!--<StudyExecutor implementationClass="com.jetbrains.edu.learning.PyStudyExecutor" language="Python"/>-->
         <!--<StudyLanguageManager implementationClass="com.jetbrains.edu.learning.PyStudyLanguageManager" language="Python"/>-->
-        <studyToolWindowConfigurator implementation="org.stepic.plugin.toolWindow.JavaStudyToolWindowConfigurator" />
+        <studyToolWindowConfigurator implementation="org.stepic.plugin.toolWindow.JavaStudyPluginConfigurator" />
     </extensions>
 
     <actions>

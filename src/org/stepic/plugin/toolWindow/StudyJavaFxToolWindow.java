@@ -40,9 +40,7 @@ public class StudyJavaFxToolWindow extends StudyToolWindow {
 
   @Override
   public void setStepText(String text) {
-    StudyToolWindowConfigurator configurator = StudyUtils.getConfigurator(ProjectUtil.guessCurrentProject(this));
-    if (configurator != null) {
+    StudyPluginConfigurator configurator = StudyUtils.getConfigurator(ProjectUtil.guessCurrentProject(this));
       myBrowserWindow.loadContent(text, configurator);
-    }
   }
 }

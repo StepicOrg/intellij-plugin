@@ -15,9 +15,10 @@ public class MyProjectComponent implements ProjectComponent {
 
     @Override
     public void initComponent() {
-        if (project.getName().equals(CourseDefinitionStorage.getInstance(project).getProjectName())) {
-            StepicConnector.initToken(project);
-        }
+//        StepicConnector.setSSLProperty(project);
+//        if (project.getName().equals(CourseDefinitionStorage.getInstance(project).getProjectName())) {
+//            StepicConnector.initToken(project);
+//        }
     }
 
     @Override

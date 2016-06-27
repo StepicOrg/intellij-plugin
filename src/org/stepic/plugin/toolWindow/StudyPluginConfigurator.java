@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.Map;
 
-public interface StudyToolWindowConfigurator {
-  ExtensionPointName<StudyToolWindowConfigurator> EP_NAME = ExtensionPointName.create("Edu.studyToolWindowConfigurator");
+public interface StudyPluginConfigurator {
+  ExtensionPointName<StudyPluginConfigurator> EP_NAME = ExtensionPointName.create("Edu.studyToolWindowConfigurator");
 
   /**
    * Provide action group that should be placed on the tool window toolbar.

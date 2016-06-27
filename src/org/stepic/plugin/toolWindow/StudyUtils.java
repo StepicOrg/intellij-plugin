@@ -102,11 +102,11 @@ public class StudyUtils {
 
     public static void initToolWindows(@NotNull final Project project) {
         final ToolWindowManager windowManager = ToolWindowManager.getInstance(project);
-        windowManager.getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW).getContentManager().removeAllContents(false);
-        MyToolWindowFactory factory = new MyToolWindowFactory();
-        factory.createToolWindowContent(project, windowManager.getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW));
+        windowManager.getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW).getContentManager().removeAllContents(false);
+        StudyToolWindowFactory factory = new StudyToolWindowFactory();
+        factory.createToolWindowContent(project, windowManager.getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW));
 
-        createProgressToolWindowContent(project, windowManager);
+//        createProgressToolWindowContent(project, windowManager);
     }
 
     private static void createProgressToolWindowContent(@NotNull Project project, ToolWindowManager windowManager) {
@@ -117,7 +117,7 @@ public class StudyUtils {
 
     @Nullable
     public static StudyToolWindow getStudyToolWindow(@NotNull final Project project) {
-        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW);
+        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
         if (toolWindow != null) {
             Content[] contents = toolWindow.getContentManager().getContents();
             for (Content content : contents) {
@@ -389,9 +389,9 @@ public class StudyUtils {
     }
 
     @Nullable
-    public static StudyToolWindowConfigurator getConfigurator(@NotNull final Project project) {
-        StudyToolWindowConfigurator[] extensions = StudyToolWindowConfigurator.EP_NAME.getExtensions();
-        for (StudyToolWindowConfigurator extension : extensions) {
+    public static StudyPluginConfigurator getConfigurator(@NotNull final Project project) {
+        StudyPluginConfigurator[] extensions = StudyPluginConfigurator.EP_NAME.getExtensions();
+        for (StudyPluginConfigurator extension : extensions) {
             if (extension.accept(project)) {
                 return extension;
             }
@@ -406,7 +406,7 @@ public class StudyUtils {
         String text = null;
         for (VirtualFile file : files) {
             text = ps.getText(file.getPath());
-            if (text != null) {
+            if (text != null && !text.isEmpty()) {
                 break;
             }
         }

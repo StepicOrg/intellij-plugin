@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-class StudyBrowserWindow extends JFrame {
+public class StudyBrowserWindow extends JFrame {
     private static final Logger LOG = Logger.getInstance(StudyToolWindow.class);
     private static final String EVENT_TYPE_CLICK = "click";
     private JFXPanel myPanel;
@@ -60,7 +60,8 @@ class StudyBrowserWindow extends JFrame {
     private void updateLaf(boolean isDarcula) {
         if (isDarcula) {
             updateLafDarcula();
-        } else {
+        }
+        else {
             updateIntellijAndGTKLaf();
         }
     }
@@ -97,7 +98,8 @@ class StudyBrowserWindow extends JFrame {
                 myProgressBar = makeProgressBarWithListener();
                 myWebComponent.setVisible(false);
                 myPane.getChildren().addAll(myWebComponent, myProgressBar);
-            } else {
+            }
+            else {
                 myPane.getChildren().add(myWebComponent);
             }
             if (myLinkInNewBrowser) {
@@ -121,26 +123,34 @@ class StudyBrowserWindow extends JFrame {
         });
     }
 
-    public void loadContent(@NotNull final String content, StudyToolWindowConfigurator configurator) {
-        String withCodeHighlighting = createHtmlWithCodeHighlighting(content, configurator);
-        Platform.runLater(() -> {
-            updateLookWithProgressBarIfNeeded();
-            myEngine.loadContent(withCodeHighlighting);
-        });
+    public void loadContent(@NotNull final String content, @Nullable StudyPluginConfigurator configurator) {
+        if (configurator == null) {
+            Platform.runLater(() -> myEngine.loadContent(content));
+        }
+        else {
+            String withCodeHighlighting = createHtmlWithCodeHighlighting(content, configurator);
+            Platform.runLater(() -> {
+                updateLookWithProgressBarIfNeeded();
+                myEngine.loadContent(withCodeHighlighting);
+            });
+        }
     }
 
     @Nullable
-    private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyToolWindowConfigurator configurator) {
+    private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyPluginConfigurator configurator) {
         String template = null;
         InputStream stream = getClass().getResourceAsStream("/code-mirror/template.html");
         try {
             template = StreamUtil.readText(stream, "utf-8");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOG.warn(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
                 stream.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 LOG.warn(e.getMessage());
             }
         }
@@ -153,7 +163,7 @@ class StudyBrowserWindow extends JFrame {
         final EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getGlobalScheme();
         int fontSize = editorColorsScheme.getEditorFontSize();
 
-        template = template.replace("${font_size}", String.valueOf(fontSize - 2));
+        template = template.replace("${font_size}", String.valueOf(fontSize- 2));
         template = template.replace("${codemirror}", getClass().getResource("/code-mirror/codemirror.js").toExternalForm());
         template = template.replace("${language_script}", configurator.getLanguageScriptUrl());
         template = template.replace("${default_mode}", configurator.getDefaultHighlightingMode());
@@ -163,7 +173,8 @@ class StudyBrowserWindow extends JFrame {
         if (LafManager.getInstance().getCurrentLookAndFeel() instanceof DarculaLookAndFeelInfo) {
             template = template.replace("${css_oldcodemirror}", getClass().getResource("/code-mirror/codemirror-old-darcula.css").toExternalForm());
             template = template.replace("${css_codemirror}", getClass().getResource("/code-mirror/codemirror-darcula.css").toExternalForm());
-        } else {
+        }
+        else {
             template = template.replace("${css_oldcodemirror}", getClass().getResource("/code-mirror/codemirror-old.css").toExternalForm());
             template = template.replace("${css_codemirror}", getClass().getResource("/code-mirror/codemirror.css").toExternalForm());
         }
@@ -194,7 +205,7 @@ class StudyBrowserWindow extends JFrame {
         if (doc != null) {
             final NodeList nodeList = doc.getElementsByTagName("a");
             for (int i = 0; i < nodeList.getLength(); i++) {
-                ((EventTarget) nodeList.item(i)).addEventListener(EVENT_TYPE_CLICK, listener, false);
+                ((EventTarget)nodeList.item(i)).addEventListener(EVENT_TYPE_CLICK, listener, false);
             }
         }
     }
@@ -209,7 +220,7 @@ class StudyBrowserWindow extends JFrame {
                     myEngine.setJavaScriptEnabled(true);
                     myEngine.getLoadWorker().cancel();
                     ev.preventDefault();
-                    final String href = getLink((Element) ev.getTarget());
+                    final String href = getLink((Element)ev.getTarget());
                     if (href == null) return;
                     BrowserUtil.browse(href);
 

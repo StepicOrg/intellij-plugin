@@ -156,4 +156,8 @@ public class CourseDefinitionStorage implements PersistentStateComponent<Element
     public void removeAll(Set<String> removed) {
         mapPathInfo.keySet().removeAll(removed);
     }
+
+    public boolean contains(String path) {
+        return mapPathInfo.containsKey(path);
+    }
 }
