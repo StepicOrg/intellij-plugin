@@ -36,7 +36,7 @@ public class Lesson {
                 steps.put(step.position, step);
                 String filename = "Step" + step.position;
                 String path = getPath(courseDir, sectionDir, lessonName) + filename + ".java";
-                StepInfo tmp = new StepInfo(Integer.toString(step.id), sectionDir + "." + lessonName, filename);
+                StepInfo tmp = new StepInfo(Integer.toString(step.id), sectionDir + "." + lessonName, filename, step.getText());
                 projectService.addStepInfo(path, tmp);
             }
         }

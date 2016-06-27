@@ -15,6 +15,10 @@ public class Step {
         return false;
     }
 
+    public String getText(){
+        return (String) block.get("text");
+    }
+
     @Override
     public String toString() {
         return "\n\t\tStep{" +
