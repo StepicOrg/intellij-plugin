@@ -17,6 +17,7 @@ package org.stepic.plugin.toolWindow;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
+import org.stepic.plugin.utils.MyLogger;
 
 import javax.swing.*;
 
@@ -29,7 +30,8 @@ public class StudyJavaFxToolWindow extends StudyToolWindow {
 
   @Override
   public JComponent createStepInfoPanel(String stepText, Project project) {
-    myBrowserWindow = new StudyBrowserWindow(true, false);
+    MyLogger.getInstance().getLOG().warn("createStepInfoPanel");
+    myBrowserWindow = new StudyBrowserWindow(false, false);
 //    myBrowserWindow.addBackAndOpenButtons();
     myBrowserWindow.loadContent(stepText, StudyUtils.getConfigurator(project));
     JPanel panel = new JPanel();

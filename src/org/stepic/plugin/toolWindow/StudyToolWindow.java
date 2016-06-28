@@ -19,17 +19,19 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.DataProvider;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.JBCardLayout;
 import com.intellij.ui.OnePixelSplitter;
 import org.jetbrains.annotations.NotNull;
+import org.stepic.plugin.utils.MyLogger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-public abstract class StudyToolWindow extends SimpleToolWindowPanel implements DataProvider, Disposable {
+public abstract class StudyToolWindow extends SimpleToolWindowPanel implements DataProvider, Disposable, DumbAware {
     private static final Logger LOG = Logger.getInstance(StudyToolWindow.class);
     private static final String STEP_INFO_ID = "stepInfo";
     private final JBCardLayout myCardLayout;
@@ -44,6 +46,7 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
     }
 
     public void init(Project project) {
+        MyLogger.getInstance().getLOG().warn("init");
         String stepText = StudyUtils.getStepText(project);
         if (stepText == null) return;
 
