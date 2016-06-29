@@ -37,7 +37,7 @@ public class SendFile extends PopupMenuAction {
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
         String stepId = projectService.getStepID(vf.getPath());
 
-        String text = renameMainClass(vf);
+        String text = renameMainClass(vf, project);
         String path = vf.getPath();
 
         String attemptId = StepicConnector.getAttemptId(stepId, project);
@@ -97,12 +97,13 @@ public class SendFile extends PopupMenuAction {
         );
     }
 
-    private String renameMainClass(VirtualFile vf) {
+    private String renameMainClass(VirtualFile vf, Project project) {
         Document doc = FileDocumentManager.getInstance().getDocument(vf);
         String[] lines = doc.getText().split("\n");
 
         Set<Integer> skipLine = new HashSet<>();
         for (int i = 0; i < lines.length; i++) {
+            if (lines[i].contains("// Sent from IntelliJ IDEA")) skipLine.add(i);
             if (lines[i].contains("package")) skipLine.add(i);
             if (lines[i].contains("class Step")) {
                 lines[i] = "class Main {";
@@ -111,6 +112,7 @@ public class SendFile extends PopupMenuAction {
         }
 
         StringBuilder sb = new StringBuilder();
+        sb.append("// Sent from IntelliJ IDEA");
         for (int i = 0; i < lines.length; i++) {
             if (skipLine.contains(i)) continue;
             sb.append(lines[i] + "\n");

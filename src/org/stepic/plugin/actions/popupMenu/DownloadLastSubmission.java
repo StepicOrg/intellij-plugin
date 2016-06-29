@@ -58,6 +58,7 @@ public class DownloadLastSubmission extends PopupMenuAction {
 
         Set<Integer> skipLine = new HashSet<>();
         for (int i = 0; i < lines.length; i++) {
+            if (lines[i].contains("// Sent from IntelliJ IDEA")) skipLine.add(i);
             if (lines[i].contains("package")) skipLine.add(i);
             if (lines[i].contains("class Main")) {
                 lines[i] = "class " + stepName + " {";
