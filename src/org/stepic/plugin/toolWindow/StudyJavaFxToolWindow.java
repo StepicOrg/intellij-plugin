@@ -22,27 +22,26 @@ import org.stepic.plugin.utils.MyLogger;
 import javax.swing.*;
 
 public class StudyJavaFxToolWindow extends StudyToolWindow {
-  private StudyBrowserWindow myBrowserWindow;
+    private StudyBrowserWindow myBrowserWindow;
 
-  public StudyJavaFxToolWindow() {
-    super();
-  }
+    public StudyJavaFxToolWindow() {
+        super();
+    }
 
-  @Override
-  public JComponent createStepInfoPanel(String stepText, Project project) {
-    MyLogger.getInstance().getLOG().warn("createStepInfoPanel");
-    myBrowserWindow = new StudyBrowserWindow(false, false);
-//    myBrowserWindow.addBackAndOpenButtons();
-    myBrowserWindow.loadContent(stepText, StudyUtils.getConfigurator(project));
-    JPanel panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-    panel.add(myBrowserWindow.getPanel());
-    return panel;
-  }
+    @Override
+    public JComponent createStepInfoPanel(String stepText, Project project) {
+        MyLogger.getInstance().getLOG().warn("createStepInfoPanel");
+        myBrowserWindow = new StudyBrowserWindow(true, false);
+//        myBrowserWindow.addBackAndOpenButtons();
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(myBrowserWindow.getPanel());
+        return panel;
+    }
 
-  @Override
-  public void setStepText(String text) {
-    StudyPluginConfigurator configurator = StudyUtils.getConfigurator(ProjectUtil.guessCurrentProject(this));
-      myBrowserWindow.loadContent(text, configurator);
-  }
+    @Override
+    public void setStepText(String text) {
+        StudyPluginConfigurator configurator = StudyUtils.getConfigurator(ProjectUtil.guessCurrentProject(this));
+        myBrowserWindow.loadContent(text, configurator);
+    }
 }

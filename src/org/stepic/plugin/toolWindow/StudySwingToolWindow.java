@@ -63,6 +63,7 @@ public class StudySwingToolWindow extends StudyToolWindow {
   }
 
   public void setStepText(@NotNull String text) {
+//    myTaskTextPane.setText("<a href=https://stepic.org/lesson/17725/step/4>step_link</a>\n" + text);
     myTaskTextPane.setText(text);
   }
 }

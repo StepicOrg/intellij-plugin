@@ -21,6 +21,7 @@ import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.stepic.plugin.utils.MyLogger;
 import org.w3c.dom.*;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
@@ -58,6 +59,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     private void updateLaf(boolean isDarcula) {
+        MyLogger.getInstance().getLOG().warn("updateLaf");
         if (isDarcula) {
             updateLafDarcula();
         }
@@ -67,6 +69,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     private void updateIntellijAndGTKLaf() {
+        MyLogger.getInstance().getLOG().warn("updateIntellijAndGTKLaf");
         Platform.runLater(() -> {
             final URL scrollBarStyleUrl = getClass().getResource("/style/javaFXBrowserScrollBar.css");
             myPane.getStylesheets().add(scrollBarStyleUrl.toExternalForm());
@@ -88,6 +91,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     private void initComponents() {
+        MyLogger.getInstance().getLOG().warn("initComponents");
         Platform.runLater(() -> {
             myPane = new StackPane();
             myWebComponent = new WebView();
@@ -124,6 +128,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     public void loadContent(@NotNull final String content, @Nullable StudyPluginConfigurator configurator) {
+        MyLogger.getInstance().getLOG().warn("loadContent");
         if (configurator == null) {
             Platform.runLater(() -> myEngine.loadContent(content));
         }
@@ -138,6 +143,7 @@ public class StudyBrowserWindow extends JFrame {
 
     @Nullable
     private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyPluginConfigurator configurator) {
+        MyLogger.getInstance().getLOG().warn("createHtmlWithCodeHighlighting");
         String template = null;
         InputStream stream = getClass().getResourceAsStream("/code-mirror/template.html");
         try {
