@@ -2,10 +2,9 @@ package org.stepic.plugin.modules;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.project.Project;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import org.stepic.plugin.stepicConnector.StepicConnector;
 import org.stepic.plugin.utils.Utils;
 import org.stepic.plugin.utils.YaTranslator;
-import org.stepic.plugin.stepicConnector.StepicConnector;
 
 import java.util.ArrayList;
 import java.util.HashMap;

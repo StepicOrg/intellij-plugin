@@ -15,7 +15,7 @@ public class Step {
         return false;
     }
 
-    public String getText(){
+    public String getText() {
         return (String) block.get("text");
     }
 

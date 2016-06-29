@@ -62,8 +62,7 @@ public class StudyBrowserWindow extends JFrame {
         MyLogger.getInstance().getLOG().warn("updateLaf");
         if (isDarcula) {
             updateLafDarcula();
-        }
-        else {
+        } else {
             updateIntellijAndGTKLaf();
         }
     }
@@ -102,8 +101,7 @@ public class StudyBrowserWindow extends JFrame {
                 myProgressBar = makeProgressBarWithListener();
                 myWebComponent.setVisible(false);
                 myPane.getChildren().addAll(myWebComponent, myProgressBar);
-            }
-            else {
+            } else {
                 myPane.getChildren().add(myWebComponent);
             }
             if (myLinkInNewBrowser) {
@@ -131,8 +129,7 @@ public class StudyBrowserWindow extends JFrame {
         MyLogger.getInstance().getLOG().warn("loadContent");
         if (configurator == null) {
             Platform.runLater(() -> myEngine.loadContent(content));
-        }
-        else {
+        } else {
             String withCodeHighlighting = createHtmlWithCodeHighlighting(content, configurator);
             Platform.runLater(() -> {
                 updateLookWithProgressBarIfNeeded();
@@ -148,15 +145,12 @@ public class StudyBrowserWindow extends JFrame {
         InputStream stream = getClass().getResourceAsStream("/code-mirror/template.html");
         try {
             template = StreamUtil.readText(stream, "utf-8");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOG.warn(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 stream.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 LOG.warn(e.getMessage());
             }
         }
@@ -169,7 +163,7 @@ public class StudyBrowserWindow extends JFrame {
         final EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getGlobalScheme();
         int fontSize = editorColorsScheme.getEditorFontSize();
 
-        template = template.replace("${font_size}", String.valueOf(fontSize- 2));
+        template = template.replace("${font_size}", String.valueOf(fontSize - 2));
         template = template.replace("${codemirror}", getClass().getResource("/code-mirror/codemirror.js").toExternalForm());
         template = template.replace("${language_script}", configurator.getLanguageScriptUrl());
         template = template.replace("${default_mode}", configurator.getDefaultHighlightingMode());
@@ -179,8 +173,7 @@ public class StudyBrowserWindow extends JFrame {
         if (LafManager.getInstance().getCurrentLookAndFeel() instanceof DarculaLookAndFeelInfo) {
             template = template.replace("${css_oldcodemirror}", getClass().getResource("/code-mirror/codemirror-old-darcula.css").toExternalForm());
             template = template.replace("${css_codemirror}", getClass().getResource("/code-mirror/codemirror-darcula.css").toExternalForm());
-        }
-        else {
+        } else {
             template = template.replace("${css_oldcodemirror}", getClass().getResource("/code-mirror/codemirror-old.css").toExternalForm());
             template = template.replace("${css_codemirror}", getClass().getResource("/code-mirror/codemirror.css").toExternalForm());
         }
@@ -211,7 +204,7 @@ public class StudyBrowserWindow extends JFrame {
         if (doc != null) {
             final NodeList nodeList = doc.getElementsByTagName("a");
             for (int i = 0; i < nodeList.getLength(); i++) {
-                ((EventTarget)nodeList.item(i)).addEventListener(EVENT_TYPE_CLICK, listener, false);
+                ((EventTarget) nodeList.item(i)).addEventListener(EVENT_TYPE_CLICK, listener, false);
             }
         }
     }
@@ -226,7 +219,7 @@ public class StudyBrowserWindow extends JFrame {
                     myEngine.setJavaScriptEnabled(true);
                     myEngine.getLoadWorker().cancel();
                     ev.preventDefault();
-                    final String href = getLink((Element)ev.getTarget());
+                    final String href = getLink((Element) ev.getTarget());
                     if (href == null) return;
                     BrowserUtil.browse(href);
 

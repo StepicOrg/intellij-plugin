@@ -49,13 +49,13 @@ public class MyProjectComponent implements ProjectComponent {
     public void registerStudyToolWindow() {
 //        if (course != null && "PyCharm".equals(course.getCourseType())) {
         MyLogger.getInstance().getLOG().warn("registerStudyToolWindow");
-            final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
-            registerToolWindows(toolWindowManager);
-            final ToolWindow studyToolWindow = toolWindowManager.getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
-            if (studyToolWindow != null) {
-                studyToolWindow.show(null);
-                StudyUtils.initToolWindows(project);
-            }
+        final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+        registerToolWindows(toolWindowManager);
+        final ToolWindow studyToolWindow = toolWindowManager.getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
+        if (studyToolWindow != null) {
+            studyToolWindow.show(null);
+            StudyUtils.initToolWindows(project);
+        }
 //        }
     }
 

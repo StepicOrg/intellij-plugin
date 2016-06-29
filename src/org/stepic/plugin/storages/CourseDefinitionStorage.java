@@ -3,10 +3,10 @@ package org.stepic.plugin.storages;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializer;
-import org.stepic.plugin.modules.StepInfo;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.stepic.plugin.modules.StepInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,32 +91,32 @@ public class CourseDefinitionStorage implements PersistentStateComponent<Element
         return getStepInfo(path).getText();
     }
 
-    public void setStepID(String path, String stepID){
+    public void setStepID(String path, String stepID) {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setStepID(stepID);
     }
 
-    public void setAttemptID(String path, String attemptID){
+    public void setAttemptID(String path, String attemptID) {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setAttemptID(attemptID);
     }
 
-    public void setPackageName(String path, String packageName){
+    public void setPackageName(String path, String packageName) {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setPackageName(packageName);
     }
 
-    public void setFilename(String path, String filename){
+    public void setFilename(String path, String filename) {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setFilename(filename);
     }
 
-    public void setSubmissionID(String path, String submissionID){
+    public void setSubmissionID(String path, String submissionID) {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setSubmissionID(submissionID);
     }
 
-    public void setText(String path, String text){
+    public void setText(String path, String text) {
         StepInfo stepInfo = getOrCreateStepInfo(path);
         stepInfo.setText(text);
     }

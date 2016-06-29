@@ -4,7 +4,8 @@ import com.intellij.notification.Notification;
 import com.intellij.openapi.project.Project;
 
 public class NotificationUtils {
-    private NotificationUtils(){}
+    private NotificationUtils() {
+    }
 
     public static void initRuntimeException(Notification notification, Project project) {
         notification.notify(project);
@@ -20,7 +21,7 @@ public class NotificationUtils {
         throw new RuntimeException(text);
     }
 
-    public static void showNotification(Notification notification, Project project){
+    public static void showNotification(Notification notification, Project project) {
         notification.notify(project);
     }
 

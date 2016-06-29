@@ -70,12 +70,12 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
     }
 
     private void addAdditionalPanels(Project project) {
-    StudyPluginConfigurator configurator = StudyUtils.getConfigurator(project);
-    assert configurator != null;
-    Map<String, JPanel> panels = configurator.getAdditionalPanels(project);
-    for (Map.Entry<String, JPanel> entry: panels.entrySet()) {
-      myContentPanel.add(entry.getKey(), entry.getValue());
-    }
+        StudyPluginConfigurator configurator = StudyUtils.getConfigurator(project);
+        assert configurator != null;
+        Map<String, JPanel> panels = configurator.getAdditionalPanels(project);
+        for (Map.Entry<String, JPanel> entry : panels.entrySet()) {
+            myContentPanel.add(entry.getKey(), entry.getValue());
+        }
     }
 
     public void dispose() {

@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.stepic.plugin.storages.ActionVisibleProperties;
 
-public abstract class PopupMenuAction extends AnAction{
+public abstract class PopupMenuAction extends AnAction {
 
     @Override
     public void update(AnActionEvent anActionEvent) {
@@ -14,6 +14,6 @@ public abstract class PopupMenuAction extends AnAction{
         if (vf == null) return;
 
         ActionVisibleProperties properties = ActionVisibleProperties.getInstance(anActionEvent.getProject());
-        anActionEvent.getPresentation().setVisible(properties.isVisible() && !vf.isDirectory() );
+        anActionEvent.getPresentation().setVisible(properties.isVisible() && !vf.isDirectory());
     }
 }

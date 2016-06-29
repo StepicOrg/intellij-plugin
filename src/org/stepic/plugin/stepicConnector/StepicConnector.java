@@ -114,7 +114,7 @@ public class StepicConnector {
             NotificationUtils.initRuntimeException(project, e.getMessage());
         }
 
-        if (response.getStatus() != 200){
+        if (response.getStatus() != 200) {
             NotificationUtils.initRuntimeException(project, "Status " + Integer.toString(response.getStatus()));
         }
         final String responseString = response.getBody();
@@ -328,7 +328,7 @@ public class StepicConnector {
         return delta - sec * 1000L < 0L;
     }
 
-    public static boolean isPasswordSet(Project project){
+    public static boolean isPasswordSet(Project project) {
         StudentStorage storage = StudentStorage.getInstance(project);
         String password = storage.getPassword();
         return !(password == null || password.isEmpty());

@@ -12,10 +12,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.stepic.plugin.modules.Submission;
-import org.stepic.plugin.utils.NotificationUtils;
 import org.stepic.plugin.stepicConnector.StepicConnector;
 import org.stepic.plugin.storages.CourseDefinitionStorage;
 import org.stepic.plugin.utils.MyLogger;
+import org.stepic.plugin.utils.NotificationUtils;
 
 import java.util.HashSet;
 import java.util.List;
