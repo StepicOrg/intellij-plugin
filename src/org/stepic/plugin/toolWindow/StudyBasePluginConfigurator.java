@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -6,14 +6,14 @@ import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import main.stepicConnector.NewProjectService;
 import org.jetbrains.annotations.NotNull;
+import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import javax.swing.*;
 import java.util.Collections;
 import java.util.Map;
 
-public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindowConfigurator {
+public abstract class StudyBasePluginConfigurator implements StudyPluginConfigurator {
     @NotNull
     @Override
     public DefaultActionGroup getActionGroup(Project project) {
@@ -40,29 +40,32 @@ public abstract class StudyBaseToolWindowConfigurator implements StudyToolWindow
 
         return new FileEditorManagerListener() {
 
-            private static final String EMPTY_TASK_TEXT = "Please, open any task to see task description";
+            private final CourseDefinitionStorage cs = CourseDefinitionStorage.getInstance(project);
+            private static final String EMPTY_STEP_TEXT = "Please, open any Step to see Step description";
 
             @Override
             public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
-                setTaskText(file);
+                if (cs.contains(file.getPath())) {
+                    setStepText(file);
+                }
             }
 
             @Override
             public void fileClosed(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
-                toolWindow.setTaskText(EMPTY_TASK_TEXT);
+                toolWindow.setStepText(EMPTY_STEP_TEXT);
             }
 
             @Override
             public void selectionChanged(@NotNull FileEditorManagerEvent event) {
                 VirtualFile file = event.getNewFile();
-                if (file != null) {
-                    setTaskText(file);
+                if (file != null && cs.contains(file.getPath())) {
+                    setStepText(file);
                 }
             }
 
-            private void setTaskText(final VirtualFile virtualFile) {
-                String text = NewProjectService.getInstance(project).getText(virtualFile.getPath());
-                toolWindow.setTaskText(text);
+            private void setStepText(final VirtualFile virtualFile) {
+                String text = CourseDefinitionStorage.getInstance(project).getText(virtualFile.getPath());
+                toolWindow.setStepText(text);
             }
         };
     }

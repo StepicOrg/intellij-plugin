@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.BrowserUtil;
@@ -21,6 +21,7 @@ import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.stepic.plugin.utils.MyLogger;
 import org.w3c.dom.*;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
@@ -34,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-class StudyBrowserWindow extends JFrame {
+public class StudyBrowserWindow extends JFrame {
     private static final Logger LOG = Logger.getInstance(StudyToolWindow.class);
     private static final String EVENT_TYPE_CLICK = "click";
     private JFXPanel myPanel;
@@ -58,6 +59,7 @@ class StudyBrowserWindow extends JFrame {
     }
 
     private void updateLaf(boolean isDarcula) {
+        MyLogger.getInstance().getLOG().warn("updateLaf");
         if (isDarcula) {
             updateLafDarcula();
         } else {
@@ -66,6 +68,7 @@ class StudyBrowserWindow extends JFrame {
     }
 
     private void updateIntellijAndGTKLaf() {
+        MyLogger.getInstance().getLOG().warn("updateIntellijAndGTKLaf");
         Platform.runLater(() -> {
             final URL scrollBarStyleUrl = getClass().getResource("/style/javaFXBrowserScrollBar.css");
             myPane.getStylesheets().add(scrollBarStyleUrl.toExternalForm());
@@ -87,6 +90,7 @@ class StudyBrowserWindow extends JFrame {
     }
 
     private void initComponents() {
+        MyLogger.getInstance().getLOG().warn("initComponents");
         Platform.runLater(() -> {
             myPane = new StackPane();
             myWebComponent = new WebView();
@@ -121,16 +125,22 @@ class StudyBrowserWindow extends JFrame {
         });
     }
 
-    public void loadContent(@NotNull final String content, StudyToolWindowConfigurator configurator) {
-        String withCodeHighlighting = createHtmlWithCodeHighlighting(content, configurator);
-        Platform.runLater(() -> {
-            updateLookWithProgressBarIfNeeded();
-            myEngine.loadContent(withCodeHighlighting);
-        });
+    public void loadContent(@NotNull final String content, @Nullable StudyPluginConfigurator configurator) {
+        MyLogger.getInstance().getLOG().warn("loadContent");
+        if (configurator == null) {
+            Platform.runLater(() -> myEngine.loadContent(content));
+        } else {
+            String withCodeHighlighting = createHtmlWithCodeHighlighting(content, configurator);
+            Platform.runLater(() -> {
+                updateLookWithProgressBarIfNeeded();
+                myEngine.loadContent(withCodeHighlighting);
+            });
+        }
     }
 
     @Nullable
-    private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyToolWindowConfigurator configurator) {
+    private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyPluginConfigurator configurator) {
+        MyLogger.getInstance().getLOG().warn("createHtmlWithCodeHighlighting");
         String template = null;
         InputStream stream = getClass().getResourceAsStream("/code-mirror/template.html");
         try {

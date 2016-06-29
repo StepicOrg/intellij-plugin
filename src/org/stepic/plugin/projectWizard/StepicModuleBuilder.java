@@ -50,8 +50,8 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         LOG.warn("build course structure " + root.getPath());
 
         Course course = null;
-            course = StepicConnector.getCourses(courseId, project).get(0);
-            course.build(root.getPath(), rootModel.getProject());
+        course = StepicConnector.getCourses(courseId, project).get(0);
+        course.build(root.getPath(), rootModel.getProject());
 
         projectService.mapPathInfo.entrySet().forEach(x -> {
             String path = x.getKey();

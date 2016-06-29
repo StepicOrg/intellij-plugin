@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -14,7 +14,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.problems.WolfTheProblemSolver;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -49,18 +48,18 @@ public class StudyEditorFactoryListener implements EditorFactoryListener {
                                 final Document document = editor.getDocument();
                                 final VirtualFile openedFile = FileDocumentManager.getInstance().getFile(document);
                                 if (openedFile != null) {
-                                    WolfTheProblemSolver.getInstance(project).clearProblems(openedFile);
-                                    final ToolWindow studyToolWindow = ToolWindowManager.getInstance(project).getToolWindow(MyToolWindowFactory.STUDY_TOOL_WINDOW);
+//                                    WolfTheProblemSolver.getInstance(project).clearProblems(openedFile);
+                                    final ToolWindow studyToolWindow = ToolWindowManager.getInstance(project).getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
                                     if (studyToolWindow != null) {
                                         StudyUtils.updateToolWindows(project);
                                         studyToolWindow.show(null);
                                     }
-                                    if (true) {
+//                                    if (true) {
 //                                        StudyNavigator.navigateToFirstAnswerPlaceholder(editor, taskFile);
 //                                        StudyEditor.addDocumentListener(document, new EduDocumentListener(taskFile));
 //                                        StudyUtils.drawAllWindows(editor, taskFile);
 //                                        editor.addEditorMouseListener(new WindowSelectionListener(taskFile));
-                                    }
+//                                    }
                                 }
                             }
                         });
@@ -74,7 +73,7 @@ public class StudyEditorFactoryListener implements EditorFactoryListener {
         final Editor editor = event.getEditor();
         final Document document = editor.getDocument();
 //        StudyEditor.removeListener(document);
-        editor.getMarkupModel().removeAllHighlighters();
-        editor.getSelectionModel().removeSelection();
+//        editor.getMarkupModel().removeAllHighlighters();
+//        editor.getSelectionModel().removeSelection();
     }
 }

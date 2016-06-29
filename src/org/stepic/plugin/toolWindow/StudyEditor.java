@@ -1,4 +1,4 @@
-package main.toolWindow;
+package org.stepic.plugin.toolWindow;
 
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorImpl;
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider;
@@ -17,15 +17,15 @@ public class StudyEditor extends PsiAwareTextEditorImpl {
 //    return myTaskFile;
 //  }
 
-//  public static void addDocumentListener(@NotNull final Document document, @NotNull final EduDocumentListener listener) {
+    //  public static void addDocumentListener(@NotNull final Document document, @NotNull final EduDocumentListener listener) {
 //    document.addDocumentListener(listener);
 //    myDocumentListeners.put(document, listener);
 //  }
 //
-  public StudyEditor(@NotNull final Project project, @NotNull final VirtualFile file) {
-    super(project, file, TextEditorProvider.getInstance());
+    public StudyEditor(@NotNull final Project project, @NotNull final VirtualFile file) {
+        super(project, file, TextEditorProvider.getInstance());
 //    myTaskFile = StudyUtils.getTaskFile(project, file);
-  }
+    }
 //
 //  public static void removeListener(Document document) {
 //    final EduDocumentListener listener = myDocumentListeners.get(document);

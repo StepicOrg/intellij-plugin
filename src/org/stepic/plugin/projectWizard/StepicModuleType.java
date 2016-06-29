@@ -21,9 +21,11 @@ import javax.swing.*;
 public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
     public static final String MODULE_NAME = "Stepic";
     public static final StepicModuleType STEPIC_MODULE_TYPE;
+
     static {
         STEPIC_MODULE_TYPE = (StepicModuleType) instantiate("org.stepic.plugin.projectWizard.StepicModuleType");
     }
+
     private static final String ID = "STEPIC_MODULE_TYPE";
 
     public StepicModuleType() {
@@ -72,9 +74,8 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
     @NotNull
     private static ModuleType instantiate(String className) {
         try {
-            return (ModuleType)Class.forName(className).newInstance();
-        }
-        catch (Exception e) {
+            return (ModuleType) Class.forName(className).newInstance();
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
@@ -96,7 +97,8 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
     }
 
     public static boolean isValidJavaSdk(@NotNull Module module) {
-        if (ModuleRootManager.getInstance(module).getSourceRoots(JavaModuleSourceRootTypes.SOURCES).isEmpty()) return true;
+        if (ModuleRootManager.getInstance(module).getSourceRoots(JavaModuleSourceRootTypes.SOURCES).isEmpty())
+            return true;
         return JavaPsiFacade.getInstance(module.getProject()).findClass(CommonClassNames.JAVA_LANG_OBJECT,
                 module.getModuleWithLibrariesScope()) != null;
     }

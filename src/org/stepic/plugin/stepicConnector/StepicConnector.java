@@ -43,7 +43,7 @@ public class StepicConnector {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 
-    private static void setSSLProperty(Project project) {
+    public static void setSSLProperty(Project project) {
 // Create a trust manager that does not validate certificate for this connection
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
@@ -114,7 +114,7 @@ public class StepicConnector {
             NotificationUtils.initRuntimeException(project, e.getMessage());
         }
 
-        if (response.getStatus() != 200){
+        if (response.getStatus() != 200) {
             NotificationUtils.initRuntimeException(project, "Status " + Integer.toString(response.getStatus()));
         }
         final String responseString = response.getBody();
@@ -246,7 +246,7 @@ public class StepicConnector {
         return Integer.toString(id);
     }
 
-    public static List<Submission> getStatusTask(String stepId, Pair<String, String> pair, Project project) {
+    public static List<Submission> getStepStatus(String stepId, Pair<String, String> pair, Project project) {
 
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("step", stepId);
@@ -328,7 +328,7 @@ public class StepicConnector {
         return delta - sec * 1000L < 0L;
     }
 
-    public static boolean isPasswordSet(Project project){
+    public static boolean isPasswordSet(Project project) {
         StudentStorage storage = StudentStorage.getInstance(project);
         String password = storage.getPassword();
         return !(password == null || password.isEmpty());

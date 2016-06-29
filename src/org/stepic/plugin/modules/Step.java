@@ -8,14 +8,14 @@ public class Step {
     int position;
     Map<String, ? extends Object> block;
 
-    public boolean isTask() {
+    public boolean isCode() {
         String tmp = (String) block.get("name");
         if (tmp.equals("code"))
             return true;
         return false;
     }
 
-    public String getText(){
+    public String getText() {
         return (String) block.get("text");
     }
 

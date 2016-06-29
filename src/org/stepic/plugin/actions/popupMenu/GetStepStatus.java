@@ -24,26 +24,26 @@ public class GetStepStatus extends PopupMenuAction {
         String ans;
 
 
-            if (wasItSolved(stepId, project)) {
-                ans = "Step was solved\n";
-            } else {
-                ans = "Step wasn't solved\n";
-            }
+        if (wasItSolved(stepId, project)) {
+            ans = "Step was solved\n";
+        } else {
+            ans = "Step wasn't solved\n";
+        }
 
-            ans += "last submission from IDEA is ";
-            String subID = projectService.getSubmissionID(path);
-            if (subID.isEmpty()) {
-                ans += "unknown";
-            } else {
-                ans += StepicConnector.getStatus(subID, project).get(0).getStatus();
-            }
+        ans += "last submission from IDEA is ";
+        String subID = projectService.getSubmissionID(path);
+        if (subID.isEmpty()) {
+            ans += "unknown";
+        } else {
+            ans += StepicConnector.getStatus(subID, project).get(0).getStatus();
+        }
 
 
         Messages.showMessageDialog(project, ans, "Information", Messages.getInformationIcon());
     }
 
-    private boolean wasItSolved(String stepID, Project project)  {
-        int size = StepicConnector.getStatusTask(stepID, Pair.pair("status", "correct"), project).size();
+    private boolean wasItSolved(String stepID, Project project) {
+        int size = StepicConnector.getStepStatus(stepID, Pair.pair("status", "correct"), project).size();
         if (size > 0) {
             return true;
         } else {

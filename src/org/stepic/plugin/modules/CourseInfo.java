@@ -51,7 +51,7 @@ public class CourseInfo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CourseInfo that = (CourseInfo)o;
+        CourseInfo that = (CourseInfo) o;
         if (that.getName() == null || that.getDescription() == null) return false;
         return that.getName().equals(myName)
                 && that.getDescription().equals(myDescription);
@@ -69,7 +69,8 @@ public class CourseInfo {
         String first_name = "";
         String last_name = "";
 
-        public Author() {}
+        public Author() {
+        }
 
         public Author(String firstName, String lastName) {
             first_name = firstName;

@@ -7,12 +7,12 @@ public class Submission {
     private String status;
     private String time;
     private String hint;
-    private Map<String,String> reply;
+    private Map<String, String> reply;
 
     public String getStatus() {
         return status;
     }
-    
+
     public String getTime() {
         return time;
     }

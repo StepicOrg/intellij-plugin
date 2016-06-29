@@ -1,7 +1,7 @@
 package org.stepic.plugin.components;
 
-import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleComponent;
 import org.jetbrains.annotations.NotNull;
 
 public class MyModuleComponent implements ModuleComponent {

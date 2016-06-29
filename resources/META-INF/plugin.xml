@@ -31,10 +31,10 @@
         <!-- Add your extensions here -->
 
         <applicationService serviceInterface="org.stepic.plugin.storages.StepicApplicationStorage"
-                        serviceImplementation="org.stepic.plugin.storages.StepicApplicationStorage"/>
+                            serviceImplementation="org.stepic.plugin.storages.StepicApplicationStorage"/>
 
         <projectService serviceInterface="org.stepic.plugin.storages.StudentStorage"
-                            serviceImplementation="org.stepic.plugin.storages.StudentStorage"/>
+                        serviceImplementation="org.stepic.plugin.storages.StudentStorage"/>
 
         <projectService serviceInterface="org.stepic.plugin.storages.CourseDefinitionStorage"
                         serviceImplementation="org.stepic.plugin.storages.CourseDefinitionStorage"/>
@@ -49,28 +49,30 @@
         <moduleType id="STEPIC_MODULE_TYPE"
                     implementationClass="org.stepic.plugin.projectWizard.StepicModuleType"/>
 
-        <projectStructureDetector implementation="org.stepic.plugin.projectWizard.StepicProjectStructureDetector" order="first"/>
+        <projectStructureDetector implementation="org.stepic.plugin.projectWizard.StepicProjectStructureDetector"
+                                  order="first"/>
 
-        <toolWindow id="Task Description" secondary="true" anchor="right"
-                    factoryClass="main.toolWindow.StudyToolWindowFactory"/>
-                    <!--factoryClass="main.toolWindow.MyToolWindowFactory"/>-->
-                    <!--conditionClass="main.toolWindow.StudyCondition"/>-->
+        <toolWindow id="Step Description" secondary="true" anchor="right"
+                    factoryClass="org.stepic.plugin.toolWindow.StudyToolWindowFactory"
+                    conditionClass="org.stepic.plugin.toolWindow.StudyCondition"/>
+        <!--factoryClass="org.stepic.plugin.toolWindow.MyToolWindowFactory"/>-->
     </extensions>
 
     <extensionPoints>
         <!--<extensionPoint qualifiedName="Edu.StudyExecutor" beanClass="com.intellij.lang.LanguageExtensionPoint">-->
-            <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.checker.StudyExecutor"/>-->
+        <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.checker.StudyExecutor"/>-->
         <!--</extensionPoint>-->
         <!--<extensionPoint qualifiedName="Edu.StudyLanguageManager" beanClass="com.intellij.lang.LanguageExtensionPoint">-->
-            <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.StudyLanguageManager"/>-->
+        <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.StudyLanguageManager"/>-->
         <!--</extensionPoint>-->
-        <extensionPoint qualifiedName="Edu.studyToolWindowConfigurator" interface="main.toolWindow.StudyToolWindowConfigurator"/>
+        <extensionPoint qualifiedName="Edu.studyToolWindowConfigurator"
+                        interface="org.stepic.plugin.toolWindow.StudyPluginConfigurator"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="Edu">
         <!--<StudyExecutor implementationClass="com.jetbrains.edu.learning.PyStudyExecutor" language="Python"/>-->
         <!--<StudyLanguageManager implementationClass="com.jetbrains.edu.learning.PyStudyLanguageManager" language="Python"/>-->
-        <studyToolWindowConfigurator implementation="main.toolWindow.JavaStudyToolWindowConfigurator" />
+        <studyToolWindowConfigurator implementation="org.stepic.plugin.toolWindow.JavaStudyPluginConfigurator"/>
     </extensions>
 
     <actions>
@@ -97,7 +99,8 @@
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
-        <action id="WhoAmI" class="org.stepic.plugin.actions.mainMenu.WhoAmI" text="_Who am I" description="return username">
+        <action id="WhoAmI" class="org.stepic.plugin.actions.mainMenu.WhoAmI" text="_Who am I"
+                description="return username">
             <add-to-group group-id="ID.StepicGroup" anchor="first"/>
         </action>
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Utils {
-    public static void refreshFiles(Project project){
+    public static void refreshFiles(Project project) {
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
 
         LocalFileSystem lfs = LocalFileSystem.getInstance();
