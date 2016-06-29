@@ -14,8 +14,9 @@
       <sourceFolder url="file://$MODULE_DIR$/icons" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/res" type="java-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-145.1617.8" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.mashape.unirest:unirest-java:1.4.9" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.7" level="project" />
   </component>
 </module>
