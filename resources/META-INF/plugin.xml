@@ -52,7 +52,7 @@
         <projectStructureDetector implementation="org.stepic.plugin.projectWizard.StepicProjectStructureDetector"
                                   order="first"/>
 
-        <toolWindow id="Step Description" secondary="false" anchor="right"
+        <toolWindow id="Step Description" secondary="true" anchor="right"
                     factoryClass="org.stepic.plugin.toolWindow.StudyToolWindowFactory"
                     conditionClass="org.stepic.plugin.toolWindow.StudyCondition"/>
         <!--factoryClass="org.stepic.plugin.toolWindow.MyToolWindowFactory"/>-->

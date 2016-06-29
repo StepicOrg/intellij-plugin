@@ -54,12 +54,12 @@ public class StudyEditorFactoryListener implements EditorFactoryListener {
                                         StudyUtils.updateToolWindows(project);
                                         studyToolWindow.show(null);
                                     }
-                                    if (true) {
+//                                    if (true) {
 //                                        StudyNavigator.navigateToFirstAnswerPlaceholder(editor, taskFile);
 //                                        StudyEditor.addDocumentListener(document, new EduDocumentListener(taskFile));
 //                                        StudyUtils.drawAllWindows(editor, taskFile);
 //                                        editor.addEditorMouseListener(new WindowSelectionListener(taskFile));
-                                    }
+//                                    }
                                 }
                             }
                         });

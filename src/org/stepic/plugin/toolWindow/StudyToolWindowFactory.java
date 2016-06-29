@@ -31,6 +31,7 @@ public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
         final Content content = contentManager.getFactory().createContent(studyToolWindow, null, false);
         contentManager.addContent(content);
         Disposer.register(project, studyToolWindow);
+        toolWindow.hide(null);
         MyLogger.getInstance().getLOG().warn("createToolWindowContent == exit");
     }
 }
