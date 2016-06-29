@@ -21,9 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Petr on 19.05.2016.
- */
 public class SendFile extends PopupMenuAction {
     private static String success = "the Step successfully sent";
     private static String error = "the Step is not sent";
@@ -37,7 +34,7 @@ public class SendFile extends PopupMenuAction {
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
         String stepId = projectService.getStepID(vf.getPath());
 
-        String text = renameMainClass(vf, project);
+        String text = renameMainClass(vf);
         String path = vf.getPath();
 
         String attemptId = StepicConnector.getAttemptId(stepId, project);
@@ -97,7 +94,7 @@ public class SendFile extends PopupMenuAction {
         );
     }
 
-    private String renameMainClass(VirtualFile vf, Project project) {
+    private String renameMainClass(VirtualFile vf) {
         Document doc = FileDocumentManager.getInstance().getDocument(vf);
         String[] lines = doc.getText().split("\n");
 
