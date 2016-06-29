@@ -21,9 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Petr on 19.05.2016.
- */
 public class SendFile extends PopupMenuAction {
     private static String success = "the Step successfully sent";
     private static String error = "the Step is not sent";
@@ -103,6 +100,7 @@ public class SendFile extends PopupMenuAction {
 
         Set<Integer> skipLine = new HashSet<>();
         for (int i = 0; i < lines.length; i++) {
+            if (lines[i].contains("// Sent from IntelliJ IDEA")) skipLine.add(i);
             if (lines[i].contains("package")) skipLine.add(i);
             if (lines[i].contains("class Step")) {
                 lines[i] = "class Main {";
@@ -111,6 +109,7 @@ public class SendFile extends PopupMenuAction {
         }
 
         StringBuilder sb = new StringBuilder();
+        sb.append("// Sent from IntelliJ IDEA");
         for (int i = 0; i < lines.length; i++) {
             if (skipLine.contains(i)) continue;
             sb.append(lines[i] + "\n");
