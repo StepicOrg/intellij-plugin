@@ -91,8 +91,7 @@ public class StepicConnector {
         parameters.put("password", pass);
         parameters.put("client_id", CLIENT_ID);
 
-        TokenInfo tokenInfo = null;
-        tokenInfo = postToStepicMapLinkReset(TOKEN_URL, parameters, TokenInfo.class, project);
+        TokenInfo tokenInfo = postToStepicMapLinkReset(TOKEN_URL, parameters, TokenInfo.class, project);
 
         String token = tokenInfo.access_token;
         if (token != null && !token.isEmpty()) {

@@ -26,7 +26,6 @@ public class Lesson {
 
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
         this.lessonNo = lessonNo;
-        String token = StepicConnector.getToken(project);
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
 
         List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), project);
@@ -60,5 +59,32 @@ public class Lesson {
                 "id=" + id +
                 ", steps=" + steps +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Lesson lesson = (Lesson) o;
+
+        if (id != lesson.id) return false;
+        if (lessonNo != lesson.lessonNo) return false;
+        if (stepsId != null ? !stepsId.equals(lesson.stepsId) : lesson.stepsId != null) return false;
+        if (title != null ? !title.equals(lesson.title) : lesson.title != null) return false;
+        if (lessonName != null ? !lessonName.equals(lesson.lessonName) : lesson.lessonName != null) return false;
+        return steps != null ? steps.equals(lesson.steps) : lesson.steps == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (stepsId != null ? stepsId.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (lessonName != null ? lessonName.hashCode() : 0);
+        result = 31 * result + (steps != null ? steps.hashCode() : 0);
+        result = 31 * result + lessonNo;
+        return result;
     }
 }

@@ -19,8 +19,7 @@ public class SignIn extends MainMenuAction {
 
         StepicConnector.setLoginAndPassword(login, password, project);
         StepicConnector.initToken(e.getProject());
-        String name = null;
-        name = StepicConnector.getUserName(project);
+        String name = StepicConnector.getUserName(project);
 
         Messages.showMessageDialog(project, "Hello, " + name + "!\n I am glad to see you.", "Information", Messages.getInformationIcon());
     }

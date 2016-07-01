@@ -87,7 +87,7 @@
     function tokenBase(stream, state) {
       // Handle scope changes
       if (stream.sol() && top(state).type == "py") {
-        state.indent = stream.indentation()
+        state.indent = stream.indentation();
         var scopeOffset = top(state).offset;
         if (stream.eatSpace()) {
           var lineOffset = stream.indentation();
@@ -226,14 +226,14 @@
     }
 
     function pushPyScope(state) {
-      while (top(state).type != "py") state.scopes.pop()
+      while (top(state).type != "py") state.scopes.pop();
       state.scopes.push({offset: top(state).offset + conf.indentUnit,
                          type: "py",
                          align: null})
     }
 
     function pushBracketScope(stream, state, type) {
-      var align = stream.match(/^([\s\[\{\(]|#.*)*$/, false) ? null : stream.column() + 1
+      var align = stream.match(/^([\s\[\{\(]|#.*)*$/, false) ? null : stream.column() + 1;
       state.scopes.push({offset: state.indent + hangingIndent,
                          type: type,
                          align: align})
@@ -278,7 +278,7 @@
 
       delimiter_index = "])}".indexOf(current);
       if (delimiter_index != -1) {
-        if (top(state).type == current) state.indent = state.scopes.pop().offset - hangingIndent
+        if (top(state).type == current) state.indent = state.scopes.pop().offset - hangingIndent;
         else return ERRORCLASS;
       }
       if (state.dedent > 0 && stream.eol() && top(state).type == "py") {
@@ -319,9 +319,9 @@
         if (state.tokenize != tokenBase)
           return state.tokenize.isString ? CodeMirror.Pass : 0;
 
-        var scope = top(state), closing = scope.type == textAfter.charAt(0)
+        var scope = top(state), closing = scope.type == textAfter.charAt(0);
         if (scope.align != null)
-          return scope.align - (closing ? 1 : 0)
+          return scope.align - (closing ? 1 : 0);
         else
           return scope.offset - (closing ? hangingIndent : 0)
       },
