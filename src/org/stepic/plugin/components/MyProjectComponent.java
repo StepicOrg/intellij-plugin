@@ -22,10 +22,6 @@ public class MyProjectComponent implements ProjectComponent {
 
     @Override
     public void initComponent() {
-//        StepicConnector.setSSLProperty(project);
-//        if (project.getName().equals(CourseDefinitionStorage.getInstance(project).getProjectName())) {
-//            StepicConnector.initToken(project);
-//        }
     }
 
     @Override
@@ -49,16 +45,13 @@ public class MyProjectComponent implements ProjectComponent {
     }
 
     private void registerStudyToolWindow() {
-//        if (course != null && "PyCharm".equals(course.getCourseType())) {
         MyLogger.getInstance().getLOG().warn("registerStudyToolWindow");
         final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
         registerToolWindows(toolWindowManager);
         final ToolWindow studyToolWindow = toolWindowManager.getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
         if (studyToolWindow != null) {
-//            studyToolWindow.show(null);
             StudyUtils.initToolWindows(project);
         }
-//        }
     }
 
     private void registerToolWindows(@NotNull final ToolWindowManager toolWindowManager) {
