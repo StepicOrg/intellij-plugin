@@ -46,7 +46,7 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
     }
 
     public void init(Project project) {
-        MyLogger.getInstance().getLOG().warn("init");
+        MyLogger.getInstance().getLOG().debug("init");
         String stepText = StudyUtils.getStepText(project);
         if (stepText == null) return;
 
@@ -124,7 +124,7 @@ public abstract class StudyToolWindow extends SimpleToolWindowPanel implements D
 //  private static DefaultActionGroup getActionGroup(@NotNull final Project project) {
 //    Course course = StudyTaskManager.getInstance(project).getCourse();
 //    if (course == null) {
-//      LOG.warn("Course is null");
+//      LOG.debug("Course is null");
 //      return new DefaultActionGroup();
 //    }
 //    StudyPluginConfigurator configurator = StudyUtils.getConfigurator(project);

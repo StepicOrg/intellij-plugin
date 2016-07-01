@@ -41,8 +41,7 @@ public class Course {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course that = (Course) o;
-        if (that.id == this.id) return true;
-        return false;
+        return that.id == this.id;
     }
 
     public void build(String root, Project project) {

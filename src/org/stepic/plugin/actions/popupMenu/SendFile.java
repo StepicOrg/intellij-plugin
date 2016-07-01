@@ -40,8 +40,8 @@ public class SendFile extends PopupMenuAction {
         String attemptId = StepicConnector.getAttemptId(stepId, project);
         String submissionId = StepicConnector.sendFile(text, attemptId, project);
 
-        MyLogger.getInstance().getLOG().warn("attId = " + attemptId);
-        MyLogger.getInstance().getLOG().warn("subId = " + submissionId);
+        MyLogger.getInstance().getLOG().debug("attId = " + attemptId);
+        MyLogger.getInstance().getLOG().debug("subId = " + submissionId);
 
         projectService.setAttemptID(path, attemptId);
         projectService.setSubmissionID(path, submissionId);

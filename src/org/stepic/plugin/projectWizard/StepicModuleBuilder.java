@@ -39,22 +39,23 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
 
         PropertiesComponent props = PropertiesComponent.getInstance();
-        projectService.setTranslate(props.getValue("translate").equals("true"));
+        projectService.setTranslate(Boolean.parseBoolean(props.getValue("translate")));
+//        projectService.setTranslate(props.getBoolean("translate"));
         projectService.setCourseID(props.getValue("courseId"));
         projectService.setProjectName(project.getName());
 
-        ActionVisibleProperties avp = ActionVisibleProperties.getInstance(project);
-        avp.setEnabled(true);
-        avp.setVisible(true);
+        ActionVisibleProperties visibleProperties = ActionVisibleProperties.getInstance(project);
+        visibleProperties.setEnabled(true);
+        visibleProperties.setVisible(true);
 
         StepicConnector.setLoginAndPassword(props.getValue("login"), props.getValue("password"), project);
-        LOG.warn("login = " + props.getValue("login"));
+        LOG.debug("login = " + props.getValue("login"));
 
         StepicConnector.initToken(project);
         String courseId = projectService.getCourseID();
-        LOG.warn("build course structure " + root.getPath());
+        LOG.debug("build course structure " + root.getPath());
 
-        Course course = StepicConnector.getCourses(courseId, project).get(0);
+        Course course = StepicConnector.getCourse(courseId, project);
         course.build(root.getPath(), rootModel.getProject());
 
         projectService.mapPathInfo.entrySet().forEach(x -> {

@@ -182,9 +182,9 @@ public class StepicConnector {
         return aw.users.get(0).getName();
     }
 
-    public static List<Course> getCourses(String courseId, Project project) {
+    public static Course getCourse(String courseId, Project project) {
         final String url = "courses/" + courseId;
-        return getFromStepic(url, CoursesContainer.class, project).courses;
+        return getFromStepic(url, CoursesContainer.class, project).courses.get(0);
     }
 
     public static List<Section> getSections(String idsQuery, Project project) {

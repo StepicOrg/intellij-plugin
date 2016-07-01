@@ -30,7 +30,7 @@ public class StudyJavaFxToolWindow extends StudyToolWindow {
 
     @Override
     public JComponent createStepInfoPanel(String stepText, Project project) {
-        MyLogger.getInstance().getLOG().warn("createStepInfoPanel");
+        MyLogger.getInstance().getLOG().debug("createStepInfoPanel");
         myBrowserWindow = new StudyBrowserWindow(true, false);
 //        myBrowserWindow.addBackAndOpenButtons();
         JPanel panel = new JPanel();

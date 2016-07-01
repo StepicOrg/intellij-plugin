@@ -17,12 +17,15 @@ public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
 
     @Override
     public void createToolWindowContent(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
-        MyLogger.getInstance().getLOG().warn("createToolWindowContent");
+        MyLogger.getInstance().getLOG().debug("createToolWindowContent");
         toolWindow.setIcon(PluginIcons.STEPIC_LOGO_MINI);
 
         final StudyToolWindow studyToolWindow;
+        if (StudyUtils.hasJavaFx()) {
             studyToolWindow = new StudyJavaFxToolWindow();
-//            studyToolWindow = new StudySwingToolWindow();
+        } else {
+            studyToolWindow = new StudySwingToolWindow();
+        }
         studyToolWindow.init(project);
         final ContentManager contentManager = toolWindow.getContentManager();
         final Content content = contentManager.getFactory().createContent(studyToolWindow, null, false);
