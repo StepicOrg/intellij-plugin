@@ -51,46 +51,41 @@ public class SendFile extends PopupMenuAction {
         final Application application = ApplicationManager.getApplication();
         final String finalSubmissionId = submissionId;
         application.executeOnPooledThread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-
-                        String ans = "evaluation";
-                        final int TIMER = 2;
-                        int count = 0;
-                        Notification notification = null;
-                        List<Submission> list = null;
-                        String b = "";
-                        while (ans.equals("evaluation") && count < 100) {
-                            try {
-                                Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
-                                list = StepicConnector.getStatus(finalSubmissionId, project);
-                                if (list != null) {
-                                    ans = list.get(0).getStatus();
-                                    b = list.get(0).getHint();
-                                }
-                                count += TIMER;
-                            } catch (InterruptedException | NullPointerException e) {
-                                notification = new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
-                                NotificationUtils.showNotification(notification, project);
-                                return;
+                () -> {
+                    String ans = "evaluation";
+                    final int TIMER = 2;
+                    int count = 0;
+                    Notification notification = null;
+                    List<Submission> list = null;
+                    String b = "";
+                    while (ans.equals("evaluation") && count < 100) {
+                        try {
+                            Thread.sleep(TIMER * 1000);          //1000 milliseconds is one second.
+                            list = StepicConnector.getStatus(finalSubmissionId, project);
+                            if (list != null) {
+                                ans = list.get(0).getStatus();
+                                b = list.get(0).getHint();
                             }
+                            count += TIMER;
+                        } catch (InterruptedException | NullPointerException e) {
+                            notification = new Notification("Step.sending", "Error", "Get Status error", NotificationType.ERROR);
+                            NotificationUtils.showNotification(notification, project);
+                            return;
                         }
-
-                        NotificationType notificationType;
-
-                        if (ans.equals("correct")) {
-                            notificationType = NotificationType.INFORMATION;
-                            b = "Success!";
-                        } else {
-                            notificationType = NotificationType.WARNING;
-                            b = b.split("\\.")[0];
-                        }
-                        notification = new Notification("Step.sending", filename + " is " + ans, b, notificationType);
-                        NotificationUtils.showNotification(notification, project);
                     }
-                }
 
+                    NotificationType notificationType;
+
+                    if (ans.equals("correct")) {
+                        notificationType = NotificationType.INFORMATION;
+                        b = "Success!";
+                    } else {
+                        notificationType = NotificationType.WARNING;
+                        b = b.split("\\.")[0];
+                    }
+                    notification = new Notification("Step.sending", filename + " is " + ans, b, notificationType);
+                    NotificationUtils.showNotification(notification, project);
+                }
         );
     }
 

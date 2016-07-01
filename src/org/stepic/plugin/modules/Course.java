@@ -36,17 +36,8 @@ public class Course {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course that = (Course) o;
-        return that.id == this.id;
-    }
-
     public void build(String root, Project project) {
         int sectionNo = 0;
-        String token = StepicConnector.getToken(project);
         List<Section> sectionList = StepicConnector.getSections(Utils.getIdQuery(sectionsId), project);
         List<String> sectionNames = new ArrayList<>();
         sectionList.forEach(x -> sectionNames.add(x.title));

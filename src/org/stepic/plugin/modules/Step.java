@@ -6,13 +6,11 @@ public class Step {
     int id;
     int lesson;
     int position;
-    Map<String, ? extends Object> block;
+    Map<String, ?> block;
 
     public boolean isCode() {
         String tmp = (String) block.get("name");
-        if (tmp.equals("code"))
-            return true;
-        return false;
+        return tmp.equals("code");
     }
 
     public String getText() {

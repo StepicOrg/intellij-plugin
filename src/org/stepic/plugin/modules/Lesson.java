@@ -26,7 +26,6 @@ public class Lesson {
 
     public void build(int lessonNo, String courseDir, String sectionDir, Project project) {
         this.lessonNo = lessonNo;
-        String token = StepicConnector.getToken(project);
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
 
         List<Step> stepsList = StepicConnector.getSteps(Utils.getIdQuery(stepsId), project);

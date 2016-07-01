@@ -5,10 +5,8 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.openapi.util.Condition;
 import com.intellij.psi.CommonClassNames;
 import com.intellij.psi.JavaPsiFacade;
 import org.jetbrains.annotations.NotNull;
@@ -83,12 +81,7 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
     @Nullable
     @Override
     public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep, @NotNull final ModuleBuilder moduleBuilder) {
-        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, new Condition<SdkTypeId>() {
-            @Override
-            public boolean value(SdkTypeId sdkType) {
-                return moduleBuilder.isSuitableSdkType(sdkType);
-            }
-        });
+        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, moduleBuilder::isSuitableSdkType);
     }
 
     @Override
@@ -96,7 +89,7 @@ public class StepicModuleType extends ModuleType<StepicModuleBuilder> {
         return isValidJavaSdk(module);
     }
 
-    public static boolean isValidJavaSdk(@NotNull Module module) {
+    private static boolean isValidJavaSdk(@NotNull Module module) {
         if (ModuleRootManager.getInstance(module).getSourceRoots(JavaModuleSourceRootTypes.SOURCES).isEmpty())
             return true;
         return JavaPsiFacade.getInstance(module.getProject()).findClass(CommonClassNames.JAVA_LANG_OBJECT,
