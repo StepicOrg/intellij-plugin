@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
+import javafx.application.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.stepic.plugin.stepicConnector.StepicConnector;
 import org.stepic.plugin.storages.CourseDefinitionStorage;
@@ -13,7 +14,7 @@ import org.stepic.plugin.toolWindow.StudyUtils;
 import org.stepic.plugin.utils.MyLogger;
 
 public class MyProjectComponent implements ProjectComponent {
-    Project project;
+    private Project project;
 
     public MyProjectComponent(Project project) {
         this.project = project;
@@ -40,20 +41,21 @@ public class MyProjectComponent implements ProjectComponent {
     @Override
     public void projectOpened() {
         MyLogger.getInstance().getLOG().warn("projectOpened");
+        Platform.setImplicitExit(false);
         if (project.getName().equals(CourseDefinitionStorage.getInstance(project).getProjectName())) {
             StepicConnector.initToken(project);
             registerStudyToolWindow();
         }
     }
 
-    public void registerStudyToolWindow() {
+    private void registerStudyToolWindow() {
 //        if (course != null && "PyCharm".equals(course.getCourseType())) {
         MyLogger.getInstance().getLOG().warn("registerStudyToolWindow");
         final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
         registerToolWindows(toolWindowManager);
         final ToolWindow studyToolWindow = toolWindowManager.getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
         if (studyToolWindow != null) {
-            studyToolWindow.show(null);
+//            studyToolWindow.show(null);
             StudyUtils.initToolWindows(project);
         }
 //        }

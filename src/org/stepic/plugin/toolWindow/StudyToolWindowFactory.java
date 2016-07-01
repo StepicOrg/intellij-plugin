@@ -21,7 +21,7 @@ public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
         toolWindow.setIcon(PluginIcons.STEPIC_LOGO_MINI);
 
         final StudyToolWindow studyToolWindow;
-        if (false) {
+        if (true) {
             studyToolWindow = new StudyJavaFxToolWindow();
         } else {
             studyToolWindow = new StudySwingToolWindow();
@@ -31,7 +31,7 @@ public class StudyToolWindowFactory implements ToolWindowFactory, DumbAware {
         final Content content = contentManager.getFactory().createContent(studyToolWindow, null, false);
         contentManager.addContent(content);
         Disposer.register(project, studyToolWindow);
-        toolWindow.hide(null);
+//        toolWindow.hide(null);
         MyLogger.getInstance().getLOG().warn("createToolWindowContent == exit");
     }
 }
