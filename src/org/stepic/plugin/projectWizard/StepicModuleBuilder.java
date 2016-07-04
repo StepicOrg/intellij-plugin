@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.stepic.plugin.modules.Course;
 import org.stepic.plugin.modules.StepInfo;
 import org.stepic.plugin.stepicConnector.StepicConnector;
+import org.stepic.plugin.storages.ActionVisibleProperties;
 import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import java.io.File;
@@ -38,19 +39,23 @@ public class StepicModuleBuilder extends JavaModuleBuilder {
         CourseDefinitionStorage projectService = CourseDefinitionStorage.getInstance(project);
 
         PropertiesComponent props = PropertiesComponent.getInstance();
-        projectService.setTranslate(props.getValue("translate").equals("true") ? true : false);
+        projectService.setTranslate(Boolean.parseBoolean(props.getValue("translate")));
+//        projectService.setTranslate(props.getBoolean("translate"));
         projectService.setCourseID(props.getValue("courseId"));
         projectService.setProjectName(project.getName());
 
+        ActionVisibleProperties visibleProperties = ActionVisibleProperties.getInstance(project);
+        visibleProperties.setEnabled(true);
+        visibleProperties.setVisible(true);
+
         StepicConnector.setLoginAndPassword(props.getValue("login"), props.getValue("password"), project);
-        LOG.warn("login = " + props.getValue("login"));
+        LOG.debug("login = " + props.getValue("login"));
 
         StepicConnector.initToken(project);
         String courseId = projectService.getCourseID();
-        LOG.warn("build course structure " + root.getPath());
+        LOG.debug("build course structure " + root.getPath());
 
-        Course course = null;
-        course = StepicConnector.getCourses(courseId, project).get(0);
+        Course course = StepicConnector.getCourse(courseId, project);
         course.build(root.getPath(), rootModel.getProject());
 
         projectService.mapPathInfo.entrySet().forEach(x -> {

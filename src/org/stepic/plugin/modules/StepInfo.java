@@ -102,4 +102,33 @@ public class StepInfo implements Serializable {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StepInfo stepInfo = (StepInfo) o;
+
+        if (stepID != null ? !stepID.equals(stepInfo.stepID) : stepInfo.stepID != null) return false;
+        if (attemptID != null ? !attemptID.equals(stepInfo.attemptID) : stepInfo.attemptID != null) return false;
+        if (packageName != null ? !packageName.equals(stepInfo.packageName) : stepInfo.packageName != null)
+            return false;
+        if (filename != null ? !filename.equals(stepInfo.filename) : stepInfo.filename != null) return false;
+        if (submissionID != null ? !submissionID.equals(stepInfo.submissionID) : stepInfo.submissionID != null)
+            return false;
+        return text != null ? text.equals(stepInfo.text) : stepInfo.text == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = stepID != null ? stepID.hashCode() : 0;
+        result = 31 * result + (attemptID != null ? attemptID.hashCode() : 0);
+        result = 31 * result + (packageName != null ? packageName.hashCode() : 0);
+        result = 31 * result + (filename != null ? filename.hashCode() : 0);
+        result = 31 * result + (submissionID != null ? submissionID.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        return result;
+    }
 }

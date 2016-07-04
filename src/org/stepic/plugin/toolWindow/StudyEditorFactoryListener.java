@@ -39,32 +39,17 @@ public class StudyEditorFactoryListener implements EditorFactoryListener {
             return;
         }
         ApplicationManager.getApplication().invokeLater(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                final Document document = editor.getDocument();
-                                final VirtualFile openedFile = FileDocumentManager.getInstance().getFile(document);
-                                if (openedFile != null) {
-//                                    WolfTheProblemSolver.getInstance(project).clearProblems(openedFile);
-                                    final ToolWindow studyToolWindow = ToolWindowManager.getInstance(project).getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
-                                    if (studyToolWindow != null) {
-                                        StudyUtils.updateToolWindows(project);
-                                        studyToolWindow.show(null);
-                                    }
-//                                    if (true) {
-//                                        StudyNavigator.navigateToFirstAnswerPlaceholder(editor, taskFile);
-//                                        StudyEditor.addDocumentListener(document, new EduDocumentListener(taskFile));
-//                                        StudyUtils.drawAllWindows(editor, taskFile);
-//                                        editor.addEditorMouseListener(new WindowSelectionListener(taskFile));
-//                                    }
-                                }
-                            }
-                        });
+                () -> ApplicationManager.getApplication().runWriteAction(() -> {
+                    final Document document = editor.getDocument();
+                    final VirtualFile openedFile = FileDocumentManager.getInstance().getFile(document);
+                    if (openedFile != null) {
+                        final ToolWindow studyToolWindow = ToolWindowManager.getInstance(project).getToolWindow(StudyToolWindowFactory.STUDY_TOOL_WINDOW);
+                        if (studyToolWindow != null) {
+                            StudyUtils.updateToolWindows(project);
+                            studyToolWindow.show(null);
+                        }
                     }
-                }
+                })
         );
     }
 

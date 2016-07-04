@@ -69,7 +69,7 @@ public class UpdateCourse extends MainMenuAction {
 
         Map<String, StepInfo> map;
         Set<String> newFiles = new HashSet<>();
-        Course course = StepicConnector.getCourses(courseID, project).get(0);
+        Course course = StepicConnector.getCourse(courseID, project);
 
         Utils.refreshFiles(project);
         map = new HashMap<>(projectService.getMapPathInfo());

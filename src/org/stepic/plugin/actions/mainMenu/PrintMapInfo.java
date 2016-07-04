@@ -8,9 +8,6 @@ import org.stepic.plugin.storages.CourseDefinitionStorage;
 
 import java.util.Map;
 
-/**
- * Created by Petr on 21.05.2016.
- */
 public class PrintMapInfo extends MainMenuAction {
 
     @Override

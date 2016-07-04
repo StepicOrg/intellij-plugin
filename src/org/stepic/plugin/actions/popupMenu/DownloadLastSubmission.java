@@ -39,17 +39,11 @@ public class DownloadLastSubmission extends PopupMenuAction {
             String pack = CourseDefinitionStorage.getInstance(project).getPackageName(vf.getPath());
             Document doc = FileDocumentManager.getInstance().getDocument(vf);
             String code2 = renameFromMainToStep(code, stepName, pack);
-            CommandProcessor.getInstance().executeCommand(project, new Runnable() {
-                @Override
-                public void run() {
-                    ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            doc.setText(code2);
-                        }
-                    });
-                }
-            }, "Download last submission", "Download last submission");
+            CommandProcessor.getInstance().executeCommand(project,
+                    () -> ApplicationManager.getApplication().runWriteAction(
+                            () -> {
+                                doc.setText(code2);
+                            }), "Download last submission", "Download last submission");
         }
     }
 

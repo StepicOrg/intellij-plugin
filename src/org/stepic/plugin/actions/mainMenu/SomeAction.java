@@ -23,7 +23,6 @@ public class SomeAction extends MainMenuAction {
         psi.setName("Abra");
 
 
-
     }
 
 

@@ -91,8 +91,7 @@ public class StepicConnector {
         parameters.put("password", pass);
         parameters.put("client_id", CLIENT_ID);
 
-        TokenInfo tokenInfo = null;
-        tokenInfo = postToStepicMapLinkReset(TOKEN_URL, parameters, TokenInfo.class, project);
+        TokenInfo tokenInfo = postToStepicMapLinkReset(TOKEN_URL, parameters, TokenInfo.class, project);
 
         String token = tokenInfo.access_token;
         if (token != null && !token.isEmpty()) {
@@ -182,9 +181,9 @@ public class StepicConnector {
         return aw.users.get(0).getName();
     }
 
-    public static List<Course> getCourses(String courseId, Project project) {
+    public static Course getCourse(String courseId, Project project) {
         final String url = "courses/" + courseId;
-        return getFromStepic(url, CoursesContainer.class, project).courses;
+        return getFromStepic(url, CoursesContainer.class, project).courses.get(0);
     }
 
     public static List<Section> getSections(String idsQuery, Project project) {

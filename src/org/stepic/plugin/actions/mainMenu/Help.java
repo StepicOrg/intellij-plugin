@@ -3,9 +3,6 @@ package org.stepic.plugin.actions.mainMenu;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.Messages;
 
-/**
- * Created by Petr on 11.06.2016.
- */
 public class Help extends MainMenuAction {
 
     private static String text = "Stepic plugin for code challenges on Java.\n" +

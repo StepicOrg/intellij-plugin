@@ -41,13 +41,22 @@ public class Course {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course that = (Course) o;
-        if (that.id == this.id) return true;
-        return false;
+        return that.id == this.id;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
+        result = 31 * result + (courseName != null ? courseName.hashCode() : 0);
+        result = 31 * result + (sectionsId != null ? sectionsId.hashCode() : 0);
+        result = 31 * result + (sections != null ? sections.hashCode() : 0);
+        return result;
     }
 
     public void build(String root, Project project) {
         int sectionNo = 0;
-        String token = StepicConnector.getToken(project);
         List<Section> sectionList = StepicConnector.getSections(Utils.getIdQuery(sectionsId), project);
         List<String> sectionNames = new ArrayList<>();
         sectionList.forEach(x -> sectionNames.add(x.title));

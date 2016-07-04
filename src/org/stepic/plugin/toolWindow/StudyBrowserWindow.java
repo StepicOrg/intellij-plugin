@@ -59,7 +59,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     private void updateLaf(boolean isDarcula) {
-        MyLogger.getInstance().getLOG().warn("updateLaf");
+        MyLogger.getInstance().getLOG().debug("updateLaf");
         if (isDarcula) {
             updateLafDarcula();
         } else {
@@ -68,7 +68,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     private void updateIntellijAndGTKLaf() {
-        MyLogger.getInstance().getLOG().warn("updateIntellijAndGTKLaf");
+        MyLogger.getInstance().getLOG().debug("updateIntellijAndGTKLaf");
         Platform.runLater(() -> {
             final URL scrollBarStyleUrl = getClass().getResource("/style/javaFXBrowserScrollBar.css");
             myPane.getStylesheets().add(scrollBarStyleUrl.toExternalForm());
@@ -90,7 +90,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     private void initComponents() {
-        MyLogger.getInstance().getLOG().warn("initComponents");
+        MyLogger.getInstance().getLOG().debug("initComponents");
         Platform.runLater(() -> {
             myPane = new StackPane();
             myWebComponent = new WebView();
@@ -126,7 +126,7 @@ public class StudyBrowserWindow extends JFrame {
     }
 
     public void loadContent(@NotNull final String content, @Nullable StudyPluginConfigurator configurator) {
-        MyLogger.getInstance().getLOG().warn("loadContent");
+        MyLogger.getInstance().getLOG().debug("loadContent");
         if (configurator == null) {
             Platform.runLater(() -> myEngine.loadContent(content));
         } else {
@@ -140,23 +140,23 @@ public class StudyBrowserWindow extends JFrame {
 
     @Nullable
     private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyPluginConfigurator configurator) {
-        MyLogger.getInstance().getLOG().warn("createHtmlWithCodeHighlighting");
+        MyLogger.getInstance().getLOG().debug("createHtmlWithCodeHighlighting");
         String template = null;
         InputStream stream = getClass().getResourceAsStream("/code-mirror/template.html");
         try {
             template = StreamUtil.readText(stream, "utf-8");
         } catch (IOException e) {
-            LOG.warn(e.getMessage());
+            LOG.debug(e.getMessage());
         } finally {
             try {
                 stream.close();
             } catch (IOException e) {
-                LOG.warn(e.getMessage());
+                LOG.debug(e.getMessage());
             }
         }
 
         if (template == null) {
-            LOG.warn("Code mirror template is null");
+            LOG.debug("Code mirror template is null");
             return null;
         }
 
