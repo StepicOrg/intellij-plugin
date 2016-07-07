@@ -140,7 +140,6 @@ public class StudyBrowserWindow extends JFrame {
 
     @Nullable
     private String createHtmlWithCodeHighlighting(@NotNull final String content, @NotNull StudyPluginConfigurator configurator) {
-        MyLogger.getInstance().getLOG().debug("createHtmlWithCodeHighlighting");
         String template = null;
         InputStream stream = getClass().getResourceAsStream("/code-mirror/template.html");
         try {
