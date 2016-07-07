@@ -66,30 +66,23 @@ public class StepicConnector {
             NotificationUtils.initRuntimeException(NotificationTemplates.CERTIFICATE_ERROR, project);
         }
 
-
         HttpConfigurable instance = HttpConfigurable.getInstance();
         CloseableHttpClient httpClient;
 
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext);
-        if (instance.USE_HTTP_PROXY){
+        if (instance.USE_HTTP_PROXY) {
             HttpHost host = new HttpHost(instance.PROXY_HOST, instance.PROXY_PORT);
             httpClient = HttpClients.custom()
                     .setSSLSocketFactory(socketFactory)
                     .setProxy(host)
                     .build();
-        }
-        else {
+        } else {
             httpClient = HttpClients.custom()
                     .setSSLSocketFactory(socketFactory)
                     .build();
         }
 
         Unirest.setHttpClient(httpClient);
-    }
-
-    private static boolean haveDataForTmpConfig() {
-        final HttpConfigurable instance = HttpConfigurable.getInstance();
-        return (instance.USE_HTTP_PROXY || instance.USE_PROXY_PAC);
     }
 
     public static void initToken(Project project) {
