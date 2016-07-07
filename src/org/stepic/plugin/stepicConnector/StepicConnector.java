@@ -6,10 +6,12 @@ import com.google.gson.GsonBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
+import com.intellij.util.net.HttpConfigurable;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.http.HttpHost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -64,11 +66,30 @@ public class StepicConnector {
             NotificationUtils.initRuntimeException(NotificationTemplates.CERTIFICATE_ERROR, project);
         }
 
-        SSLConnectionSocketFactory sslcsf = new SSLConnectionSocketFactory(sslContext);
-        CloseableHttpClient httpclient = HttpClients.custom()
-                .setSSLSocketFactory(sslcsf)
-                .build();
-        Unirest.setHttpClient(httpclient);
+
+        HttpConfigurable instance = HttpConfigurable.getInstance();
+        CloseableHttpClient httpClient;
+
+        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext);
+        if (instance.USE_HTTP_PROXY){
+            HttpHost host = new HttpHost(instance.PROXY_HOST, instance.PROXY_PORT);
+            httpClient = HttpClients.custom()
+                    .setSSLSocketFactory(socketFactory)
+                    .setProxy(host)
+                    .build();
+        }
+        else {
+            httpClient = HttpClients.custom()
+                    .setSSLSocketFactory(socketFactory)
+                    .build();
+        }
+
+        Unirest.setHttpClient(httpClient);
+    }
+
+    private static boolean haveDataForTmpConfig() {
+        final HttpConfigurable instance = HttpConfigurable.getInstance();
+        return (instance.USE_HTTP_PROXY || instance.USE_PROXY_PAC);
     }
 
     public static void initToken(Project project) {
