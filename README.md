@@ -1,7 +1,7 @@
-# intellij-plugin 0.6.7
+# intellij-plugin 0.6.8
 
-To work with plugin you must to create a project of Stepic type.
-You need to enter login and password your Stepic account.
+To work with plugin you must to create a project of Stepik type.
+You need to enter login and password your Stepik account.
 And then input course URL or course number.
 After twenty seconds course will be built.
 
@@ -24,8 +24,8 @@ In the same way you can to download last submissions and get the status of step.
 4. Restart IDEA
 
 ##  Usage
-1. File > New > Project > Stepic
-2. Enter your login/password and a course link (in a form of https://stepic.org/course/some-course-name-ID/ or just ID)
+1. File > New > Project > Stepik
+2. Enter your login/password and a course link (in a form of https://stepik.org/course/some-course-name-ID/ or just ID)
 
 ## Build
 1. In order to build this project, you have to setting up an development environment (IntelliJ Platform SDK) as described here: http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html
