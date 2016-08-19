@@ -1,12 +1,12 @@
 <idea-plugin version="2">
-    <id>stepic.submmit.plugin.id</id>
-    <name>Stepic Java submitter -beta-</name>
-    <version>0.6.7</version>
-    <vendor email="petr.bogdanov@stepic.org" url="https://stepic.org">Stepic</vendor>
+    <id>stepik.submmit.plugin.id</id>
+    <name>Stepik Java submitter -beta-</name>
+    <version>0.6.8</version>
+    <vendor email="petr.bogdanov@stepik.org" url="https://stepik.org">Stepik</vendor>
 
     <description><![CDATA[
-      Stepic plugin for code challenges on Java.<br>
-      To use this plugin you have to have Stepic account and follow the course.<br>
+      Stepik plugin for code challenges on Java.<br>
+      To use this plugin you have to have Stepik account and follow the course.<br>
       <br>
       It used Yandex.Translator to translate lesson names on Russian to package names on English.<br>
     ]]></description>
@@ -30,32 +30,32 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
 
-        <applicationService serviceInterface="org.stepic.plugin.storages.StepicApplicationStorage"
-                            serviceImplementation="org.stepic.plugin.storages.StepicApplicationStorage"/>
+        <applicationService serviceInterface="org.stepik.plugin.storages.StepikApplicationStorage"
+                            serviceImplementation="org.stepik.plugin.storages.StepikApplicationStorage"/>
 
-        <projectService serviceInterface="org.stepic.plugin.storages.StudentStorage"
-                        serviceImplementation="org.stepic.plugin.storages.StudentStorage"/>
+        <projectService serviceInterface="org.stepik.plugin.storages.StudentStorage"
+                        serviceImplementation="org.stepik.plugin.storages.StudentStorage"/>
 
-        <projectService serviceInterface="org.stepic.plugin.storages.CourseDefinitionStorage"
-                        serviceImplementation="org.stepic.plugin.storages.CourseDefinitionStorage"/>
+        <projectService serviceInterface="org.stepik.plugin.storages.CourseDefinitionStorage"
+                        serviceImplementation="org.stepik.plugin.storages.CourseDefinitionStorage"/>
 
-        <projectService serviceInterface="org.stepic.plugin.storages.ActionVisibleProperties"
-                        serviceImplementation="org.stepic.plugin.storages.ActionVisibleProperties"/>
+        <projectService serviceInterface="org.stepik.plugin.storages.ActionVisibleProperties"
+                        serviceImplementation="org.stepik.plugin.storages.ActionVisibleProperties"/>
 
-        <moduleBuilder builderClass="org.stepic.plugin.projectWizard.StepicModuleBuilder"
-                       id="STEPIC_MODULE_BUILDER"
+        <moduleBuilder builderClass="org.stepik.plugin.projectWizard.StepikModuleBuilder"
+                       id="STEPIK_MODULE_BUILDER"
                        order="first"/>
 
-        <moduleType id="STEPIC_MODULE_TYPE"
-                    implementationClass="org.stepic.plugin.projectWizard.StepicModuleType"/>
+        <moduleType id="STEPIK_MODULE_TYPE"
+                    implementationClass="org.stepik.plugin.projectWizard.StepikModuleType"/>
 
-        <projectStructureDetector implementation="org.stepic.plugin.projectWizard.StepicProjectStructureDetector"
+        <projectStructureDetector implementation="org.stepik.plugin.projectWizard.StepikProjectStructureDetector"
                                   order="first"/>
 
         <toolWindow id="Step Description" anchor="right"
-                    factoryClass="org.stepic.plugin.toolWindow.StudyToolWindowFactory"
-                    conditionClass="org.stepic.plugin.toolWindow.StudyCondition"/>
-        <!--factoryClass="org.stepic.plugin.toolWindow.MyToolWindowFactory"/>-->
+                    factoryClass="org.stepik.plugin.toolWindow.StudyToolWindowFactory"
+                    conditionClass="org.stepik.plugin.toolWindow.StudyCondition"/>
+        <!--factoryClass="org.stepik.plugin.toolWindow.MyToolWindowFactory"/>-->
     </extensions>
 
     <extensionPoints>
@@ -66,32 +66,32 @@
         <!--<with attribute="implementationClass" implements="com.jetbrains.edu.learning.StudyLanguageManager"/>-->
         <!--</extensionPoint>-->
         <extensionPoint qualifiedName="Edu.studyToolWindowConfigurator"
-                        interface="org.stepic.plugin.toolWindow.StudyPluginConfigurator"/>
+                        interface="org.stepik.plugin.toolWindow.StudyPluginConfigurator"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="Edu">
         <!--<StudyExecutor implementationClass="com.jetbrains.edu.learning.PyStudyExecutor" language="Python"/>-->
         <!--<StudyLanguageManager implementationClass="com.jetbrains.edu.learning.PyStudyLanguageManager" language="Python"/>-->
-        <studyToolWindowConfigurator implementation="org.stepic.plugin.toolWindow.JavaStudyPluginConfigurator"/>
+        <studyToolWindowConfigurator implementation="org.stepik.plugin.toolWindow.JavaStudyPluginConfigurator"/>
     </extensions>
 
     <actions>
-        <group id="ID.StepicGroup" text="_Stepic" popup="true">
+        <group id="ID.StepikGroup" text="_Stepik" popup="true">
             <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
         </group>
 
         <!-- Add your actions here -->
         <action id="ID.SendFile"
-                class="org.stepic.plugin.actions.popupMenu.SendFile"
+                class="org.stepik.plugin.actions.popupMenu.SendFile"
                 text="Submit Solution"
-                description="Send your solution to Stepic"
-                icon="/icons/stepic_logo_green.png">
+                description="Send your solution to Stepik"
+                icon="/icons/stepik_logo_green.png">
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
         </action>
 
         <action id="ID.GetStepStatus"
-                class="org.stepic.plugin.actions.popupMenu.GetStepStatus"
+                class="org.stepik.plugin.actions.popupMenu.GetStepStatus"
                 text="Check Step Status"
                 description="Get status of the step (e.g. wrong/correct)"
                 icon="AllIcons.General.TodoQuestion">
@@ -99,78 +99,78 @@
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
-        <action id="WhoAmI" class="org.stepic.plugin.actions.mainMenu.WhoAmI" text="_Who am I"
+        <action id="WhoAmI" class="org.stepik.plugin.actions.mainMenu.WhoAmI" text="_Who am I"
                 description="return username">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
+            <add-to-group group-id="ID.StepikGroup" anchor="first"/>
         </action>
 
         <action id="ID.Update"
-                class="org.stepic.plugin.actions.mainMenu.UpdateCourse"
+                class="org.stepik.plugin.actions.mainMenu.UpdateCourse"
                 text="Update Course"
                 description="Update this course">
-            <add-to-group group-id="ID.StepicGroup" anchor="first"/>
+            <add-to-group group-id="ID.StepikGroup" anchor="first"/>
         </action>
 
         <action id="ID.DownloadLastSubmission"
-                class="org.stepic.plugin.actions.popupMenu.DownloadLastSubmission"
+                class="org.stepik.plugin.actions.popupMenu.DownloadLastSubmission"
                 text="Download Latest Submission"
-                description="Download your latest submission from Stepic"
+                description="Download your latest submission from Stepik"
                 icon="/icons/download_blue.png">
             <add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>
         </action>
 
-        <action id="ID.Help" class="org.stepic.plugin.actions.mainMenu.Help" text="_Help" description="Help">
-            <add-to-group group-id="ID.StepicGroup" anchor="last"/>
+        <action id="ID.Help" class="org.stepik.plugin.actions.mainMenu.Help" text="_Help" description="Help">
+            <add-to-group group-id="ID.StepikGroup" anchor="last"/>
         </action>
 
         <!--###########################################################################-->
         <action id="ID.PrintMapInfo"
-                class="org.stepic.plugin.actions.mainMenu.PrintMapInfo"
+                class="org.stepik.plugin.actions.mainMenu.PrintMapInfo"
                 text="PrintMapInfo" description="PrintMapInfo">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+            <!--<add-to-group group-id="ID.StepikGroup" anchor="first"/>-->
         </action>
-        <action id="TEST.NegTranslator" class="org.stepic.plugin.actions.mainMenu.NegTranslator" text="NegTranslator"
+        <action id="TEST.NegTranslator" class="org.stepik.plugin.actions.mainMenu.NegTranslator" text="NegTranslator"
                 description="NegTranslator">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+            <!--<add-to-group group-id="ID.StepikGroup" anchor="first"/>-->
         </action>
         <action id="ID.GetIdStep"
-                class="org.stepic.plugin.actions.popupMenu.GetIdStep"
+                class="org.stepik.plugin.actions.popupMenu.GetIdStep"
                 text="GetIdStep"
                 description="GetIdStep">
             <!--<add-to-group group-id="ProjectViewPopupMenuRunGroup" anchor="first"/>-->
             <!--<add-to-group group-id="EditorPopupMenu.Run" anchor="first"/>-->
         </action>
-        <action id="ID.RefreshMap" class="org.stepic.plugin.actions.mainMenu.RefreshMap" text="Refresh Map"
+        <action id="ID.RefreshMap" class="org.stepik.plugin.actions.mainMenu.RefreshMap" text="Refresh Map"
                 description="Refresh Map">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+            <!--<add-to-group group-id="ID.StepikGroup" anchor="first"/>-->
         </action>
 
         <action id="ID.TEST.SomeAction"
-                class="org.stepic.plugin.actions.mainMenu.SomeAction"
+                class="org.stepik.plugin.actions.mainMenu.SomeAction"
                 text="SomeAction"
                 description="SomeAction">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+            <!--<add-to-group group-id="ID.StepikGroup" anchor="first"/>-->
         </action>
 
-        <action id="Sign in" class="org.stepic.plugin.actions.mainMenu.SignIn" text="(tmp) Sign _in"
+        <action id="Sign in" class="org.stepik.plugin.actions.mainMenu.SignIn" text="(tmp) Sign _in"
                 description="Insert your e-mail and password">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="first"/>-->
+            <!--<add-to-group group-id="ID.StepikGroup" anchor="first"/>-->
         </action>
-        <action id="ID.RefreshToken" class="org.stepic.plugin.actions.mainMenu.RefreshToken" text="RefreshToken"
+        <action id="ID.RefreshToken" class="org.stepik.plugin.actions.mainMenu.RefreshToken" text="RefreshToken"
                 description="get new token">
-            <!--<add-to-group group-id="ID.StepicGroup" anchor="before" relative-to-action="ID.Help"/>-->
+            <!--<add-to-group group-id="ID.StepikGroup" anchor="before" relative-to-action="ID.Help"/>-->
         </action>
     </actions>
 
     <module-components>
         <component>
-            <implementation-class>org.stepic.plugin.components.MyModuleComponent</implementation-class>
+            <implementation-class>org.stepik.plugin.components.MyModuleComponent</implementation-class>
         </component>
     </module-components>
     <project-components>
         <component>
-            <implementation-class>org.stepic.plugin.components.MyProjectComponent</implementation-class>
+            <implementation-class>org.stepik.plugin.components.MyProjectComponent</implementation-class>
         </component>
     </project-components>
 </idea-plugin>
