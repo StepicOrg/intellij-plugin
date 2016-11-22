@@ -1,3 +1,6 @@
+# This repository is outdated
+Current repository: [intellij-plugins](https://github.com/StepicOrg/intellij-plugins)<br>
+
 # intellij-plugin 0.6.8
 
 To work with plugin you must to create a project of Stepik type.
